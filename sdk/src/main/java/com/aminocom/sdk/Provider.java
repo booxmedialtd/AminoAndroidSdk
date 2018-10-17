@@ -25,7 +25,7 @@ public class Provider {
     private long channelsCacheTime = 0;
 
     private ServerApi api;
-    private CacheRepository cacheRepository;
+    private LocalRepository localRepository;
 
     public Provider() {
         final HttpLoggingInterceptor.Logger logger = message -> {
@@ -58,23 +58,23 @@ public class Provider {
 
         api = retrofit.create(ServerApi.class);
 
-        cacheRepository = new CacheRepository();
+        localRepository = new CacheRepository();
     }
 
     public Observable<List<Channel>> getChannels() {
         if (System.currentTimeMillis() - channelsCacheTime > CacheTTLConfig.CHANNEL_TTL) {
             return api.getChannels("", "")
-                    .flatMapObservable(it -> cacheRepository.getChannels());
+                    .flatMapObservable(it -> localRepository.getChannels());
         } else {
-            return cacheRepository.getChannels();
+            return localRepository.getChannels();
         }
     }
 
     public Observable<List<Channel>> getChannelCache() {
-        return cacheRepository.getChannels();
+        return localRepository.getChannels();
     }
 
     public void setChannelCache(List<Channel> channels) {
-        cacheRepository.cacheChannels(channels);
+        localRepository.cacheChannels(channels);
     }
 }
