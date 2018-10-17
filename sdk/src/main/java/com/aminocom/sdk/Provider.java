@@ -2,13 +2,16 @@ package com.aminocom.sdk;
 
 import android.util.Log;
 
+import com.aminocom.sdk.model.client.Channel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -19,7 +22,10 @@ public class Provider {
 
     private static final String TAG = Provider.class.getSimpleName();
 
+    private long channelsCacheTime = 0;
+
     private ServerApi api;
+    private CacheRepository cacheRepository;
 
     public Provider() {
         final HttpLoggingInterceptor.Logger logger = message -> {
@@ -44,12 +50,31 @@ public class Provider {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("")
+                .baseUrl("https://dna-tv.fi")
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
         api = retrofit.create(ServerApi.class);
+
+        cacheRepository = new CacheRepository();
+    }
+
+    public Observable<List<Channel>> getChannels() {
+        if (System.currentTimeMillis() - channelsCacheTime > CacheTTLConfig.CHANNEL_TTL) {
+            return api.getChannels("", "")
+                    .flatMapObservable(it -> cacheRepository.getChannels());
+        } else {
+            return cacheRepository.getChannels();
+        }
+    }
+
+    public Observable<List<Channel>> getChannelCache() {
+        return cacheRepository.getChannels();
+    }
+
+    public void setChannelCache(List<Channel> channels) {
+        cacheRepository.cacheChannels(channels);
     }
 }
