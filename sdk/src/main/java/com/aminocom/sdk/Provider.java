@@ -64,6 +64,7 @@ public class Provider {
     public Observable<List<Channel>> getChannels() {
         if (System.currentTimeMillis() - channelsCacheTime > CacheTTLConfig.CHANNEL_TTL) {
             return api.getChannels("", "")
+                    // TODO: Add type converter
                     .flatMapObservable(it -> localRepository.getChannels());
         } else {
             return localRepository.getChannels();
