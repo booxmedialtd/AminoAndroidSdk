@@ -4,5 +4,5 @@ public class ChannelResponse {
 
     public ResultSet resultSet;
 
-    public ChannelList channelList;
+    public ChannelData data;
 }
