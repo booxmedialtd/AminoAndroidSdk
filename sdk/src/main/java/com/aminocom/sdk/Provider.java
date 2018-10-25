@@ -2,7 +2,7 @@ package com.aminocom.sdk;
 
 import android.util.Log;
 
-import com.aminocom.sdk.model.client.Channel;
+import com.aminocom.sdk.model.client.channel.Channel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

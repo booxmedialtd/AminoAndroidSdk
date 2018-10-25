@@ -1,6 +1,6 @@
 package com.aminocom.sdk;
 
-import com.aminocom.sdk.model.client.Channel;
+import com.aminocom.sdk.model.client.channel.Channel;
 import com.aminocom.sdk.model.client.Epg;
 import com.aminocom.sdk.model.client.Group;
 import com.aminocom.sdk.model.client.Program;

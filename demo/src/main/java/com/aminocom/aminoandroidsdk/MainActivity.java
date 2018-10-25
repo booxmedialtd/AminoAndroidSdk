@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.aminocom.sdk.Provider;
-import com.aminocom.sdk.model.client.Channel;
+import com.aminocom.sdk.model.client.channel.Channel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                             StringBuilder text = new StringBuilder();
 
                             for (Channel channel : items) {
-                                text.append(channel.title).append("\n");
+                                text.append(channel.getTitle()).append("\n");
                             }
 
                             testText.setText(text.toString());
