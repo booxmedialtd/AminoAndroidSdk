@@ -2,6 +2,7 @@ package com.aminocom.sdk;
 
 import android.util.Log;
 
+import com.aminocom.sdk.mapper.ChannelMapper;
 import com.aminocom.sdk.model.client.channel.Channel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -64,8 +65,12 @@ public class Provider {
     public Observable<List<Channel>> getChannels() {
         if (System.currentTimeMillis() - channelsCacheTime > CacheTTLConfig.CHANNEL_TTL) {
             return api.getChannels("", "")
-                    // TODO: Add type converter
-                    .flatMapObservable(it -> localRepository.getChannels());
+                    .toObservable()
+                    .flatMapIterable(response -> response.data.channels)
+                    .map(ChannelMapper::from)
+                    .toList()
+                    .doOnSuccess(channels -> localRepository.cacheChannels(channels))
+                    .flatMapObservable(list -> localRepository.getChannels());
         } else {
             return localRepository.getChannels();
         }

@@ -4,7 +4,7 @@ import com.aminocom.sdk.model.client.channel.Channel;
 import com.aminocom.sdk.model.network.ChannelItem;
 
 public class ChannelMapper {
-    public Channel fromResponse(ChannelItem response) {
+    public static Channel from(ChannelItem response) {
         Channel result = new Channel();
 
         result.setId(response.id);
