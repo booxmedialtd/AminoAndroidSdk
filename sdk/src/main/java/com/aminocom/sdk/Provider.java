@@ -22,6 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Provider {
 
     private static final String TAG = Provider.class.getSimpleName();
+    private static final String SERVICE = "mobileclient";
 
     private long channelsCacheTime = 0;
 
@@ -51,7 +52,7 @@ public class Provider {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://dna-tv.fi")
+                .baseUrl("https://nebtest1.auto.neb.amo.booxmedia.xyz")
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -64,12 +65,15 @@ public class Provider {
 
     public Observable<List<Channel>> getChannels() {
         if (System.currentTimeMillis() - channelsCacheTime > CacheTTLConfig.CHANNEL_TTL) {
-            return api.getChannels("", "")
+            return api.getChannels("aleksei@test.com", SERVICE)
                     .toObservable()
                     .flatMapIterable(response -> response.data.channels)
                     .map(ChannelMapper::from)
                     .toList()
-                    .doOnSuccess(channels -> localRepository.cacheChannels(channels))
+                    .doOnSuccess(channels -> {
+                        localRepository.cacheChannels(channels);
+                        channelsCacheTime = System.currentTimeMillis();
+                    })
                     .flatMapObservable(list -> localRepository.getChannels());
         } else {
             return localRepository.getChannels();
