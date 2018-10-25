@@ -6,12 +6,12 @@ import java.util.List;
  * Channel JSON object for API V3
  */
 public class ChannelItem {
-    private String id;
-    private String title;
-    private String description;
-    private boolean adult;
-    private String mediaType;
-    private List<Thumbnails> thumbnails;
-    private List<ProductItem> products;
-    private ChannelServiceElement services;
+    public String id;
+    public String title;
+    public String description;
+    public boolean adult;
+    public String mediaType;
+    public List<ThumbnailElement> thumbnails;
+    public List<ProductItem> products;
+    public ChannelServiceElement services;
 }

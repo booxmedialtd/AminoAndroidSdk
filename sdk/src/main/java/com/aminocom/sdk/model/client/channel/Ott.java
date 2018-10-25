@@ -1,78 +1,33 @@
 package com.aminocom.sdk.model.client.channel;
 
-import java.util.Objects;
+import java.util.List;
 
 public class Ott {
-    private int id;
-    private String codecInfo;
-    private String protection;
-    private String streamingProtocol;
-    private String transportProtocol;
-    private String url;
+    private int lcn;
+    private int mobileLcn;
+    private List<OttStream> streams;
 
-    public int getId() {
-        return id;
+    public int getLcn() {
+        return lcn;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setLcn(int lcn) {
+        this.lcn = lcn;
     }
 
-    public String getCodecInfo() {
-        return codecInfo;
+    public int getMobileLcn() {
+        return mobileLcn;
     }
 
-    public void setCodecInfo(String codecInfo) {
-        this.codecInfo = codecInfo;
+    public void setMobileLcn(int mobileLcn) {
+        this.mobileLcn = mobileLcn;
     }
 
-    public String getProtection() {
-        return protection;
+    public List<OttStream> getStreams() {
+        return streams;
     }
 
-    public void setProtection(String protection) {
-        this.protection = protection;
-    }
-
-    public String getStreamingProtocol() {
-        return streamingProtocol;
-    }
-
-    public void setStreamingProtocol(String streamingProtocol) {
-        this.streamingProtocol = streamingProtocol;
-    }
-
-    public String getTransportProtocol() {
-        return transportProtocol;
-    }
-
-    public void setTransportProtocol(String transportProtocol) {
-        this.transportProtocol = transportProtocol;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    @Override
-    public String toString() {
-        return String.valueOf(id);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Ott ott = (Ott) o;
-        return id == ott.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setStreams(List<OttStream> streams) {
+        this.streams = streams;
     }
 }

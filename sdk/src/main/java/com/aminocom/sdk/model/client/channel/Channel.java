@@ -18,25 +18,25 @@ public class Channel {
         this.title = title;
     }
 
-    private long id;
+    private String id;
     private String title;
     private String description;
     private boolean adult;
     private String mediaType;
     private List<Thumbnail> thumbnails;
     private List<Product> products;
-    private List<Ott> otts;
+    private Ott ott;
     private List<Dvb> dvbs;
     private ServiceState live;
     private ServiceState recording;
     private ServiceState catchUp;
     private FastForwardState fastForward;
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -88,12 +88,12 @@ public class Channel {
         this.products = products;
     }
 
-    public List<Ott> getOtts() {
-        return otts;
+    public Ott getOtt() {
+        return ott;
     }
 
-    public void setOtts(List<Ott> otts) {
-        this.otts = otts;
+    public void setOtt(Ott ott) {
+        this.ott = ott;
     }
 
     public List<Dvb> getDvbs() {
