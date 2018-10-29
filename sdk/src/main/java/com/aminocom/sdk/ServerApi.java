@@ -9,6 +9,6 @@ import retrofit2.http.Query;
 
 interface ServerApi {
     // TODO: Add service parameter to interceptor
-    @GET("api/v3/user/{user}/channels/")
+    @GET("api/v3/user/{user}/channel/")
     Single<ChannelResponse> getChannels(@Path("user") String user, @Query("service") String service);
 }
