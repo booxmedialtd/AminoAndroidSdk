@@ -1,0 +1,82 @@
+package com.aminocom.sdk;
+
+import com.burgstaller.okhttp.CacheKeyProvider;
+import com.burgstaller.okhttp.DefaultCacheKeyProvider;
+import com.burgstaller.okhttp.digest.CachingAuthenticator;
+
+import java.io.IOException;
+import java.util.Map;
+
+import io.reactivex.annotations.NonNull;
+import okhttp3.Connection;
+import okhttp3.Interceptor;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.Route;
+import okhttp3.internal.platform.Platform;
+
+import static java.net.HttpURLConnection.HTTP_PROXY_AUTH;
+import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
+
+public class RetrofitInterceptor implements Interceptor {
+
+    private static final String USER_AGENT = "BM-NATIVE-APP";
+
+    private final Map<String, CachingAuthenticator> authCache;
+    private final CacheKeyProvider cacheKeyProvider;
+
+    public RetrofitInterceptor(Map<String, CachingAuthenticator> authCache) {
+        this.authCache = authCache;
+        this.cacheKeyProvider = new DefaultCacheKeyProvider();
+    }
+
+    @Override
+    public Response intercept(@NonNull Chain chain) throws IOException {
+        Request.Builder builder = chain.request().newBuilder();
+
+        Request oldRequest = chain.request();
+
+        builder.addHeader("User-Agent", USER_AGENT);
+
+        String cookie = null;//AccountUtil.getCookie();
+
+        if (cookie != null && !cookie.isEmpty()) {
+            builder.addHeader("Cookie", cookie);
+        }
+
+        builder.url(oldRequest.url());
+        builder.method(oldRequest.method(), oldRequest.body());
+        builder.build();
+
+        final Request request = builder.build();
+        final String key = cacheKeyProvider.getCachingKey(request);
+        CachingAuthenticator authenticator = authCache.get(key);
+        Request authRequest = null;
+        Connection connection = chain.connection();
+        Route route = connection != null ? connection.route() : null;
+        if (authenticator != null) {
+            authRequest = authenticator.authenticateWithState(route, request);
+        }
+        if (authRequest == null) {
+            authRequest = request;
+        }
+        Response response = chain.proceed(authRequest);
+
+        // Cached response was used, but it produced unauthorized response (cache expired).
+        int responseCode = response != null ? response.code() : 0;
+        if (authenticator != null && (responseCode == HTTP_UNAUTHORIZED || responseCode == HTTP_PROXY_AUTH)) {
+            // Remove cached authenticator and resend request
+            if (authCache.remove(key) != null) {
+
+                if (response.body() != null) {
+                    response.body().close();
+                }
+
+                Platform.get().log(Platform.INFO, "Cached authentication expired. Sending a new request.", null);
+                // Force sending a new request without "Authorization" header
+                response = chain.proceed(request);
+            }
+        }
+        return response;
+    }
+}
