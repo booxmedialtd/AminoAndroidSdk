@@ -13,13 +13,35 @@ public class ChannelMapper {
         result.setAdult(response.adult);
         result.setMediaType(response.mediaType);
         result.setThumbnails(ThumbnailMapper.from(response.thumbnails));
-        result.setProducts(ProductMapper.from(response.products));
-        result.setOtt(OttMapper.from(response.services.live.sources.ott));
-        result.setDvbs(DvbMapper.from(response.services.live.sources.dvb));
-        result.setLive(ServiceStateMapper.from(response.services.live));
-        result.setRecording(ServiceStateMapper.from(response.services.recording));
-        result.setCatchUp(ServiceStateMapper.from(response.services.catchup));
-        result.setFastForward(FastForwardMapping.from(response.services.fastForward));
+
+        if (response.products != null) {
+            result.setProducts(ProductMapper.from(response.products));
+        }
+
+        if (response.services.live.sources.ott != null) {
+            result.setOtt(OttMapper.from(response.services.live.sources.ott));
+        }
+
+        if (response.services.live.sources.dvb != null) {
+            result.setDvbs(DvbMapper.from(response.services.live.sources.dvb));
+        }
+
+        if (response.services.live != null) {
+            result.setLive(ServiceStateMapper.from(response.services.live));
+        }
+
+        if (response.services.recording != null) {
+            result.setRecording(ServiceStateMapper.from(response.services.recording));
+        }
+
+        if (response.services.catchup != null) {
+            result.setCatchUp(ServiceStateMapper.from(response.services.catchup));
+        }
+
+        if (response.services.fastForward != null) {
+            result.setFastForward(FastForwardMapping.from(response.services.fastForward));
+        }
+
 
         return result;
     }

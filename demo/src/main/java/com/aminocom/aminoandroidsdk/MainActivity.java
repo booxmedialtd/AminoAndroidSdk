@@ -31,8 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
         Provider provider = new Provider();
 
-        provider.setChannelCache(getTestChannelList(3, "Channel"));
-
         disposable = provider.getChannels()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -48,7 +46,15 @@ public class MainActivity extends AppCompatActivity {
                         t -> Log.e(TAG, "Failed to get channels data", t)
                 );
 
-        testButton.setOnClickListener(view -> provider.setChannelCache(getTestChannelList(5, "Updated channel")));
+        testButton.setOnClickListener(view -> provider.login()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(items -> {
+
+                        },
+                        t -> Log.e(TAG, "Failed to login", t)
+                )
+        );
     }
 
     private List<Channel> getTestChannelList(int limit, String prefix) {

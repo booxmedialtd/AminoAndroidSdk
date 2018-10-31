@@ -2,6 +2,7 @@ package com.aminocom.sdk;
 
 import com.aminocom.sdk.mapper.ChannelMapper;
 import com.aminocom.sdk.model.client.channel.Channel;
+import com.burgstaller.okhttp.AuthenticationCacheInterceptor;
 import com.burgstaller.okhttp.CachingAuthenticatorDecorator;
 import com.burgstaller.okhttp.digest.CachingAuthenticator;
 import com.burgstaller.okhttp.digest.Credentials;
@@ -17,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -48,14 +50,16 @@ public class Provider {
                 .create();
 
         Credentials credentials = new Credentials(SERVICE, "qn05BON1hXGCUsw");
+        //Credentials credentials2 = new Credentials("aleksei@test.com", "1234");
+
         final DigestAuthenticator authenticator = new DigestAuthenticator(credentials);
 
         final Map<String, CachingAuthenticator> authCache = new ConcurrentHashMap<>();
 
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .authenticator(new CachingAuthenticatorDecorator(authenticator, authCache))
-                //.addInterceptor(new AuthenticationCacheInterceptor(authCache))
-                .addInterceptor(new RetrofitInterceptor(authCache))
+                .addInterceptor(new AuthenticationCacheInterceptor(authCache))
+                //.addInterceptor(new RetrofitInterceptor(authCache))
                 .addNetworkInterceptor(interceptor)
                 .connectTimeout(2, TimeUnit.MINUTES)
                 .readTimeout(2, TimeUnit.MINUTES)
@@ -74,8 +78,10 @@ public class Provider {
     }
 
     public Observable<List<Channel>> getChannels() {
+        String userName = AccountUtil.getCookie() != null ? "aleksei@test.com" : "guest";
+
         if (System.currentTimeMillis() - channelsCacheTime > CacheTTLConfig.CHANNEL_TTL) {
-            return api.getChannels("aleksei@test.com", SERVICE)
+            return api.getChannels(userName, SERVICE)
                     .toObservable()
                     .flatMapIterable(response -> response.data.channels)
                     .map(ChannelMapper::from)
@@ -90,11 +96,14 @@ public class Provider {
         }
     }
 
-    public Observable<List<Channel>> getChannelCache() {
-        return localRepository.getChannels();
-    }
-
-    public void setChannelCache(List<Channel> channels) {
-        localRepository.cacheChannels(channels);
+    public Single<String> login() {
+        return api.login(
+                "aleksei@test.com",
+                "0.0.1",
+                AccountUtil.generateUuid(),
+                "Android",
+                "8.0.1",
+                SERVICE
+        );
     }
 }
