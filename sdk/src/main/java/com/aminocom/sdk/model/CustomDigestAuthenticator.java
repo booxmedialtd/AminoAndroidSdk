@@ -155,17 +155,7 @@ public class CustomDigestAuthenticator implements CachingAuthenticator {
             throw new IllegalArgumentException("missing nonce in challenge header: " + header);
         }
 
-
-        // There are more than one header with name "Set-Cookie"
-        StringBuilder stringBuilder = new StringBuilder();
-
-        for (int i = 0; i < headers.names().size(); i++) {
-            if (headers.name(i).equals("Set-Cookie")) {
-                stringBuilder.append(headers.value(i)).append("; ");
-            }
-        }
-
-        String cookie = stringBuilder.substring(0, stringBuilder.length() - 2);
+        String cookie = response.header("Set-Cookie", null);
 
         return authenticateWithState(route, response.request(), parameters, cookie);
     }
@@ -247,7 +237,7 @@ public class CustomDigestAuthenticator implements CachingAuthenticator {
                 .header(digestHeader.getName(), digestHeader.getValue());
 
         if (realm.equals("user") && cookie != null) {
-            builder.addHeader("Set-Cookie", cookie);
+            builder.addHeader("Cookie", cookie);
         }
 
         return builder.build();
