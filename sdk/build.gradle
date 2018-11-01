@@ -11,6 +11,8 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        buildConfigField "String", "BASE_SCHEME", '"https"'
+        buildConfigField "String", "BASE_DOMAIN", '"nebtest1.auto.neb.amo.booxmedia.xyz"'
     }
 
     buildTypes {

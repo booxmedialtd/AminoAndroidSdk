@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         Provider provider = new Provider();
 
-        disposable = provider.getChannels()
+        /*disposable = provider.getChannels()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items -> {
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                             testText.setText(text.toString());
                         },
                         t -> Log.e(TAG, "Failed to get channels data", t)
-                );
+                );*/
 
         testButton.setOnClickListener(view -> provider.login()
                 .subscribeOn(Schedulers.io())

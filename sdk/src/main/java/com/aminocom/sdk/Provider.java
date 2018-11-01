@@ -1,6 +1,7 @@
 package com.aminocom.sdk;
 
 import com.aminocom.sdk.mapper.ChannelMapper;
+import com.aminocom.sdk.model.CustomDigestAuthenticator;
 import com.aminocom.sdk.model.client.channel.Channel;
 import com.burgstaller.okhttp.AuthenticationCacheInterceptor;
 import com.burgstaller.okhttp.CachingAuthenticatorDecorator;
@@ -49,17 +50,18 @@ public class Provider {
                 .setDateFormat(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH).toPattern())
                 .create();
 
-        Credentials credentials = new Credentials(SERVICE, "qn05BON1hXGCUsw");
-        //Credentials credentials2 = new Credentials("aleksei@test.com", "1234");
+        Credentials serviceCredentials = new Credentials(SERVICE, "qn05BON1hXGCUsw");
+        Credentials userCredentials = new Credentials("aleksei@test.com", "1234");
 
-        final DigestAuthenticator authenticator = new DigestAuthenticator(credentials);
+        final CustomDigestAuthenticator serviceAuthenticator = new CustomDigestAuthenticator(serviceCredentials, userCredentials);
+        final DigestAuthenticator userAuthenticator = new DigestAuthenticator(userCredentials);
 
         final Map<String, CachingAuthenticator> authCache = new ConcurrentHashMap<>();
 
         OkHttpClient client = new OkHttpClient().newBuilder()
-                .authenticator(new CachingAuthenticatorDecorator(authenticator, authCache))
+                .authenticator(new CachingAuthenticatorDecorator(serviceAuthenticator, authCache))
                 .addInterceptor(new AuthenticationCacheInterceptor(authCache))
-                //.addInterceptor(new RetrofitInterceptor(authCache))
+                //.addInterceptor(new RetrofitInterceptor(userAuthenticator, userCredentials, authCache))
                 .addNetworkInterceptor(interceptor)
                 .connectTimeout(2, TimeUnit.MINUTES)
                 .readTimeout(2, TimeUnit.MINUTES)
