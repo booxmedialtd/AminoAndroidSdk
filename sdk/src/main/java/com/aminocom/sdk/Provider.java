@@ -3,7 +3,7 @@ package com.aminocom.sdk;
 import com.aminocom.sdk.mapper.ChannelMapper;
 import com.aminocom.sdk.model.CustomDigestAuthenticator;
 import com.aminocom.sdk.model.client.channel.Channel;
-import com.burgstaller.okhttp.AuthenticationCacheInterceptor;
+import com.aminocom.sdk.model.network.UserResponse;
 import com.burgstaller.okhttp.CachingAuthenticatorDecorator;
 import com.burgstaller.okhttp.digest.CachingAuthenticator;
 import com.burgstaller.okhttp.digest.Credentials;
@@ -58,8 +58,8 @@ public class Provider {
 
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .authenticator(new CachingAuthenticatorDecorator(authenticator, authCache))
-                .addInterceptor(new AuthenticationCacheInterceptor(authCache))
-                //.addInterceptor(new RetrofitInterceptor(userAuthenticator, userCredentials, authCache))
+                //.addInterceptor(new AuthenticationCacheInterceptor(authCache))
+                .addInterceptor(new RetrofitInterceptor(authCache))
                 .addNetworkInterceptor(interceptor)
                 .connectTimeout(2, TimeUnit.MINUTES)
                 .readTimeout(2, TimeUnit.MINUTES)
@@ -98,7 +98,7 @@ public class Provider {
     }
 
     // TODO: add correct parameters when SDK Builder will be ready
-    public Single<String> login(String login, String password) {
+    public Single<UserResponse> login(String login, String password) {
         authenticator.setUserCredentials(new Credentials(login, password));
 
         return api.login(

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aminocom.sdk.Provider;
 import com.aminocom.sdk.model.client.channel.Channel;
@@ -46,12 +47,11 @@ public class MainActivity extends AppCompatActivity {
                         t -> Log.e(TAG, "Failed to get channels data", t)
                 );*/
 
-        testButton.setOnClickListener(view -> provider.login("aleksei@test.com", "1234")
+        testButton.setOnClickListener(view -> disposable = provider.login("aleksei@test.com", "1234")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(items -> {
-
-                        },
+                .subscribe(
+                        items -> Toast.makeText(this, "Login successful", Toast.LENGTH_LONG).show(),
                         t -> Log.e(TAG, "Failed to login", t)
                 )
         );

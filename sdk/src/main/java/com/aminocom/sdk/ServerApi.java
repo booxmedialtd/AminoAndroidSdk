@@ -1,6 +1,7 @@
 package com.aminocom.sdk;
 
 import com.aminocom.sdk.model.network.ChannelResponse;
+import com.aminocom.sdk.model.network.UserResponse;
 
 import io.reactivex.Single;
 import retrofit2.http.Field;
@@ -15,7 +16,7 @@ interface ServerApi {
 
     @POST("api/user/{user}/login")
     @FormUrlEncoded
-    Single<String> login(
+    Single<UserResponse> login(
             @Path("user") String user,
             @Field("ver") String version,
             @Field("device_id") String deviceId,
