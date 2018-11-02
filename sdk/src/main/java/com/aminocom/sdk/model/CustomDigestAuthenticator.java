@@ -39,17 +39,17 @@ import okhttp3.internal.platform.Platform;
 
 public class CustomDigestAuthenticator implements CachingAuthenticator {
 
-    public static final String PROXY_AUTH = "Proxy-Authenticate";
-    public static final String PROXY_AUTH_RESP = "Proxy-Authorization";
-    public static final String WWW_AUTH = "WWW-Authenticate";
-    public static final String WWW_AUTH_RESP = "Authorization";
+    private static final String PROXY_AUTH = "Proxy-Authenticate";
+    private static final String PROXY_AUTH_RESP = "Proxy-Authorization";
+    private static final String WWW_AUTH = "WWW-Authenticate";
+    private static final String WWW_AUTH_RESP = "Authorization";
 
     private static final String CREDENTIAL_CHARSET = "http.auth.credential-charset";
     private static final int QOP_UNKNOWN = -1;
     private static final int QOP_MISSING = 0;
     private static final int QOP_AUTH_INT = 1;
     private static final int QOP_AUTH = 2;
-    private static final String TAG = "OkDigest";
+
     /**
      * Hexa values used when creating 32 character long digest in HTTP DigestScheme
      * in case of authentication.
@@ -68,8 +68,6 @@ public class CustomDigestAuthenticator implements CachingAuthenticator {
     private String lastNonce;
     private long nounceCount;
     private String cnonce;
-    private String a1;
-    private String a2;
     private boolean proxy;
 
     public CustomDigestAuthenticator(Credentials credentials, Credentials userCredentials) {
@@ -92,7 +90,7 @@ public class CustomDigestAuthenticator implements CachingAuthenticator {
      *
      * @return The cnonce value as String.
      */
-    public static String createCnonce() {
+    private static String createCnonce() {
         final SecureRandom rnd = new SecureRandom();
         final byte[] tmp = new byte[8];
         rnd.nextBytes(tmp);
@@ -107,7 +105,7 @@ public class CustomDigestAuthenticator implements CachingAuthenticator {
      * @param binaryData array containing the digest
      * @return encoded MD5, or <CODE>null</CODE> if encoding failed
      */
-    static String encode(final byte[] binaryData) {
+    private static String encode(final byte[] binaryData) {
         final int n = binaryData.length;
         final char[] buffer = new char[n * 2];
         for (int i = 0; i < n; i++) {
@@ -120,7 +118,7 @@ public class CustomDigestAuthenticator implements CachingAuthenticator {
         return new String(buffer);
     }
 
-    protected void parseChallenge(
+    private void parseChallenge(
             final String buffer, int pos, int len, Map<String, String> params) {
 
         BasicHeaderValueParser parser = BasicHeaderValueParser.INSTANCE;
@@ -139,7 +137,7 @@ public class CustomDigestAuthenticator implements CachingAuthenticator {
     }
 
     @Override
-    public synchronized Request authenticate(Route route, Response response) throws IOException {
+    public synchronized Request authenticate(Route route, Response response) {
         Headers headers = response.headers();
 
         String header = findDigestHeader(headers, getHeaderName(response.code()));
@@ -183,15 +181,14 @@ public class CustomDigestAuthenticator implements CachingAuthenticator {
     }
 
     @Override
-    public Request authenticateWithState(Route route, Request request) throws IOException {
+    public Request authenticateWithState(Route route, Request request) {
         // make sure we don't modify the values in shared parametersRef instance
         Map<String, String> ref = parametersRef.get();
-        Map<String, String> parameters = ref == null
-                ? new HashMap<String, String>() : new HashMap<String, String>(ref);
+        Map<String, String> parameters = ref == null ? new HashMap<>() : new HashMap<>(ref);
         return authenticateWithState(route, request, parameters, null);
     }
 
-    private Request authenticateWithState(Route route, Request request, Map<String, String> parameters, String cookie) throws IOException {
+    private Request authenticateWithState(Route route, Request request, Map<String, String> parameters, String cookie) {
         final String realm = parameters.get("realm");
         if (realm == null) {
             // missing realm, this would mean that the authenticator is not initialized for this
@@ -206,7 +203,7 @@ public class CustomDigestAuthenticator implements CachingAuthenticator {
         boolean isStale = "true".equalsIgnoreCase(stale);
 
         if (!realm.equals("user")) {
-            if (havePreviousDigestAuthorizationAndShouldAbort(request, nonce, isStale)) {
+            if (havePreviousDigestAuthorizationAndShouldAbort(request, isStale)) {
                 // prevent infinite loops when the password is wrong
                 Platform.get().log(Platform.WARN, "previous digest authentication with same nonce failed, returning null", null);
                 return null;
@@ -249,12 +246,11 @@ public class CustomDigestAuthenticator implements CachingAuthenticator {
      * again and would fail again and again, ...
      *
      * @param request the previous request
-     * @param nonce   the current server nonce.
      * @param isStale when {@code true} then the server told us that the nonce was stale.
      * @return {@code true} in case the previous request already was authenticating to the current
      * server nonce.
      */
-    private boolean havePreviousDigestAuthorizationAndShouldAbort(Request request, String nonce, boolean isStale) {
+    private boolean havePreviousDigestAuthorizationAndShouldAbort(Request request, boolean isStale) {
         final String headerKey;
         if (isProxy()) {
             headerKey = PROXY_AUTH_RESP;
@@ -349,7 +345,7 @@ public class CustomDigestAuthenticator implements CachingAuthenticator {
             pwd = userCredentials.getPassword();
         }
 
-        if (nonce.equals(this.lastNonce)) {
+        if (nonce != null && nonce.equals(this.lastNonce)) {
             nounceCount++;
         } else {
             nounceCount = 1;
@@ -366,8 +362,8 @@ public class CustomDigestAuthenticator implements CachingAuthenticator {
             cnonce = createCnonce();
         }
 
-        a1 = null;
-        a2 = null;
+        String a1;
+        String a2;
         // 3.2.2.2: Calculating digest
         if ("MD5-sess".equalsIgnoreCase(algorithm)) {
             // H( unq(username-value) ":" unq(realm-value) ":" passwd )
@@ -486,11 +482,11 @@ public class CustomDigestAuthenticator implements CachingAuthenticator {
      *
      * @return the credentials charset
      */
-    public Charset getCredentialsCharset() {
+    private Charset getCredentialsCharset() {
         return credentialsCharset;
     }
 
-    String getCredentialsCharset(final Request request) {
+    private String getCredentialsCharset(final Request request) {
         String charset = request.header(CREDENTIAL_CHARSET);
         if (charset == null) {
             charset = getCredentialsCharset().name();
@@ -507,7 +503,7 @@ public class CustomDigestAuthenticator implements CachingAuthenticator {
         }
     }
 
-    public static byte[] getAsciiBytes(String data) {
+    private static byte[] getAsciiBytes(String data) {
         if (data == null) {
             throw new IllegalArgumentException("Parameter may not be null");
         } else {
@@ -519,20 +515,20 @@ public class CustomDigestAuthenticator implements CachingAuthenticator {
         }
     }
 
-    public boolean isProxy() {
+    private boolean isProxy() {
         return proxy;
     }
 
-    public void setProxy(boolean proxy) {
+    private void setProxy(boolean proxy) {
         this.proxy = proxy;
     }
 
     private static class AuthenticationException extends IllegalStateException {
-        public AuthenticationException(String s) {
+        AuthenticationException(String s) {
             super(s);
         }
 
-        public AuthenticationException(String message, Exception ex) {
+        AuthenticationException(String message, Exception ex) {
             super(message, ex);
         }
     }
