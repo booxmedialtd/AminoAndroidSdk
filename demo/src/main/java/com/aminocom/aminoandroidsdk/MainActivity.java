@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                         t -> Log.e(TAG, "Failed to get channels data", t)
                 );*/
 
-        testButton.setOnClickListener(view -> provider.login()
+        testButton.setOnClickListener(view -> provider.login("aleksei@test.com", "1234")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items -> {

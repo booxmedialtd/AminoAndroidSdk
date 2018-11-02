@@ -7,7 +7,6 @@ import com.burgstaller.okhttp.AuthenticationCacheInterceptor;
 import com.burgstaller.okhttp.CachingAuthenticatorDecorator;
 import com.burgstaller.okhttp.digest.CachingAuthenticator;
 import com.burgstaller.okhttp.digest.Credentials;
-import com.burgstaller.okhttp.digest.DigestAuthenticator;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -35,6 +34,7 @@ public class Provider {
 
     private ServerApi api;
     private LocalRepository localRepository;
+    private final CustomDigestAuthenticator authenticator;
 
     public Provider() {
         final HttpLoggingInterceptor.Logger logger = message -> {
@@ -51,15 +51,13 @@ public class Provider {
                 .create();
 
         Credentials serviceCredentials = new Credentials(SERVICE, "qn05BON1hXGCUsw");
-        Credentials userCredentials = new Credentials("aleksei@test.com", "1234");
 
-        final CustomDigestAuthenticator serviceAuthenticator = new CustomDigestAuthenticator(serviceCredentials, userCredentials);
-        final DigestAuthenticator userAuthenticator = new DigestAuthenticator(userCredentials);
+        authenticator = new CustomDigestAuthenticator(serviceCredentials, null);
 
         final Map<String, CachingAuthenticator> authCache = new ConcurrentHashMap<>();
 
         OkHttpClient client = new OkHttpClient().newBuilder()
-                .authenticator(new CachingAuthenticatorDecorator(serviceAuthenticator, authCache))
+                .authenticator(new CachingAuthenticatorDecorator(authenticator, authCache))
                 .addInterceptor(new AuthenticationCacheInterceptor(authCache))
                 //.addInterceptor(new RetrofitInterceptor(userAuthenticator, userCredentials, authCache))
                 .addNetworkInterceptor(interceptor)
@@ -79,6 +77,7 @@ public class Provider {
         localRepository = new CacheRepository();
     }
 
+    // TODO: change username when username will be stored in SDK
     public Observable<List<Channel>> getChannels() {
         String userName = AccountUtil.getCookie() != null ? "aleksei@test.com" : "guest";
 
@@ -98,9 +97,12 @@ public class Provider {
         }
     }
 
-    public Single<String> login() {
+    // TODO: add correct parameters when SDK Builder will be ready
+    public Single<String> login(String login, String password) {
+        authenticator.setUserCredentials(new Credentials(login, password));
+
         return api.login(
-                "aleksei@test.com",
+                login,
                 "0.0.1",
                 AccountUtil.generateUuid(),
                 "Android",

@@ -64,7 +64,7 @@ public class CustomDigestAuthenticator implements CachingAuthenticator {
     private AtomicReference<Map<String, String>> parametersRef = new AtomicReference<>();
     private Charset credentialsCharset = Charset.forName("ASCII");
     private final Credentials credentials;
-    private final Credentials userCredentials;
+    private Credentials userCredentials;
     private String lastNonce;
     private long nounceCount;
     private String cnonce;
@@ -72,6 +72,10 @@ public class CustomDigestAuthenticator implements CachingAuthenticator {
 
     public CustomDigestAuthenticator(Credentials credentials, Credentials userCredentials) {
         this.credentials = credentials;
+        this.userCredentials = userCredentials;
+    }
+
+    public void setUserCredentials(Credentials userCredentials) {
         this.userCredentials = userCredentials;
     }
 
@@ -337,7 +341,7 @@ public class CustomDigestAuthenticator implements CachingAuthenticator {
         final String uname;
         final String pwd;
 
-        if (realm != null && !realm.equals("user")) {
+        if (realm != null && !realm.equals("user") || userCredentials == null) {
             uname = credentials.getUserName();
             pwd = credentials.getPassword();
         } else {
