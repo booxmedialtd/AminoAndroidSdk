@@ -15,6 +15,15 @@ class AccountUtil {
         return CookieManager.getInstance().getCookie(cookieUrl);
     }
 
+    public static void setCookie(String cookie) {
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(BuildConfig.BASE_SCHEME);
+        builder.authority(BuildConfig.BASE_DOMAIN);
+        String cookieUrl = builder.build().toString();
+
+        CookieManager.getInstance().setCookie(cookieUrl, cookie);
+    }
+
     public static String generateUuid() {
         return UUID.randomUUID().toString();
     }

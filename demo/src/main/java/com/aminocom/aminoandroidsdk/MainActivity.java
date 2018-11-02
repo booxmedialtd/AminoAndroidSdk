@@ -10,9 +10,6 @@ import android.widget.Toast;
 import com.aminocom.sdk.Provider;
 import com.aminocom.sdk.model.client.channel.Channel;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -32,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         Provider provider = new Provider();
 
-        /*disposable = provider.getChannels()
+        disposable = provider.getChannels()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items -> {
@@ -45,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                             testText.setText(text.toString());
                         },
                         t -> Log.e(TAG, "Failed to get channels data", t)
-                );*/
+                );
 
         testButton.setOnClickListener(view -> disposable = provider.login("aleksei@test.com", "1234")
                 .subscribeOn(Schedulers.io())
@@ -55,16 +52,6 @@ public class MainActivity extends AppCompatActivity {
                         t -> Log.e(TAG, "Failed to login", t)
                 )
         );
-    }
-
-    private List<Channel> getTestChannelList(int limit, String prefix) {
-        List<Channel> channels = new ArrayList<>();
-
-        for (int i = 0; i < limit; i++) {
-            channels.add(new Channel(prefix + " " + i));
-        }
-
-        return channels;
     }
 
     @Override

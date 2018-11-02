@@ -9,6 +9,7 @@ import java.util.Map;
 
 import io.reactivex.annotations.NonNull;
 import okhttp3.Connection;
+import okhttp3.Headers;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -65,6 +66,21 @@ public class RetrofitInterceptor implements Interceptor {
 
         // Cached response was used, but it produced unauthorized response (cache expired).
         int responseCode = response != null ? response.code() : 0;
+
+        if (response != null
+                && response.request() != null
+                && response.request().url().toString().contains("/login")
+                && responseCode == 200) {
+
+            Headers headers = response.headers();
+
+            for (int i = 0; i < headers.names().size(); i++) {
+                if (headers.name(i).equals("Set-Cookie") && headers.value(i).contains("usid")) {
+                    AccountUtil.setCookie(headers.value(i));
+                }
+            }
+        }
+
         if (authenticator != null && (responseCode == HTTP_UNAUTHORIZED || responseCode == HTTP_PROXY_AUTH)) {
             // Remove cached authenticator and resend request
             if (authCache.remove(key) != null) {
