@@ -1,11 +1,13 @@
-package com.aminocom.sdk;
+package com.aminocom.sdk.util;
 
 import android.net.Uri;
 import android.webkit.CookieManager;
 
+import com.aminocom.sdk.BuildConfig;
+
 import java.util.UUID;
 
-class AccountUtil {
+public class AccountUtil {
     public static String getCookie() {
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(BuildConfig.BASE_SCHEME);

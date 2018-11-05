@@ -1,21 +1,24 @@
 package com.aminocom.sdk;
 
+import com.aminocom.sdk.util.AccountUtil;
+import com.aminocom.sdk.util.CookieParser;
 import com.burgstaller.okhttp.CacheKeyProvider;
 import com.burgstaller.okhttp.DefaultCacheKeyProvider;
 import com.burgstaller.okhttp.digest.CachingAuthenticator;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.annotations.NonNull;
 import okhttp3.Connection;
-import okhttp3.Headers;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.Route;
 import okhttp3.internal.platform.Platform;
 
+import static java.net.HttpURLConnection.HTTP_OK;
 import static java.net.HttpURLConnection.HTTP_PROXY_AUTH;
 import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 
@@ -67,16 +70,14 @@ public class RetrofitInterceptor implements Interceptor {
         // Cached response was used, but it produced unauthorized response (cache expired).
         int responseCode = response != null ? response.code() : 0;
 
-        if (response != null
-                && response.request() != null
-                && response.request().url().toString().contains("/login")
-                && responseCode == 200) {
+        if (response != null && response.request() != null
+                && response.request().url().toString().contains("/login") && responseCode == HTTP_OK) {
 
-            Headers headers = response.headers();
+            List<String> loginCookies = CookieParser.parseCookies(response);
 
-            for (int i = 0; i < headers.names().size(); i++) {
-                if (headers.name(i).equals("Set-Cookie") && headers.value(i).contains("usid")) {
-                    AccountUtil.setCookie(headers.value(i));
+            if (!loginCookies.isEmpty()) {
+                for (String cookieString : loginCookies) {
+                    AccountUtil.setCookie(cookieString);
                 }
             }
         }

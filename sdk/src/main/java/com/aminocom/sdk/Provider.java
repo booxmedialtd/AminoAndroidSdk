@@ -4,6 +4,7 @@ import com.aminocom.sdk.mapper.ChannelMapper;
 import com.aminocom.sdk.model.CustomDigestAuthenticator;
 import com.aminocom.sdk.model.client.channel.Channel;
 import com.aminocom.sdk.model.network.UserResponse;
+import com.aminocom.sdk.util.AccountUtil;
 import com.burgstaller.okhttp.CachingAuthenticatorDecorator;
 import com.burgstaller.okhttp.digest.CachingAuthenticator;
 import com.burgstaller.okhttp.digest.Credentials;
@@ -56,6 +57,7 @@ public class Provider {
 
         final Map<String, CachingAuthenticator> authCache = new ConcurrentHashMap<>();
 
+        // TODO: add a cookie manager interface as dependency to Interceptor to allow unit testing
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .authenticator(new CachingAuthenticatorDecorator(authenticator, authCache))
                 //.addInterceptor(new AuthenticationCacheInterceptor(authCache))
