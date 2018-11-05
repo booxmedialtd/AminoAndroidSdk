@@ -1,10 +1,13 @@
 package com.aminocom.sdk;
 
+import com.aminocom.sdk.util.AccountUtil;
+import com.aminocom.sdk.util.CookieParser;
 import com.burgstaller.okhttp.CacheKeyProvider;
 import com.burgstaller.okhttp.DefaultCacheKeyProvider;
 import com.burgstaller.okhttp.digest.CachingAuthenticator;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.annotations.NonNull;
@@ -15,6 +18,7 @@ import okhttp3.Response;
 import okhttp3.Route;
 import okhttp3.internal.platform.Platform;
 
+import static java.net.HttpURLConnection.HTTP_OK;
 import static java.net.HttpURLConnection.HTTP_PROXY_AUTH;
 import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 
@@ -38,7 +42,7 @@ public class RetrofitInterceptor implements Interceptor {
 
         builder.addHeader("User-Agent", USER_AGENT);
 
-        String cookie = null;//AccountUtil.getCookie();
+        String cookie = AccountUtil.getCookie();
 
         if (cookie != null && !cookie.isEmpty()) {
             builder.addHeader("Cookie", cookie);
@@ -49,6 +53,7 @@ public class RetrofitInterceptor implements Interceptor {
         builder.build();
 
         final Request request = builder.build();
+        //Request request = chain.request();
         final String key = cacheKeyProvider.getCachingKey(request);
         CachingAuthenticator authenticator = authCache.get(key);
         Request authRequest = null;
@@ -64,14 +69,23 @@ public class RetrofitInterceptor implements Interceptor {
 
         // Cached response was used, but it produced unauthorized response (cache expired).
         int responseCode = response != null ? response.code() : 0;
+
+        if (response != null && response.request() != null
+                && response.request().url().toString().contains("/login") && responseCode == HTTP_OK) {
+
+            List<String> loginCookies = CookieParser.parseCookies(response);
+
+            if (!loginCookies.isEmpty()) {
+                for (String cookieString : loginCookies) {
+                    AccountUtil.setCookie(cookieString);
+                }
+            }
+        }
+
         if (authenticator != null && (responseCode == HTTP_UNAUTHORIZED || responseCode == HTTP_PROXY_AUTH)) {
             // Remove cached authenticator and resend request
             if (authCache.remove(key) != null) {
-
-                if (response.body() != null) {
-                    response.body().close();
-                }
-
+                response.body().close();
                 Platform.get().log(Platform.INFO, "Cached authentication expired. Sending a new request.", null);
                 // Force sending a new request without "Authorization" header
                 response = chain.proceed(request);

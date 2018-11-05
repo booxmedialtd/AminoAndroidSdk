@@ -1,6 +1,7 @@
 package com.aminocom.sdk;
 
 import com.aminocom.sdk.model.client.channel.Channel;
+import com.aminocom.sdk.model.network.UserResponse;
 
 import org.junit.After;
 import org.junit.Before;
@@ -30,6 +31,7 @@ public class ProviderTest {
         provider = new Provider();
     }
 
+    // FIXME: Fix mocking of cookies manager
     @Test
     public void getChannels() throws Exception {
         TestObserver testObserver = new TestObserver<List<Channel>>();
@@ -51,6 +53,44 @@ public class ProviderTest {
         RecordedRequest request = mockServer.takeRequest();
 
         //assertEquals(path, request.getPath());
+    }
+
+    // FIXME: Fix mocking of cookies manager
+    @Test
+    public void loginCorrect() throws Exception {
+        TestObserver testObserver = new TestObserver<List<UserResponse>>();
+
+        String user = "aleksei@test.com";
+        String password = "1234";
+
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(200)
+                .setBody(getJson("json/login_response.json"));
+
+        mockServer.enqueue(mockResponse);
+
+        provider.login(user, password).subscribe(testObserver);
+        testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS);
+
+        testObserver.assertNoErrors();
+        testObserver.assertValueCount(1);
+    }
+
+    // FIXME: Fix mocking of cookies manager
+    @Test
+    public void loginWrong() throws Exception {
+        TestObserver testObserver = new TestObserver<List<UserResponse>>();
+
+        String user = "some_user@test.com";
+        String password = "0000";
+
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(401);
+
+        mockServer.enqueue(mockResponse);
+
+        provider.login(user, password).subscribe(testObserver);
+        testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS);
     }
 
     @After

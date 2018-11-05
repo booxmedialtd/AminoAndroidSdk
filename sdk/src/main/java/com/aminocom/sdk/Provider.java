@@ -1,12 +1,13 @@
 package com.aminocom.sdk;
 
 import com.aminocom.sdk.mapper.ChannelMapper;
+import com.aminocom.sdk.model.CustomDigestAuthenticator;
 import com.aminocom.sdk.model.client.channel.Channel;
-import com.burgstaller.okhttp.AuthenticationCacheInterceptor;
+import com.aminocom.sdk.model.network.UserResponse;
+import com.aminocom.sdk.util.AccountUtil;
 import com.burgstaller.okhttp.CachingAuthenticatorDecorator;
 import com.burgstaller.okhttp.digest.CachingAuthenticator;
 import com.burgstaller.okhttp.digest.Credentials;
-import com.burgstaller.okhttp.digest.DigestAuthenticator;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -34,6 +35,7 @@ public class Provider {
 
     private ServerApi api;
     private LocalRepository localRepository;
+    private final CustomDigestAuthenticator authenticator;
 
     public Provider() {
         final HttpLoggingInterceptor.Logger logger = message -> {
@@ -49,17 +51,17 @@ public class Provider {
                 .setDateFormat(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH).toPattern())
                 .create();
 
-        Credentials credentials = new Credentials(SERVICE, "qn05BON1hXGCUsw");
-        //Credentials credentials2 = new Credentials("aleksei@test.com", "1234");
+        Credentials serviceCredentials = new Credentials(SERVICE, "qn05BON1hXGCUsw");
 
-        final DigestAuthenticator authenticator = new DigestAuthenticator(credentials);
+        authenticator = new CustomDigestAuthenticator(serviceCredentials, null);
 
         final Map<String, CachingAuthenticator> authCache = new ConcurrentHashMap<>();
 
+        // TODO: add a cookie manager interface as dependency to Interceptor to allow unit testing
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .authenticator(new CachingAuthenticatorDecorator(authenticator, authCache))
-                .addInterceptor(new AuthenticationCacheInterceptor(authCache))
-                //.addInterceptor(new RetrofitInterceptor(authCache))
+                //.addInterceptor(new AuthenticationCacheInterceptor(authCache))
+                .addInterceptor(new RetrofitInterceptor(authCache))
                 .addNetworkInterceptor(interceptor)
                 .connectTimeout(2, TimeUnit.MINUTES)
                 .readTimeout(2, TimeUnit.MINUTES)
@@ -77,6 +79,7 @@ public class Provider {
         localRepository = new CacheRepository();
     }
 
+    // TODO: change username when username will be stored in SDK
     public Observable<List<Channel>> getChannels() {
         String userName = AccountUtil.getCookie() != null ? "aleksei@test.com" : "guest";
 
@@ -96,9 +99,12 @@ public class Provider {
         }
     }
 
-    public Single<String> login() {
+    // TODO: add correct parameters when SDK Builder will be ready
+    public Single<UserResponse> login(String login, String password) {
+        authenticator.setUserCredentials(new Credentials(login, password));
+
         return api.login(
-                "aleksei@test.com",
+                login,
                 "0.0.1",
                 AccountUtil.generateUuid(),
                 "Android",
