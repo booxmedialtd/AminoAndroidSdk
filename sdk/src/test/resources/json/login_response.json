@@ -1,0 +1,322 @@
+{
+  "resultSet": {
+    "totalItems": 4,
+    "totalPages": 1,
+    "itemsPerPage": 1000,
+    "currentPage": 0,
+    "offset": 0
+  },
+  "data": {
+    "channels": [
+      {
+        "id": "17540",
+        "title": "Yle TV1",
+        "description": "",
+        "adult": false,
+        "mediaType": "VIDEO",
+        "thumbnails": [
+          {
+            "url": "https://tv.dna.fi/assets/graphics/thumbnails/channel/dna/yleTv1_60px.png",
+            "height": 60,
+            "width": 60
+          },
+          {
+            "url": "https://tv.dna.fi/assets/graphics/thumbnails/channel/dna/yleTv1_60px.png",
+            "height": 120,
+            "width": 120
+          },
+          {
+            "url": "https://tv.dna.fi/assets/graphics/thumbnails/channel/dna/yleTv1_60px.png",
+            "height": 240,
+            "width": 240
+          }
+        ],
+        "products": [
+          {
+            "id": "1",
+            "title": "Live TV package"
+          },
+          {
+            "id": "2",
+            "title": "Platform test product"
+          },
+          {
+            "id": "1005",
+            "title": "HK testing product"
+          }
+        ],
+        "extra": {
+          "ext_source_id": "754117"
+        },
+        "services": {
+          "live": {
+            "enabled": false,
+            "commercial": true,
+            "protection": [
+              "none",
+              "none",
+              "none"
+            ],
+            "sources": {
+              "ott": {
+                "lcn": 1,
+                "mobile_lcn": 1,
+                "streams": [
+                  {
+                    "id": 16,
+                    "codec_info": "usp_multi",
+                    "protection": "none",
+                    "streaming_protocol": "hls",
+                    "transport_protocol": "https",
+                    "url": "https://nebtest1.auto.neb.amo.booxmedia.xyz/api/channel/17540/stream/16/play?service\u003dmobileclient"
+                  },
+                  {
+                    "id": 22,
+                    "codec_info": "usp_multi",
+                    "protection": "none",
+                    "streaming_protocol": "hls",
+                    "transport_protocol": "http",
+                    "url": "https://nebtest1.auto.neb.amo.booxmedia.xyz/api/channel/17540/stream/22/play?service\u003dmobileclient"
+                  },
+                  {
+                    "id": 54,
+                    "codec_info": "video/mp4",
+                    "protection": "none",
+                    "streaming_protocol": "hls",
+                    "transport_protocol": "udp",
+                    "url": "https://nebtest1.auto.neb.amo.booxmedia.xyz/api/channel/17540/stream/54/play?service\u003dmobileclient"
+                  }
+                ]
+              },
+              "dvb": {
+                "triplets": [
+                  {
+                    "operator_name": "",
+                    "type": "C",
+                    "onid": "6552",
+                    "tsid": "65520",
+                    "sid": "17",
+                    "quality": "SD",
+                    "lcn": 0
+                  }
+                ]
+              }
+            }
+          },
+          "catchup": {
+            "enabled": false,
+            "blacklisted": false,
+            "commercial": true
+          },
+          "recording": {
+            "enabled": false,
+            "commercial": true,
+            "blacklisted": false
+          },
+          "fastForward": {
+            "fastForwardPvr": false,
+            "fastForwardCatchUp": true,
+            "fastForwardStartOver": false
+          }
+        },
+        "user": {},
+        "customProperties": []
+      },
+      {
+        "id": "17472",
+        "title": "Yle Teema",
+        "description": "",
+        "adult": false,
+        "mediaType": "VIDEO",
+        "thumbnails": [],
+        "products": [
+          {
+            "id": "1",
+            "title": "Live TV package"
+          },
+          {
+            "id": "2",
+            "title": "Platform test product"
+          },
+          {
+            "id": "1005",
+            "title": "HK testing product"
+          }
+        ],
+        "extra": {
+          "ext_source_id": "754345"
+        },
+        "services": {
+          "live": {
+            "enabled": false,
+            "commercial": true,
+            "protection": [
+              "none"
+            ],
+            "sources": {
+              "ott": {
+                "lcn": 20,
+                "mobile_lcn": 20,
+                "streams": [
+                  {
+                    "id": 6,
+                    "codec_info": "usp_multi",
+                    "protection": "none",
+                    "streaming_protocol": "hls",
+                    "transport_protocol": "https",
+                    "url": "https://nebtest1.auto.neb.amo.booxmedia.xyz/api/channel/17472/stream/6/play?service\u003dmobileclient"
+                  }
+                ]
+              },
+              "dvb": {
+                "triplets": [
+                  {
+                    "operator_name": "",
+                    "type": "C",
+                    "onid": "11",
+                    "tsid": "11",
+                    "sid": "11",
+                    "quality": "SD",
+                    "lcn": 0
+                  }
+                ]
+              }
+            }
+          },
+          "catchup": {
+            "enabled": true,
+            "blacklisted": false,
+            "commercial": true
+          },
+          "recording": {
+            "enabled": false,
+            "commercial": true,
+            "blacklisted": false
+          },
+          "fastForward": {
+            "fastForwardPvr": false,
+            "fastForwardCatchUp": false,
+            "fastForwardStartOver": false
+          }
+        },
+        "user": {},
+        "customProperties": []
+      },
+      {
+        "id": "17541",
+        "title": "QaChannel766",
+        "description": "",
+        "adult": false,
+        "mediaType": "VIDEO",
+        "thumbnails": [],
+        "products": [
+          {
+            "id": "1",
+            "title": "Live TV package"
+          },
+          {
+            "id": "2",
+            "title": "Platform test product"
+          }
+        ],
+        "extra": {
+          "ext_source_id": "750796"
+        },
+        "services": {
+          "live": {
+            "enabled": false,
+            "commercial": true,
+            "protection": [
+              "none"
+            ],
+            "sources": {}
+          },
+          "catchup": {
+            "enabled": false,
+            "blacklisted": false,
+            "commercial": true
+          },
+          "recording": {
+            "enabled": false,
+            "commercial": true,
+            "blacklisted": false
+          },
+          "fastForward": {
+            "fastForwardPvr": false,
+            "fastForwardCatchUp": false,
+            "fastForwardStartOver": false
+          }
+        },
+        "user": {},
+        "customProperties": []
+      },
+      {
+        "id": "17592",
+        "title": "UpdateTestChannelName3",
+        "description": "",
+        "adult": false,
+        "mediaType": "VIDEO",
+        "thumbnails": [],
+        "products": [],
+        "extra": {
+          "ext_source_id": "34"
+        },
+        "services": {
+          "live": {
+            "enabled": false,
+            "commercial": true,
+            "protection": [
+              "none"
+            ],
+            "sources": {
+              "ott": {
+                "lcn": 77,
+                "mobile_lcn": 77,
+                "streams": [
+                  {
+                    "id": 39,
+                    "codec_info": "video/mp4",
+                    "protection": "none",
+                    "streaming_protocol": "hls",
+                    "transport_protocol": "http",
+                    "url": "https://nebtest1.auto.neb.amo.booxmedia.xyz/api/channel/17592/stream/39/play?service\u003dmobileclient"
+                  }
+                ]
+              },
+              "dvb": {
+                "triplets": [
+                  {
+                    "operator_name": "",
+                    "type": "T",
+                    "onid": "223",
+                    "tsid": "223",
+                    "sid": "662",
+                    "quality": "HD",
+                    "lcn": 0
+                  }
+                ]
+              }
+            }
+          },
+          "catchup": {
+            "enabled": false,
+            "blacklisted": false,
+            "commercial": true
+          },
+          "recording": {
+            "enabled": false,
+            "commercial": true,
+            "blacklisted": false
+          },
+          "fastForward": {
+            "fastForwardPvr": false,
+            "fastForwardCatchUp": false,
+            "fastForwardStartOver": false
+          }
+        },
+        "user": {},
+        "customProperties": []
+      }
+    ]
+  }
+}
