@@ -36,8 +36,11 @@ public class Provider {
     private ServerApi api;
     private LocalRepository localRepository;
     private final CustomDigestAuthenticator authenticator;
+    private CookieManager cookieManager;
 
-    public Provider() {
+    public Provider(CookieManager cookieManager) {
+        this.cookieManager = cookieManager;
+
         final HttpLoggingInterceptor.Logger logger = message -> {
             if (!message.isEmpty()) {
                 System.out.println("HttpInterceptor: " + message);
@@ -60,8 +63,7 @@ public class Provider {
         // TODO: add a cookie manager interface as dependency to Interceptor to allow unit testing
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .authenticator(new CachingAuthenticatorDecorator(authenticator, authCache))
-                //.addInterceptor(new AuthenticationCacheInterceptor(authCache))
-                .addInterceptor(new RetrofitInterceptor(authCache))
+                .addInterceptor(new RetrofitInterceptor(authCache, cookieManager))
                 .addNetworkInterceptor(interceptor)
                 .connectTimeout(2, TimeUnit.MINUTES)
                 .readTimeout(2, TimeUnit.MINUTES)
@@ -81,7 +83,7 @@ public class Provider {
 
     // TODO: change username when username will be stored in SDK
     public Observable<List<Channel>> getChannels() {
-        String userName = AccountUtil.getCookie() != null ? "aleksei@test.com" : "guest";
+        String userName = cookieManager.isCookieExists() ? "aleksei@test.com" : "guest";
 
         if (System.currentTimeMillis() - channelsCacheTime > CacheTTLConfig.CHANNEL_TTL) {
             return api.getChannels(userName, SERVICE)

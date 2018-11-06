@@ -28,7 +28,22 @@ public class ProviderTest {
 
         mockServer.start();
 
-        provider = new Provider();
+        provider = new Provider(new CookieManager() {
+            @Override
+            public boolean isCookieExists() {
+                return false;
+            }
+
+            @Override
+            public void setCookie(String value) {
+
+            }
+
+            @Override
+            public String getCookie() {
+                return null;
+            }
+        });
     }
 
     // FIXME: Fix mocking of cookies manager

@@ -1,6 +1,5 @@
 package com.aminocom.sdk;
 
-import com.aminocom.sdk.util.AccountUtil;
 import com.aminocom.sdk.util.CookieParser;
 import com.burgstaller.okhttp.CacheKeyProvider;
 import com.burgstaller.okhttp.DefaultCacheKeyProvider;
@@ -28,9 +27,11 @@ public class RetrofitInterceptor implements Interceptor {
 
     private final Map<String, CachingAuthenticator> authCache;
     private final CacheKeyProvider cacheKeyProvider;
+    private CookieManager cookieManager;
 
-    public RetrofitInterceptor(Map<String, CachingAuthenticator> authCache) {
+    public RetrofitInterceptor(Map<String, CachingAuthenticator> authCache, CookieManager cookieManager) {
         this.authCache = authCache;
+        this.cookieManager = cookieManager;
         this.cacheKeyProvider = new DefaultCacheKeyProvider();
     }
 
@@ -42,7 +43,7 @@ public class RetrofitInterceptor implements Interceptor {
 
         builder.addHeader("User-Agent", USER_AGENT);
 
-        String cookie = AccountUtil.getCookie();
+        String cookie = cookieManager.getCookie();
 
         if (cookie != null && !cookie.isEmpty()) {
             builder.addHeader("Cookie", cookie);
@@ -77,7 +78,7 @@ public class RetrofitInterceptor implements Interceptor {
 
             if (!loginCookies.isEmpty()) {
                 for (String cookieString : loginCookies) {
-                    AccountUtil.setCookie(cookieString);
+                    cookieManager.setCookie(cookieString);
                 }
             }
         }
