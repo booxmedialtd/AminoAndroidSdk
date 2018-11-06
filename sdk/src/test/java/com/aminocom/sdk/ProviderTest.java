@@ -18,8 +18,9 @@ import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 
+import static org.junit.Assert.assertEquals;
+
 public class ProviderTest {
-    private Provider provider;
     private MockWebServer mockServer;
 
     @Before
@@ -27,31 +28,16 @@ public class ProviderTest {
         mockServer = new MockWebServer();
 
         mockServer.start();
-
-        provider = new Provider(new CookieManager() {
-            @Override
-            public boolean isCookieExists() {
-                return false;
-            }
-
-            @Override
-            public void setCookie(String value) {
-
-            }
-
-            @Override
-            public String getCookie() {
-                return null;
-            }
-        });
     }
 
-    // FIXME: Fix mocking of cookies manager
+    // FIXME: Fix mocking of the server
     @Test
     public void getChannels() throws Exception {
-        TestObserver testObserver = new TestObserver<List<Channel>>();
+        Provider provider = new Provider(new TestCookieManager());
 
-        //String path = "json";
+        TestObserver<List<Channel>> testObserver = new TestObserver<>();
+
+        String path = "json";
 
         MockResponse mockResponse = new MockResponse()
                 .setResponseCode(200)
@@ -67,22 +53,24 @@ public class ProviderTest {
 
         RecordedRequest request = mockServer.takeRequest();
 
-        //assertEquals(path, request.getPath());
+        assertEquals(path, request.getPath());
     }
 
-    // FIXME: Fix mocking of cookies manager
+    // FIXME: Fix mocking of the server
     @Test
     public void loginCorrect() throws Exception {
-        TestObserver testObserver = new TestObserver<List<UserResponse>>();
+        Provider provider = new Provider(new TestCookieManager());
+
+        TestObserver<UserResponse> testObserver = new TestObserver<>();
 
         String user = "aleksei@test.com";
         String password = "1234";
 
-        MockResponse mockResponse = new MockResponse()
+        /*MockResponse mockResponse = new MockResponse()
                 .setResponseCode(200)
                 .setBody(getJson("json/login_response.json"));
 
-        mockServer.enqueue(mockResponse);
+        mockServer.enqueue(mockResponse);*/
 
         provider.login(user, password).subscribe(testObserver);
         testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS);
@@ -91,21 +79,24 @@ public class ProviderTest {
         testObserver.assertValueCount(1);
     }
 
-    // FIXME: Fix mocking of cookies manager
+    // FIXME: Fix mocking of the server
     @Test
     public void loginWrong() throws Exception {
-        TestObserver testObserver = new TestObserver<List<UserResponse>>();
+        Provider provider = new Provider(new TestCookieManager());
+
+        TestObserver<UserResponse> testObserver = new TestObserver<>();
 
         String user = "some_user@test.com";
         String password = "0000";
 
-        MockResponse mockResponse = new MockResponse()
-                .setResponseCode(401);
+        //MockResponse mockResponse = new MockResponse().setResponseCode(401);
 
-        mockServer.enqueue(mockResponse);
+        //mockServer.enqueue(mockResponse);
 
         provider.login(user, password).subscribe(testObserver);
         testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS);
+
+        assertEquals(1, testObserver.errorCount());
     }
 
     @After
