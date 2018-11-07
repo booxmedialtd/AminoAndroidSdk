@@ -1,4 +1,7 @@
-package com.aminocom.sdk.model.network;
+package com.aminocom.sdk.model.network.channel;
+
+import com.aminocom.sdk.model.network.ProductItem;
+import com.aminocom.sdk.model.network.ThumbnailElement;
 
 import java.util.List;
 

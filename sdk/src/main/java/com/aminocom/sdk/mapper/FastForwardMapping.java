@@ -1,7 +1,7 @@
 package com.aminocom.sdk.mapper;
 
 import com.aminocom.sdk.model.client.channel.FastForwardState;
-import com.aminocom.sdk.model.network.FastForwardElement;
+import com.aminocom.sdk.model.network.channel.FastForwardElement;
 
 class FastForwardMapping {
     static FastForwardState from(FastForwardElement element) {

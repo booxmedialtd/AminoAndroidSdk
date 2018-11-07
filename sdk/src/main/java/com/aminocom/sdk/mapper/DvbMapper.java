@@ -1,8 +1,8 @@
 package com.aminocom.sdk.mapper;
 
 import com.aminocom.sdk.model.client.channel.Dvb;
-import com.aminocom.sdk.model.network.DvbElement;
-import com.aminocom.sdk.model.network.TripletItem;
+import com.aminocom.sdk.model.network.channel.DvbElement;
+import com.aminocom.sdk.model.network.channel.TripletItem;
 
 import java.util.ArrayList;
 import java.util.List;

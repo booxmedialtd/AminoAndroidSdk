@@ -1,6 +1,6 @@
 package com.aminocom.sdk;
 
-import com.aminocom.sdk.model.network.ChannelResponse;
+import com.aminocom.sdk.model.network.channel.ChannelResponse;
 import com.aminocom.sdk.model.network.UserResponse;
 
 import io.reactivex.Single;
@@ -25,6 +25,6 @@ interface ServerApi {
             @Field("service") String service
     );
 
-    @GET("api/v3/user/{user}/channel/")
+    @GET("api/v3/user/{user}/channel")
     Single<ChannelResponse> getChannels(@Path("user") String user, @Query("service") String service);
 }

@@ -1,7 +1,6 @@
 package com.aminocom.sdk;
 
 import com.aminocom.sdk.mapper.ChannelMapper;
-import com.aminocom.sdk.model.CustomDigestAuthenticator;
 import com.aminocom.sdk.model.client.channel.Channel;
 import com.aminocom.sdk.model.network.UserResponse;
 import com.aminocom.sdk.util.AccountUtil;

@@ -2,8 +2,8 @@ package com.aminocom.sdk.mapper;
 
 import com.aminocom.sdk.model.client.channel.Ott;
 import com.aminocom.sdk.model.client.channel.OttStream;
-import com.aminocom.sdk.model.network.OttElement;
-import com.aminocom.sdk.model.network.OttStreamItem;
+import com.aminocom.sdk.model.network.channel.OttElement;
+import com.aminocom.sdk.model.network.channel.OttStreamItem;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.aminocom.sdk.mapper;
 
 import com.aminocom.sdk.model.client.channel.Channel;
-import com.aminocom.sdk.model.network.ChannelItem;
+import com.aminocom.sdk.model.network.channel.ChannelItem;
 
 public class ChannelMapper {
     public static Channel from(ChannelItem response) {

@@ -1,4 +1,4 @@
-package com.aminocom.sdk.model.network;
+package com.aminocom.sdk.model.network.channel;
 
 public class OttStreamItem {
     public int id;

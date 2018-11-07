@@ -1,4 +1,4 @@
-package com.aminocom.sdk.model;
+package com.aminocom.sdk;
 
 import com.burgstaller.okhttp.digest.CachingAuthenticator;
 import com.burgstaller.okhttp.digest.Credentials;
