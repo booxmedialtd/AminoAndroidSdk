@@ -1,8 +1,9 @@
 package com.aminocom.sdk;
 
-import com.aminocom.sdk.model.network.category.CategoryListResponse;
-import com.aminocom.sdk.model.network.channel.ChannelResponse;
 import com.aminocom.sdk.model.network.UserResponse;
+import com.aminocom.sdk.model.network.category.CategoryListResponse;
+import com.aminocom.sdk.model.network.category.CategoryResponse;
+import com.aminocom.sdk.model.network.channel.ChannelResponse;
 
 import io.reactivex.Single;
 import retrofit2.http.Field;
@@ -11,6 +12,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 // TODO: Add service parameter to interceptor
 interface ServerApi {
@@ -31,4 +33,7 @@ interface ServerApi {
 
     @GET("api/category")
     Single<CategoryListResponse> getCategoryList(@Query("service") String service);
+
+    @GET
+    Single<CategoryResponse> getCategory(@Url String url);
 }
