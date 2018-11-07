@@ -19,6 +19,13 @@
         android:text="Test channels"
         app:layout_constraintStart_toEndOf="@id/login_button" />
 
+    <Button
+        android:id="@+id/categories_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test categories"
+        app:layout_constraintStart_toEndOf="@id/channels_button" />
+
     <TextView
         android:id="@+id/test_text"
         android:layout_width="wrap_content"

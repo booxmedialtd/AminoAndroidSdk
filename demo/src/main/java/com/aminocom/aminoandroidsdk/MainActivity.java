@@ -7,7 +7,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aminocom.sdk.AndroidCookieManager;
 import com.aminocom.sdk.Provider;
+import com.aminocom.sdk.model.client.Category;
 import com.aminocom.sdk.model.client.channel.Channel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -27,8 +29,9 @@ public class MainActivity extends AppCompatActivity {
         TextView testText = findViewById(R.id.test_text);
         Button loginButton = findViewById(R.id.login_button);
         Button channelsButton = findViewById(R.id.channels_button);
+        Button categoriesButton = findViewById(R.id.categories_button);
 
-        Provider provider = new Provider();
+        Provider provider = new Provider(new AndroidCookieManager());
 
         loginButton.setOnClickListener(view -> disposable.add(
                 provider.login("aleksei@test.com", "1234")
@@ -53,8 +56,30 @@ public class MainActivity extends AppCompatActivity {
 
                                     testText.setText(text.toString());
                                 },
-                                t -> Log.e(TAG, "Failed to get channels data", t)
+                                t -> Log.e(TAG, "Failed to get channels", t)
                         )
+                )
+        );
+
+        categoriesButton.setOnClickListener(view -> disposable.add(
+                provider.getCategories()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(items -> {
+                                    StringBuilder text = new StringBuilder();
+
+                                    for (Category category : items) {
+                                        text
+                                                .append("Category name: ")
+                                                .append(category.getTitle())
+                                                .append(" Program size: ")
+                                                .append(category.getPrograms().size())
+                                                .append("\n");
+                                    }
+
+                                    testText.setText(text.toString());
+                                },
+                                t -> Log.e(TAG, "Failed to load categories", t))
                 )
         );
     }
