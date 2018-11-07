@@ -7,10 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.observers.TestObserver;
@@ -22,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ProviderTest {
     private MockWebServer mockServer;
+    private JsonReader jsonReader;
 
     @Before
     public void setUp() throws Exception {
@@ -41,7 +39,7 @@ public class ProviderTest {
 
         MockResponse mockResponse = new MockResponse()
                 .setResponseCode(200)
-                .setBody(getJson("json/channel_response_4_items.json"));
+                .setBody(jsonReader.getJson("json/channel_response_4_items.json"));
 
         mockServer.enqueue(mockResponse);
 
@@ -102,24 +100,5 @@ public class ProviderTest {
     @After
     public void tearDown() throws Exception {
         mockServer.shutdown();
-    }
-
-    private String getJson(String fileName) {
-
-        StringBuilder result = new StringBuilder();
-
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource(fileName).getFile());
-
-        try (Scanner scanner = new Scanner(file)) {
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                result.append(line).append("\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return result.toString();
     }
 }
