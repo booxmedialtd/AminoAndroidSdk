@@ -1,8 +1,12 @@
 package com.aminocom.sdk;
 
+import com.aminocom.sdk.mapper.CategoryMapper;
+import com.aminocom.sdk.mapper.CategoryProgramMapper;
 import com.aminocom.sdk.mapper.ChannelMapper;
+import com.aminocom.sdk.model.client.Category;
 import com.aminocom.sdk.model.client.channel.Channel;
 import com.aminocom.sdk.model.network.UserResponse;
+import com.aminocom.sdk.model.network.category.CategoryListItem;
 import com.aminocom.sdk.util.AccountUtil;
 import com.burgstaller.okhttp.CachingAuthenticatorDecorator;
 import com.burgstaller.okhttp.digest.CachingAuthenticator;
@@ -28,9 +32,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Provider {
 
     private static final String TAG = Provider.class.getSimpleName();
+
     private static final String SERVICE = "mobileclient";
 
     private long channelsCacheTime = 0;
+    private long categoriesCacheTime = 0;
 
     private ServerApi api;
     private LocalRepository localRepository;
@@ -59,7 +65,6 @@ public class Provider {
 
         final Map<String, CachingAuthenticator> authCache = new ConcurrentHashMap<>();
 
-        // TODO: add a cookie manager interface as dependency to Interceptor to allow unit testing
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .authenticator(new CachingAuthenticatorDecorator(authenticator, authCache))
                 .addInterceptor(new RetrofitInterceptor(authCache, cookieManager))
@@ -78,6 +83,20 @@ public class Provider {
         api = retrofit.create(ServerApi.class);
 
         localRepository = new CacheRepository();
+    }
+
+    // TODO: add correct parameters when SDK Builder will be ready
+    public Single<UserResponse> login(String login, String password) {
+        authenticator.setUserCredentials(new Credentials(login, password));
+
+        return api.login(
+                login,
+                "0.0.1",
+                AccountUtil.generateUuid(),
+                "Android",
+                "8.0.1",
+                SERVICE
+        );
     }
 
     // TODO: change username when username will be stored in SDK
@@ -100,17 +119,29 @@ public class Provider {
         }
     }
 
-    // TODO: add correct parameters when SDK Builder will be ready
-    public Single<UserResponse> login(String login, String password) {
-        authenticator.setUserCredentials(new Credentials(login, password));
+    public Observable<List<Category>> getCategories() {
+        if (System.currentTimeMillis() - categoriesCacheTime > CacheTTLConfig.CATEGORY_TTL) {
+            return api.getCategoryList(SERVICE)
+                    .toObservable()
+                    .flatMapIterable(response -> response.categoryList.categories)
+                    .flatMapSingle(this::getCategory)
+                    .toList()
+                    .doOnSuccess(categories -> {
+                        localRepository.cacheCategories(categories);
+                        categoriesCacheTime = System.currentTimeMillis();
+                    })
+                    .flatMapObservable(list -> localRepository.getCategories());
+        } else {
+            return localRepository.getCategories();
+        }
+    }
 
-        return api.login(
-                login,
-                "0.0.1",
-                AccountUtil.generateUuid(),
-                "Android",
-                "8.0.1",
-                SERVICE
-        );
+    private Single<Category> getCategory(CategoryListItem item) {
+        return api.getCategory(item.epgUrl)
+                .toObservable()
+                .flatMapIterable(categoryResponse -> categoryResponse.epg.programList.programs)
+                .map(CategoryProgramMapper::from)
+                .toList()
+                .map(programs -> CategoryMapper.from(item, programs));
     }
 }

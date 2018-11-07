@@ -1,9 +1,10 @@
 package com.aminocom.sdk;
 
+import com.aminocom.sdk.model.client.Category;
 import com.aminocom.sdk.model.client.channel.Channel;
 import com.aminocom.sdk.model.client.Epg;
 import com.aminocom.sdk.model.client.Group;
-import com.aminocom.sdk.model.client.Program;
+import com.aminocom.sdk.model.client.CategoryProgram;
 
 import java.util.List;
 
@@ -11,9 +12,10 @@ import io.reactivex.Observable;
 
 class CacheRepository implements LocalRepository {
     private ObservableList<Channel> channels = new ObservableList<>();
-    private ObservableList<Program> programs = new ObservableList<>();
+    private ObservableList<CategoryProgram> programs = new ObservableList<>();
     private ObservableList<Epg> epgList = new ObservableList<>();
     private ObservableList<Group> groups = new ObservableList<>();
+    private ObservableList<Category> categories = new ObservableList<>();
 
     @Override
     public Observable<List<Channel>> getChannels() {
@@ -26,12 +28,12 @@ class CacheRepository implements LocalRepository {
     }
 
     @Override
-    public Observable<List<Program>> getPrograms() {
+    public Observable<List<CategoryProgram>> getPrograms() {
         return programs.getObservable();
     }
 
     @Override
-    public void cachePrograms(List<Program> programs) {
+    public void cachePrograms(List<CategoryProgram> programs) {
         this.programs.setItems(programs);
     }
 
@@ -53,5 +55,15 @@ class CacheRepository implements LocalRepository {
     @Override
     public void cacheGroups(List<Group> groups) {
         this.groups.setItems(groups);
+    }
+
+    @Override
+    public Observable<List<Category>> getCategories() {
+        return categories.getObservable();
+    }
+
+    @Override
+    public void cacheCategories(List<Category> categories) {
+        this.categories.setItems(categories);
     }
 }

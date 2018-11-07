@@ -5,7 +5,7 @@ import java.util.List;
 public class CategoryProgram {
     private String title;
     private String programUid;
-    private String startTime;
+    private long startTime;
     private String description;
     private int duration;
     private String thumbnailUrl;
@@ -32,11 +32,11 @@ public class CategoryProgram {
         this.programUid = programUid;
     }
 
-    public String getStartTime() {
+    public long getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
 

@@ -4,12 +4,15 @@ import com.aminocom.sdk.model.client.CategoryProgram;
 import com.aminocom.sdk.model.network.category.ProgramItem;
 
 public class CategoryProgramMapper {
-    private CategoryProgram CategoryProgramMapper(ProgramItem programItem) {
+    private CategoryProgramMapper() {
+    }
+
+    public static CategoryProgram from(ProgramItem programItem) {
         CategoryProgram result = new CategoryProgram();
 
         result.setTitle(programItem.title);
         result.setProgramUid(programItem.programUid);
-        result.setStartTime(programItem.startTime);
+        result.setStartTime(programItem.startTime.getTime());
         result.setDescription(programItem.description);
         result.setDuration(programItem.duration);
         result.setThumbnailUrl(programItem.thumbnailUrl);
