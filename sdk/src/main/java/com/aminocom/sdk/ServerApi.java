@@ -1,5 +1,6 @@
 package com.aminocom.sdk;
 
+import com.aminocom.sdk.model.network.category.CategoryListResponse;
 import com.aminocom.sdk.model.network.channel.ChannelResponse;
 import com.aminocom.sdk.model.network.UserResponse;
 
@@ -27,4 +28,7 @@ interface ServerApi {
 
     @GET("api/v3/user/{user}/channel")
     Single<ChannelResponse> getChannels(@Path("user") String user, @Query("service") String service);
+
+    @GET("api/category")
+    Single<CategoryListResponse> getCategoryList(@Query("service") String service);
 }
