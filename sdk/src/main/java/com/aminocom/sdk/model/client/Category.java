@@ -7,7 +7,7 @@ public class Category {
     private String title;
     private String thumbnail;
     private String type;
-    private List<Program> programs;
+    private List<CategoryProgram> programs;
 
     public String getId() {
         return id;
@@ -41,11 +41,11 @@ public class Category {
         this.type = type;
     }
 
-    public List<Program> getPrograms() {
+    public List<CategoryProgram> getPrograms() {
         return programs;
     }
 
-    public void setPrograms(List<Program> programs) {
+    public void setPrograms(List<CategoryProgram> programs) {
         this.programs = programs;
     }
 }
