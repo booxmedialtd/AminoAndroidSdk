@@ -1,5 +1,7 @@
 package com.aminocom.sdk;
 
+import android.util.Log;
+
 import com.aminocom.sdk.mapper.CategoryMapper;
 import com.aminocom.sdk.mapper.CategoryProgramMapper;
 import com.aminocom.sdk.mapper.ChannelMapper;
@@ -138,7 +140,10 @@ public class Provider {
 
     private Single<Category> getCategory(CategoryListItem item) {
         return api.getCategory(item.epgUrl)
+                .doOnError(t -> Log.e(TAG, "Failed to load category: " + item.title))
                 .toObservable()
+                .onExceptionResumeNext(Observable.empty())
+                .filter(response -> response.epg.resultSet.totalItems > 0)
                 .flatMapIterable(categoryResponse -> categoryResponse.epg.programList.programs)
                 .map(CategoryProgramMapper::from)
                 .toList()
