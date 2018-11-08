@@ -1,5 +1,6 @@
 package com.aminocom.sdk;
 
+import com.aminocom.sdk.model.client.Category;
 import com.aminocom.sdk.model.client.channel.Channel;
 import com.aminocom.sdk.model.network.UserResponse;
 
@@ -17,6 +18,7 @@ import okhttp3.mockwebserver.RecordedRequest;
 
 import static org.junit.Assert.assertEquals;
 
+// TODO: check correctness of TestCookieManager
 public class ProviderTest {
     private MockWebServer mockServer;
     private JsonReader jsonReader;
@@ -95,6 +97,45 @@ public class ProviderTest {
         testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS);
 
         assertEquals(1, testObserver.errorCount());
+    }
+
+    // FIXME: Fix mocking of the server
+    @Test
+    public void getCategories_NoLogin() throws Exception {
+        Provider provider = new Provider(new TestCookieManager());
+
+        TestObserver<List<Category>> testObserver = new TestObserver<>();
+
+        provider.getCategories().subscribe(testObserver);
+        testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS);
+
+        testObserver.assertNoErrors();
+        testObserver.assertValueCount(1);
+    }
+
+    // FIXME: Fix mocking of the server.
+    @Test
+    public void getCategories_Login() throws Exception {
+        Provider provider = new Provider(new TestCookieManager());
+
+        TestObserver<UserResponse> loginObserver = new TestObserver<>();
+
+        String user = "aleksei@test.com";
+        String password = "1234";
+
+        provider.login(user, password).subscribe(loginObserver);
+        loginObserver.awaitTerminalEvent(1, TimeUnit.SECONDS);
+
+        loginObserver.assertNoErrors();
+        loginObserver.assertValueCount(1);
+
+        TestObserver<List<Category>> categoryObserver = new TestObserver<>();
+
+        provider.getCategories().subscribe(categoryObserver);
+        categoryObserver.awaitTerminalEvent(3, TimeUnit.SECONDS);
+
+        categoryObserver.assertNoErrors();
+        categoryObserver.assertValueCount(1);
     }
 
     @After
