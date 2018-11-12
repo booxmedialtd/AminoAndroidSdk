@@ -15,7 +15,7 @@ import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 // TODO: Add service parameter to interceptor
-interface ServerApi {
+public interface ServerApi {
 
     @POST("api/user/{user}/login")
     @FormUrlEncoded

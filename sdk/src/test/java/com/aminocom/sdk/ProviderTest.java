@@ -3,6 +3,7 @@ package com.aminocom.sdk;
 import com.aminocom.sdk.model.client.Category;
 import com.aminocom.sdk.model.client.channel.Channel;
 import com.aminocom.sdk.model.network.UserResponse;
+import com.aminocom.sdk.provider.amino.AminoProviders;
 
 import org.junit.After;
 import org.junit.Before;
@@ -33,7 +34,12 @@ public class ProviderTest {
     // FIXME: Fix mocking of the server
     @Test
     public void getChannels() throws Exception {
-        Provider provider = new Provider(new TestCookieManager());
+        SdkBuilder sdk = new SdkBuilder(
+                "https://nebtest1.auto.neb.amo.booxmedia.xyz/",
+                "mobileclient",
+                "qn05BON1hXGCUsw",
+                new AminoProviders(),
+                new AndroidCookieManager());
 
         TestObserver<List<Channel>> testObserver = new TestObserver<>();
 
@@ -45,7 +51,7 @@ public class ProviderTest {
 
         mockServer.enqueue(mockResponse);
 
-        provider.getChannels().subscribe(testObserver);
+        sdk.channels().getChannels().subscribe(testObserver);
         testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS);
 
         testObserver.assertNoErrors();
@@ -59,7 +65,12 @@ public class ProviderTest {
     // FIXME: Fix mocking of the server
     @Test
     public void loginCorrect() throws Exception {
-        Provider provider = new Provider(new TestCookieManager());
+        SdkBuilder sdk = new SdkBuilder(
+                "https://nebtest1.auto.neb.amo.booxmedia.xyz/",
+                "mobileclient",
+                "qn05BON1hXGCUsw",
+                new AminoProviders(),
+                new AndroidCookieManager());
 
         TestObserver<UserResponse> testObserver = new TestObserver<>();
 
@@ -72,7 +83,7 @@ public class ProviderTest {
 
         mockServer.enqueue(mockResponse);*/
 
-        provider.login(user, password).subscribe(testObserver);
+        sdk.user().login(user, password).subscribe(testObserver);
         testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS);
 
         testObserver.assertNoErrors();
@@ -82,7 +93,12 @@ public class ProviderTest {
     // FIXME: Fix mocking of the server
     @Test
     public void loginWrong() throws Exception {
-        Provider provider = new Provider(new TestCookieManager());
+        SdkBuilder sdk = new SdkBuilder(
+                "https://nebtest1.auto.neb.amo.booxmedia.xyz/",
+                "mobileclient",
+                "qn05BON1hXGCUsw",
+                new AminoProviders(),
+                new AndroidCookieManager());
 
         TestObserver<UserResponse> testObserver = new TestObserver<>();
 
@@ -93,7 +109,7 @@ public class ProviderTest {
 
         //mockServer.enqueue(mockResponse);
 
-        provider.login(user, password).subscribe(testObserver);
+        sdk.user().login(user, password).subscribe(testObserver);
         testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS);
 
         assertEquals(1, testObserver.errorCount());
@@ -102,11 +118,16 @@ public class ProviderTest {
     // FIXME: Fix mocking of the server
     @Test
     public void getCategories_NoLogin() throws Exception {
-        Provider provider = new Provider(new TestCookieManager());
+        SdkBuilder sdk = new SdkBuilder(
+                "https://nebtest1.auto.neb.amo.booxmedia.xyz/",
+                "mobileclient",
+                "qn05BON1hXGCUsw",
+                new AminoProviders(),
+                new AndroidCookieManager());
 
         TestObserver<List<Category>> testObserver = new TestObserver<>();
 
-        provider.getCategories().subscribe(testObserver);
+        sdk.categories().getCategories().subscribe(testObserver);
         testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS);
 
         testObserver.assertNoErrors();
@@ -116,14 +137,19 @@ public class ProviderTest {
     // FIXME: Fix mocking of the server.
     @Test
     public void getCategories_Login() throws Exception {
-        Provider provider = new Provider(new TestCookieManager());
+        SdkBuilder sdk = new SdkBuilder(
+                "https://nebtest1.auto.neb.amo.booxmedia.xyz/",
+                "mobileclient",
+                "qn05BON1hXGCUsw",
+                new AminoProviders(),
+                new AndroidCookieManager());
 
         TestObserver<UserResponse> loginObserver = new TestObserver<>();
 
         String user = "aleksei@test.com";
         String password = "1234";
 
-        provider.login(user, password).subscribe(loginObserver);
+        sdk.user().login(user, password).subscribe(loginObserver);
         loginObserver.awaitTerminalEvent(1, TimeUnit.SECONDS);
 
         loginObserver.assertNoErrors();
@@ -131,7 +157,7 @@ public class ProviderTest {
 
         TestObserver<List<Category>> categoryObserver = new TestObserver<>();
 
-        provider.getCategories().subscribe(categoryObserver);
+        sdk.categories().getCategories().subscribe(categoryObserver);
         categoryObserver.awaitTerminalEvent(3, TimeUnit.SECONDS);
 
         categoryObserver.assertNoErrors();

@@ -8,9 +8,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aminocom.sdk.AndroidCookieManager;
-import com.aminocom.sdk.Provider;
+import com.aminocom.sdk.SdkBuilder;
 import com.aminocom.sdk.model.client.Category;
 import com.aminocom.sdk.model.client.channel.Channel;
+import com.aminocom.sdk.provider.amino.AminoProviders;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -31,10 +32,16 @@ public class MainActivity extends AppCompatActivity {
         Button channelsButton = findViewById(R.id.channels_button);
         Button categoriesButton = findViewById(R.id.categories_button);
 
-        Provider provider = new Provider(new AndroidCookieManager());
+        SdkBuilder sdk = new SdkBuilder(
+                "https://nebtest1.auto.neb.amo.booxmedia.xyz/",
+                "mobileclient",
+                "qn05BON1hXGCUsw",
+                new AminoProviders(),
+                new AndroidCookieManager()
+        );
 
         loginButton.setOnClickListener(view -> disposable.add(
-                provider.login("aleksei@test.com", "1234")
+                sdk.user().login("aleksei@test.com", "1234")
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
@@ -44,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         );
 
         channelsButton.setOnClickListener(view -> disposable.add(
-                provider.getChannels()
+                sdk.channels().getChannels()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(items -> {
@@ -62,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         );
 
         categoriesButton.setOnClickListener(view -> disposable.add(
-                provider.getCategories()
+                sdk.categories().getCategories()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(items -> {
