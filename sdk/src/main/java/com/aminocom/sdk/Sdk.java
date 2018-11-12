@@ -2,6 +2,8 @@ package com.aminocom.sdk;
 
 import com.aminocom.sdk.provider.CategoryProvider;
 import com.aminocom.sdk.provider.ChannelProvider;
+import com.aminocom.sdk.provider.ProviderFactory;
+import com.aminocom.sdk.provider.ProviderType;
 import com.aminocom.sdk.provider.Providers;
 import com.aminocom.sdk.provider.UserProvider;
 import com.burgstaller.okhttp.CachingAuthenticatorDecorator;
@@ -22,13 +24,11 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class SdkBuilder implements Providers {
+public class Sdk implements Providers {
 
     private Providers providers;
 
-    public SdkBuilder(String baseUrl, String service, String servicePassword, Providers providers, CookieManager cookieManager) {
-
-        this.providers = providers;
+    public Sdk(String baseUrl, String service, String servicePassword, ProviderType type, CookieManager cookieManager) {
 
         final HttpLoggingInterceptor.Logger logger = message -> {
             if (!message.isEmpty()) {
@@ -43,7 +43,6 @@ public class SdkBuilder implements Providers {
                 .setDateFormat(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH).toPattern())
                 .create();
 
-        //Credentials serviceCredentials = new Credentials(service, "qn05BON1hXGCUsw");
         Credentials serviceCredentials = new Credentials(service, servicePassword);
 
         CustomDigestAuthenticator authenticator = new CustomDigestAuthenticator(serviceCredentials, null);
@@ -59,7 +58,6 @@ public class SdkBuilder implements Providers {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                //.baseUrl("https://nebtest1.auto.neb.amo.booxmedia.xyz/")
                 .baseUrl(baseUrl)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -69,6 +67,8 @@ public class SdkBuilder implements Providers {
         ServerApi api = retrofit.create(ServerApi.class);
 
         LocalRepository localRepository = new CacheRepository();
+
+        this.providers = ProviderFactory.getProvider(type, api, authenticator, service, localRepository, cookieManager);
     }
 
     @Override

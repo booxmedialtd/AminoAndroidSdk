@@ -3,7 +3,7 @@ package com.aminocom.sdk;
 import com.aminocom.sdk.model.client.Category;
 import com.aminocom.sdk.model.client.channel.Channel;
 import com.aminocom.sdk.model.network.UserResponse;
-import com.aminocom.sdk.provider.amino.AminoProviders;
+import com.aminocom.sdk.provider.ProviderType;
 
 import org.junit.After;
 import org.junit.Before;
@@ -34,11 +34,11 @@ public class ProviderTest {
     // FIXME: Fix mocking of the server
     @Test
     public void getChannels() throws Exception {
-        SdkBuilder sdk = new SdkBuilder(
+        Sdk sdk = new Sdk(
                 "https://nebtest1.auto.neb.amo.booxmedia.xyz/",
                 "mobileclient",
                 "qn05BON1hXGCUsw",
-                new AminoProviders(),
+                ProviderType.AMINO,
                 new AndroidCookieManager());
 
         TestObserver<List<Channel>> testObserver = new TestObserver<>();
@@ -65,11 +65,11 @@ public class ProviderTest {
     // FIXME: Fix mocking of the server
     @Test
     public void loginCorrect() throws Exception {
-        SdkBuilder sdk = new SdkBuilder(
+        Sdk sdk = new Sdk(
                 "https://nebtest1.auto.neb.amo.booxmedia.xyz/",
                 "mobileclient",
                 "qn05BON1hXGCUsw",
-                new AminoProviders(),
+                ProviderType.AMINO,
                 new AndroidCookieManager());
 
         TestObserver<UserResponse> testObserver = new TestObserver<>();
@@ -93,11 +93,11 @@ public class ProviderTest {
     // FIXME: Fix mocking of the server
     @Test
     public void loginWrong() throws Exception {
-        SdkBuilder sdk = new SdkBuilder(
+        Sdk sdk = new Sdk(
                 "https://nebtest1.auto.neb.amo.booxmedia.xyz/",
                 "mobileclient",
                 "qn05BON1hXGCUsw",
-                new AminoProviders(),
+                ProviderType.AMINO,
                 new AndroidCookieManager());
 
         TestObserver<UserResponse> testObserver = new TestObserver<>();
@@ -118,11 +118,11 @@ public class ProviderTest {
     // FIXME: Fix mocking of the server
     @Test
     public void getCategories_NoLogin() throws Exception {
-        SdkBuilder sdk = new SdkBuilder(
+        Sdk sdk = new Sdk(
                 "https://nebtest1.auto.neb.amo.booxmedia.xyz/",
                 "mobileclient",
                 "qn05BON1hXGCUsw",
-                new AminoProviders(),
+                ProviderType.AMINO,
                 new AndroidCookieManager());
 
         TestObserver<List<Category>> testObserver = new TestObserver<>();
@@ -137,11 +137,11 @@ public class ProviderTest {
     // FIXME: Fix mocking of the server.
     @Test
     public void getCategories_Login() throws Exception {
-        SdkBuilder sdk = new SdkBuilder(
+        Sdk sdk = new Sdk(
                 "https://nebtest1.auto.neb.amo.booxmedia.xyz/",
                 "mobileclient",
                 "qn05BON1hXGCUsw",
-                new AminoProviders(),
+                ProviderType.AMINO,
                 new AndroidCookieManager());
 
         TestObserver<UserResponse> loginObserver = new TestObserver<>();

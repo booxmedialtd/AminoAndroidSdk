@@ -8,10 +8,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aminocom.sdk.AndroidCookieManager;
-import com.aminocom.sdk.SdkBuilder;
+import com.aminocom.sdk.Sdk;
 import com.aminocom.sdk.model.client.Category;
 import com.aminocom.sdk.model.client.channel.Channel;
-import com.aminocom.sdk.provider.amino.AminoProviders;
+import com.aminocom.sdk.provider.ProviderType;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -32,11 +32,11 @@ public class MainActivity extends AppCompatActivity {
         Button channelsButton = findViewById(R.id.channels_button);
         Button categoriesButton = findViewById(R.id.categories_button);
 
-        SdkBuilder sdk = new SdkBuilder(
+        Sdk sdk = new Sdk(
                 "https://nebtest1.auto.neb.amo.booxmedia.xyz/",
                 "mobileclient",
                 "qn05BON1hXGCUsw",
-                new AminoProviders(),
+                ProviderType.AMINO,
                 new AndroidCookieManager()
         );
 
