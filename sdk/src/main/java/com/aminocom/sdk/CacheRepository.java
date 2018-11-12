@@ -10,7 +10,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
-class CacheRepository implements LocalRepository {
+public class CacheRepository implements LocalRepository {
     private ObservableList<Channel> channels = new ObservableList<>();
     private ObservableList<CategoryProgram> programs = new ObservableList<>();
     private ObservableList<Epg> epgList = new ObservableList<>();

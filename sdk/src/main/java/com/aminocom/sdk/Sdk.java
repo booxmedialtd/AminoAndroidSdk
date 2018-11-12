@@ -66,9 +66,7 @@ public class Sdk implements Providers {
 
         ServerApi api = retrofit.create(ServerApi.class);
 
-        LocalRepository localRepository = new CacheRepository();
-
-        this.providers = ProviderFactory.getProvider(type, api, authenticator, service, localRepository, cookieManager);
+        this.providers = ProviderFactory.getProvider(type, api, authenticator, service, cookieManager);
     }
 
     @Override

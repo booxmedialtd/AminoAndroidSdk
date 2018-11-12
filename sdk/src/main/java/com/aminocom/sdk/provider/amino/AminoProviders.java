@@ -1,5 +1,6 @@
 package com.aminocom.sdk.provider.amino;
 
+import com.aminocom.sdk.CacheRepository;
 import com.aminocom.sdk.CookieManager;
 import com.aminocom.sdk.CustomDigestAuthenticator;
 import com.aminocom.sdk.LocalRepository;
@@ -15,7 +16,9 @@ public class AminoProviders implements Providers {
     private ChannelProvider channelProvider;
     private CategoryProvider categoryProvider;
 
-    public AminoProviders(ServerApi api, CustomDigestAuthenticator authenticator, String service, LocalRepository localRepository, CookieManager cookieManager) {
+    public AminoProviders(ServerApi api, CustomDigestAuthenticator authenticator, String service, CookieManager cookieManager) {
+        LocalRepository localRepository = new CacheRepository();
+
         userProvider = UserProviderImpl.newInstance(api, authenticator, service);
         channelProvider = ChannelProviderImpl.newInstance(api, localRepository, service, cookieManager);
         categoryProvider = CategoryProviderImpl.newInstance(api, localRepository, service);
