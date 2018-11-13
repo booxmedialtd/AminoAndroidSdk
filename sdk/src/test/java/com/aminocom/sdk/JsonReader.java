@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
-final class JsonReader {
-    String getJson(String fileName) {
+public final class JsonReader {
+    public String getJson(String fileName) {
 
         StringBuilder result = new StringBuilder();
 

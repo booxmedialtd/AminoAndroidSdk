@@ -1,5 +1,8 @@
-package com.aminocom.sdk;
+package com.aminocom.sdk.provider.amino;
 
+import com.aminocom.sdk.AndroidCookieManager;
+import com.aminocom.sdk.JsonReader;
+import com.aminocom.sdk.Sdk;
 import com.aminocom.sdk.model.client.Category;
 import com.aminocom.sdk.model.client.channel.Channel;
 import com.aminocom.sdk.model.network.UserResponse;
@@ -20,7 +23,7 @@ import okhttp3.mockwebserver.RecordedRequest;
 import static org.junit.Assert.assertEquals;
 
 // TODO: check correctness of TestCookieManager
-public class ProviderTest {
+public class CategoryProviderImplTest {
     private MockWebServer mockServer;
     private JsonReader jsonReader;
 
