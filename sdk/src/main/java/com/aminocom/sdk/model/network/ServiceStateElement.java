@@ -1,4 +1,4 @@
-package com.aminocom.sdk.model.network.channel;
+package com.aminocom.sdk.model.network;
 
 public class ServiceStateElement {
 	public boolean enabled;
