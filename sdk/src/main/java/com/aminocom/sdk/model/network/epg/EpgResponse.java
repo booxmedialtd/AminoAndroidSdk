@@ -8,5 +8,5 @@ public class EpgResponse {
 
     public ResultSet resultSet;
 
-    public List<EpgChannel> channels;
+    public List<EpgChannelItem> channels;
 }

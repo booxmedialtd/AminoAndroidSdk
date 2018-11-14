@@ -4,16 +4,16 @@ import com.aminocom.sdk.model.network.ThumbnailElement;
 
 import java.util.List;
 
-public class EpgChannel {
+public class EpgChannelItem {
     public String id;
 
     public String title;
 
     public List<String> networkType;
 
-    public List<EpgServiceElement> services;
+    public EpgServiceElement services;
 
     public List<ThumbnailElement> logos;
 
-    public List<EpgProgram> programs;
+    public List<EpgProgramItem> programs;
 }

@@ -1,6 +1,7 @@
 package com.aminocom.sdk.model.client.channel;
 
 import com.aminocom.sdk.model.client.Product;
+import com.aminocom.sdk.model.client.ServiceState;
 import com.aminocom.sdk.model.client.Thumbnail;
 
 import java.util.List;

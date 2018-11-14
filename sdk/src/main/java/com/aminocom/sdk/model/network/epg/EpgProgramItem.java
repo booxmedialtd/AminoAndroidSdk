@@ -2,15 +2,16 @@ package com.aminocom.sdk.model.network.epg;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
 import java.util.List;
 
-public class EpgProgram {
+public class EpgProgramItem {
 
     public String title;
 
     public String description;
 
-    public long startTime;
+    public Date startTime;
 
     public int duration;
 

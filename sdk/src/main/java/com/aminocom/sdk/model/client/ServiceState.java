@@ -1,4 +1,4 @@
-package com.aminocom.sdk.model.client.channel;
+package com.aminocom.sdk.model.client;
 
 public class ServiceState {
     private boolean enabled;

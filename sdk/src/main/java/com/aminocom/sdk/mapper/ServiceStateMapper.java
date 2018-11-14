@@ -1,8 +1,8 @@
 package com.aminocom.sdk.mapper;
 
-import com.aminocom.sdk.model.client.channel.ServiceState;
-import com.aminocom.sdk.model.network.channel.LiveElement;
+import com.aminocom.sdk.model.client.ServiceState;
 import com.aminocom.sdk.model.network.ServiceStateElement;
+import com.aminocom.sdk.model.network.channel.LiveElement;
 
 class ServiceStateMapper {
     private ServiceStateMapper() {

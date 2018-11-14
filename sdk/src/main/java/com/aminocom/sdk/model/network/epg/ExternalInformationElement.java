@@ -10,5 +10,5 @@ public class ExternalInformationElement {
 	public String externalProgramId;
 
     @SerializedName("provider")
-	public String external_showing_id;
+	public String externalShowingId;
 }
