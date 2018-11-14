@@ -5,6 +5,9 @@ import com.aminocom.sdk.model.network.channel.LiveElement;
 import com.aminocom.sdk.model.network.ServiceStateElement;
 
 class ServiceStateMapper {
+    private ServiceStateMapper() {
+    }
+
     static ServiceState from(ServiceStateElement element) {
         ServiceState result = new ServiceState();
 

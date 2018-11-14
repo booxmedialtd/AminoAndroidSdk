@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductMapper {
+    private ProductMapper() {
+    }
+
     static List<Product> from(List<ProductItem> items) {
         List<Product> result = new ArrayList<>();
 

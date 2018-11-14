@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 class DvbMapper {
+    private DvbMapper() {
+    }
+
     static List<Dvb> from(DvbElement element) {
         List<Dvb> result = new ArrayList<>();
 

@@ -4,6 +4,9 @@ import com.aminocom.sdk.model.client.channel.Channel;
 import com.aminocom.sdk.model.network.channel.ChannelItem;
 
 public class ChannelMapper {
+    private ChannelMapper() {
+    }
+
     public static Channel from(ChannelItem response) {
         Channel result = new Channel();
 

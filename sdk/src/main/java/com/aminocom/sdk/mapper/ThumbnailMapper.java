@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 class ThumbnailMapper {
+    private ThumbnailMapper() {
+    }
+
     static List<Thumbnail> from(List<ThumbnailElement> elements) {
         List<Thumbnail> result = new ArrayList<>();
 

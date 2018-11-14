@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 class OttMapper {
+    private OttMapper() {
+    }
+
     static Ott from(OttElement element) {
         Ott result = new Ott();
 
