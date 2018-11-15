@@ -4,4 +4,5 @@ public interface Providers {
     UserProvider user();
     ChannelProvider channels();
     CategoryProvider categories();
+    EpgProvider epg();
 }

@@ -4,6 +4,7 @@ import com.aminocom.sdk.model.network.UserResponse;
 import com.aminocom.sdk.model.network.category.CategoryListResponse;
 import com.aminocom.sdk.model.network.category.CategoryResponse;
 import com.aminocom.sdk.model.network.channel.ChannelResponse;
+import com.aminocom.sdk.model.network.epg.EpgResponse;
 
 import io.reactivex.Single;
 import retrofit2.http.Field;
@@ -36,4 +37,10 @@ public interface ServerApi {
 
     @GET
     Single<CategoryResponse> getCategory(@Url String url);
+
+    @GET("api/v3/epg")
+    Single<EpgResponse> getEpg(@Query("service") String service,
+                               @Query("st") String startTime,
+                               @Query("et") String endTime,
+                               @Query("pg") int page);
 }
