@@ -9,6 +9,6 @@ public class EpgServiceElement {
 	public LiveElement live;
     @SerializedName("recording")
 	public ServiceStateElement recording;
-    @SerializedName("recording")
+    @SerializedName("catchup")
     public ServiceStateElement catchup;
 }
