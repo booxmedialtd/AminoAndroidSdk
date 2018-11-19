@@ -18,13 +18,13 @@ public class AminoProviders implements Providers {
     private CategoryProvider categoryProvider;
     private EpgProvider epgProvider;
 
-    public AminoProviders(ServerApi api, CustomDigestAuthenticator authenticator, String service, CookieManager cookieManager) {
+    public AminoProviders(ServerApi api, CustomDigestAuthenticator authenticator, String service, CookieManager cookieManager, LocalRepository dbRepository) {
         LocalRepository localRepository = new CacheRepository();
 
         userProvider = UserProviderImpl.newInstance(api, authenticator, service);
         channelProvider = ChannelProviderImpl.newInstance(api, localRepository, service, cookieManager);
         categoryProvider = CategoryProviderImpl.newInstance(api, localRepository, service);
-        epgProvider = EpgProviderImpl.newInstance(api, localRepository, service);
+        epgProvider = EpgProviderImpl.newInstance(api, dbRepository, service);
     }
 
     @Override

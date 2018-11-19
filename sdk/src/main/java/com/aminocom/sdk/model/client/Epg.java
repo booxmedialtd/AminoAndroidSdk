@@ -10,7 +10,7 @@ public class Epg {
     private ServiceState live;
     private ServiceState recording;
     private ServiceState catchUp;
-    private List<EpgProgram> programs;
+    private List<Program> programs;
 
     public String getChannelId() {
         return channelId;
@@ -68,11 +68,11 @@ public class Epg {
         this.catchUp = catchUp;
     }
 
-    public List<EpgProgram> getPrograms() {
+    public List<Program> getPrograms() {
         return programs;
     }
 
-    public void setPrograms(List<EpgProgram> programs) {
+    public void setPrograms(List<Program> programs) {
         this.programs = programs;
     }
 }

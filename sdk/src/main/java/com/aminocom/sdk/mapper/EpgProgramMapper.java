@@ -1,6 +1,6 @@
 package com.aminocom.sdk.mapper;
 
-import com.aminocom.sdk.model.client.EpgProgram;
+import com.aminocom.sdk.model.client.Program;
 import com.aminocom.sdk.model.network.epg.EpgProgramItem;
 
 import java.util.ArrayList;
@@ -11,18 +11,18 @@ public class EpgProgramMapper {
     private EpgProgramMapper() {
     }
 
-    public static List<EpgProgram> from(List<EpgProgramItem> programs) {
-        List<EpgProgram> result = new ArrayList<>();
+    public static List<Program> from(String channelId, List<EpgProgramItem> programs) {
+        List<Program> result = new ArrayList<>();
 
         for (EpgProgramItem item : programs) {
-            result.add(from(item));
+            result.add(from(channelId, item));
         }
 
         return result;
     }
 
-    public static EpgProgram from(EpgProgramItem item) {
-        EpgProgram result = new EpgProgram();
+    public static Program from(String channelId, EpgProgramItem item) {
+        Program result = new Program();
 
         result.setTitle(item.title);
         result.setDescription(item.description);
@@ -31,6 +31,7 @@ public class EpgProgramMapper {
         result.setShowId(item.showId);
         result.setProgramUId(item.programUId);
         result.setDvbInformation(item.dvbInformation);
+        result.setChannelId(channelId);
 
         if (item.services.recording != null) {
             result.setRecording(ServiceStateMapper.from(item.services.recording));

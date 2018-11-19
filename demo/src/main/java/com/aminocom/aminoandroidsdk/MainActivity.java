@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aminocom.sdk.AndroidCookieManager;
+import com.aminocom.sdk.DbRepository;
 import com.aminocom.sdk.Sdk;
 import com.aminocom.sdk.model.client.Category;
 import com.aminocom.sdk.model.client.channel.Channel;
@@ -31,17 +32,28 @@ public class MainActivity extends AppCompatActivity {
         Button loginButton = findViewById(R.id.login_button);
         Button channelsButton = findViewById(R.id.channels_button);
         Button categoriesButton = findViewById(R.id.categories_button);
+        Button epgButton = findViewById(R.id.epg_button);
 
-        Sdk sdk = new Sdk(
+        /*Sdk sdk = new Sdk(
                 "https://nebtest1.auto.neb.amo.booxmedia.xyz/",
                 "mobileclient",
                 "qn05BON1hXGCUsw",
                 ProviderType.AMINO,
-                new AndroidCookieManager()
+                new AndroidCookieManager(),
+                new DbRepository(getApplicationContext())*/
+
+        Sdk sdk = new Sdk(
+                "https://tv.dna.fi/",
+                "dnaclient",
+                "dn4c1!3nt",
+                ProviderType.AMINO,
+                new AndroidCookieManager(),
+                new DbRepository(getApplicationContext())
         );
 
         loginButton.setOnClickListener(view -> disposable.add(
-                sdk.user().login("aleksei@test.com", "1234")
+                //sdk.user().login("aleksei@test.com", "1234")
+                sdk.user().login("bt1@dna.fi", "1234")
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
@@ -87,6 +99,18 @@ public class MainActivity extends AppCompatActivity {
                                     testText.setText(text.toString());
                                 },
                                 t -> Log.e(TAG, "Failed to load categories", t))
+                )
+        );
+
+        epgButton.setOnClickListener(view -> disposable.add(
+                sdk.epg().getTodayEpg()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(items -> {
+
+                                },
+                                t -> Log.e(TAG, "Failed to get channels", t)
+                        )
                 )
         );
     }

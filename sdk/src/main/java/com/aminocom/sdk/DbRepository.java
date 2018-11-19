@@ -1,5 +1,9 @@
 package com.aminocom.sdk;
 
+import android.arch.persistence.room.Room;
+import android.content.Context;
+
+import com.aminocom.sdk.db.SdkDatabase;
 import com.aminocom.sdk.model.client.Category;
 import com.aminocom.sdk.model.client.Epg;
 import com.aminocom.sdk.model.client.Group;
@@ -10,7 +14,14 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
-public class CacheRepository implements LocalRepository {
+public class DbRepository implements LocalRepository {
+
+    private SdkDatabase db;
+
+    public DbRepository(Context appContext) {
+        this.db = Room.databaseBuilder(appContext, SdkDatabase.class, "sdk-database").build();
+    }
+
     private ObservableList<Channel> channels = new ObservableList<>();
     private ObservableList<Program> programs = new ObservableList<>();
     private ObservableList<Epg> epgList = new ObservableList<>();
@@ -34,12 +45,12 @@ public class CacheRepository implements LocalRepository {
 
     @Override
     public void cachePrograms(List<Program> programs) {
-        this.programs.setItems(programs);
+        db.programDao().insertAll(programs);
     }
 
     @Override
     public void clearPrograms() {
-        this.programs = new ObservableList<>();
+        db.programDao().clear();
     }
 
     @Override

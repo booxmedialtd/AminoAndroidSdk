@@ -26,6 +26,14 @@
         android:text="Test categories"
         app:layout_constraintStart_toEndOf="@id/channels_button" />
 
+    <Button
+        android:id="@+id/epg_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test EPG"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/channels_button" />
+
     <TextView
         android:id="@+id/test_text"
         android:layout_width="wrap_content"

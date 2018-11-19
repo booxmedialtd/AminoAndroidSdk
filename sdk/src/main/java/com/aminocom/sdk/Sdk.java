@@ -2,6 +2,7 @@ package com.aminocom.sdk;
 
 import com.aminocom.sdk.provider.CategoryProvider;
 import com.aminocom.sdk.provider.ChannelProvider;
+import com.aminocom.sdk.provider.EpgProvider;
 import com.aminocom.sdk.provider.ProviderFactory;
 import com.aminocom.sdk.provider.ProviderType;
 import com.aminocom.sdk.provider.Providers;
@@ -28,7 +29,7 @@ public class Sdk implements Providers {
 
     private Providers providers;
 
-    public Sdk(String baseUrl, String service, String servicePassword, ProviderType type, CookieManager cookieManager) {
+    public Sdk(String baseUrl, String service, String servicePassword, ProviderType type, CookieManager cookieManager, LocalRepository dbRepository) {
 
         final HttpLoggingInterceptor.Logger logger = message -> {
             if (!message.isEmpty()) {
@@ -66,7 +67,7 @@ public class Sdk implements Providers {
 
         ServerApi api = retrofit.create(ServerApi.class);
 
-        this.providers = ProviderFactory.getProvider(type, api, authenticator, service, cookieManager);
+        this.providers = ProviderFactory.getProvider(type, api, authenticator, service, cookieManager, dbRepository);
     }
 
     @Override
@@ -82,5 +83,10 @@ public class Sdk implements Providers {
     @Override
     public CategoryProvider categories() {
         return providers.categories();
+    }
+
+    @Override
+    public EpgProvider epg() {
+        return providers.epg();
     }
 }

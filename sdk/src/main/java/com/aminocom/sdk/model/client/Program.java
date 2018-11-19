@@ -1,15 +1,23 @@
 package com.aminocom.sdk.model.client;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import java.util.List;
 
-public class EpgProgram {
+@Entity(tableName = "programs")
+public class Program {
+    @PrimaryKey
+    @NonNull
+    private String programUId = "";
     private String title;
     private String description;
     private long startTime;
     private int duration;
     private String showId;
-    private String programUId;
     private String dvbInformation;
+    private String channelId;
     private List<String> categories;
     private List<String> categoryIds;
     private ServiceState recording;
@@ -56,11 +64,12 @@ public class EpgProgram {
         this.showId = showId;
     }
 
+    @NonNull
     public String getProgramUId() {
         return programUId;
     }
 
-    public void setProgramUId(String programUId) {
+    public void setProgramUId(@NonNull String programUId) {
         this.programUId = programUId;
     }
 
@@ -70,6 +79,14 @@ public class EpgProgram {
 
     public void setDvbInformation(String dvbInformation) {
         this.dvbInformation = dvbInformation;
+    }
+
+    public String getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
     }
 
     public List<String> getCategories() {

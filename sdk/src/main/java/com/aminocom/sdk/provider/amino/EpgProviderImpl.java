@@ -1,5 +1,7 @@
 package com.aminocom.sdk.provider.amino;
 
+import android.util.Log;
+
 import com.aminocom.sdk.CacheTTLConfig;
 import com.aminocom.sdk.LocalRepository;
 import com.aminocom.sdk.ServerApi;
@@ -40,6 +42,7 @@ public class EpgProviderImpl implements EpgProvider {
     }
 
     // TODO: Add saving of a loaded date and checking of current loaded date to decrease server load
+    // TODO: decrease number of connections to the DB
     @Override
     public Observable<List<Epg>> getEpg(long dateInMillis) {
         final long startDate = DateUtil.getTvDayStartTime(dateInMillis);
@@ -51,12 +54,12 @@ public class EpgProviderImpl implements EpgProvider {
                     .takeUntil(response -> response.resultSet.currentPage == response.resultSet.totalPages - 1)
                     .flatMapIterable(response -> response.channels)
                     .map(EpgMapper::from)
-                    .toList()
-                    .doOnSuccess(epgList -> {
-                        localRepository.cacheEpg(epgList);
+                    .doOnNext(epgList -> {
+                        Log.e("LOG_TAG", "===================== getEpg: epg size: " + epgList.size());
+                        localRepository.cachePrograms(epgList);
                         epgCacheTime = System.currentTimeMillis();
                     })
-                    .flatMapObservable(list -> localRepository.getEpg());
+                    .flatMap(list -> localRepository.getEpg());
         } else {
             return localRepository.getEpg();
         }
