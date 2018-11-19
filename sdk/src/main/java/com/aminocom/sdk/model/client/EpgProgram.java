@@ -14,7 +14,7 @@ public class EpgProgram {
     private List<String> categoryIds;
     private ServiceState recording;
     private ServiceState catchUp;
-    private ExternalInformation externalInformation;
+    private List<ExternalInformation> externalInformation;
 
     public String getTitle() {
         return title;
@@ -104,11 +104,11 @@ public class EpgProgram {
         this.catchUp = catchUp;
     }
 
-    public ExternalInformation getExternalInformation() {
+    public List<ExternalInformation> getExternalInformation() {
         return externalInformation;
     }
 
-    public void setExternalInformation(ExternalInformation externalInformation) {
+    public void setExternalInformation(List<ExternalInformation> externalInformation) {
         this.externalInformation = externalInformation;
     }
 }

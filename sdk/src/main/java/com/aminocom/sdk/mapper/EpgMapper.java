@@ -14,7 +14,7 @@ public class EpgMapper {
         result.setChannelTitle(response.title);
         result.setNetworkType(response.networkType);
         result.setChannelLogos(ThumbnailMapper.from(response.logos));
-        result.setPrograms(EpgProgramMapper.from(response.programs));
+        //result.setPrograms(EpgProgramMapper.from(response.programs));
 
         if (response.services.live != null) {
             result.setLive(ServiceStateMapper.from(response.services.live));

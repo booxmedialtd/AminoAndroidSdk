@@ -2,7 +2,6 @@ package com.aminocom.sdk.model.network.epg;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
 import java.util.List;
 
 public class EpgProgramItem {
@@ -11,7 +10,7 @@ public class EpgProgramItem {
 
     public String description;
 
-    public Date startTime;
+    public long startTime;
 
     public int duration;
 
@@ -28,5 +27,5 @@ public class EpgProgramItem {
     public EpgServiceElement services;
 
     @SerializedName("external_program_information")
-    public ExternalInformationElement externalInformation;
+    public List<ExternalInformationElement> externalInformation;
 }

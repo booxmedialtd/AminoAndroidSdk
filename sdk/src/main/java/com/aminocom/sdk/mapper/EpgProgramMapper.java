@@ -5,6 +5,7 @@ import com.aminocom.sdk.model.network.epg.EpgProgramItem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class EpgProgramMapper {
     private EpgProgramMapper() {
@@ -25,7 +26,7 @@ public class EpgProgramMapper {
 
         result.setTitle(item.title);
         result.setDescription(item.description);
-        result.setStartTime(item.startTime.getTime());
+        result.setStartTime(TimeUnit.SECONDS.toMillis(item.startTime));
         result.setDuration(item.duration);
         result.setShowId(item.showId);
         result.setProgramUId(item.programUId);
