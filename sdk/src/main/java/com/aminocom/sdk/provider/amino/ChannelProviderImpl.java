@@ -6,6 +6,7 @@ import com.aminocom.sdk.LocalRepository;
 import com.aminocom.sdk.ServerApi;
 import com.aminocom.sdk.mapper.ChannelMapper;
 import com.aminocom.sdk.model.client.channel.Channel;
+import com.aminocom.sdk.model.client.channel.LiveChannel;
 import com.aminocom.sdk.provider.ChannelProvider;
 
 import java.util.List;
@@ -51,5 +52,10 @@ public class ChannelProviderImpl implements ChannelProvider {
         } else {
             return localRepository.getChannels();
         }
+    }
+
+    @Override
+    public Flowable<List<LiveChannel>> getLiveChannels() {
+        return Flowable.empty();
     }
 }

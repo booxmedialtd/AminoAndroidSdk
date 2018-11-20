@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,8 @@ import io.reactivex.schedulers.Schedulers;
 public class LiveTvFragment extends Fragment {
 
     private static final String TAG = LiveTvFragment.class.getSimpleName();
+
+    private ChannelAdapter adapter;
 
     private Disposable disposable = null;
 
@@ -41,11 +44,16 @@ public class LiveTvFragment extends Fragment {
             }
         }
 
-        disposable = ((App) getActivity().getApplication()).sdk.channels().getChannels()
+        adapter = new ChannelAdapter();
+
+        RecyclerView list = view.findViewById(R.id.live_tv_list);
+        list.setAdapter(adapter);
+
+        disposable = ((App) getActivity().getApplication()).sdk.channels().getLiveChannels()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(items -> {
-                        },
+                .subscribe(
+                        items -> adapter.setItems(items),
                         t -> Log.e(TAG, "Failed to get channels", t)
                 );
 
@@ -54,7 +62,7 @@ public class LiveTvFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
 
