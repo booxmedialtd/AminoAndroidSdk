@@ -56,69 +56,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        /*loginButton.setOnClickListener(view -> disposable.add(
-                //sdk.user().login("aleksei@test.com", "1234")
-                sdk.user().login("bt1@dna.fi", "1234")
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                items -> Toast.makeText(this, "Login successful", Toast.LENGTH_LONG).show(),
-                                t -> Log.e(TAG, "Failed to login", t)
-                        ))
-        );
-
-        channelsButton.setOnClickListener(view -> disposable.add(
-                sdk.channels().getChannels()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(items -> {
-                                    StringBuilder text = new StringBuilder();
-
-                                    for (Channel channel : items) {
-                                        text.append(channel.getTitle()).append("\n");
-                                    }
-
-                                    testText.setText(text.toString());
-                                },
-                                t -> Log.e(TAG, "Failed to get channels", t)
-                        )
-                )
-        );
-
-        categoriesButton.setOnClickListener(view -> disposable.add(
-                sdk.categories().getCategories()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(items -> {
-                                    StringBuilder text = new StringBuilder();
-
-                                    for (Category category : items) {
-                                        text
-                                                .append("Category name: ")
-                                                .append(category.getTitle())
-                                                .append(" Program size: ")
-                                                .append(category.getPrograms().size())
-                                                .append("\n");
-                                    }
-
-                                    testText.setText(text.toString());
-                                },
-                                t -> Log.e(TAG, "Failed to load categories", t))
-                )
-        );
-
-        epgButton.setOnClickListener(view -> disposable.add(
-                sdk.epg().getTodayEpg()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(items -> {
-
-                                },
-                                t -> Log.e(TAG, "Failed to get channels", t)
-                        )
-                )
-        );*/
     }
 
     @Override
@@ -139,11 +76,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_live_tv) {
-            fragment = LiveTvFragment.newInstance();
+            fragment = LiveTvFragment.newInstance(sdk);
         } else if (id == R.id.nav_categories) {
-            fragment = CategoryFragment.newInstance();
+            fragment = CategoryFragment.newInstance(sdk);
         } else if (id == R.id.nav_epg) {
-            fragment = EpgFragment.newInstance();
+            fragment = EpgFragment.newInstance(sdk);
         } else if (id == R.id.nav_login) {
             disposable.add(
                     //sdk.user().login("aleksei@test.com", "1234")

@@ -6,16 +6,31 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.aminocom.aminoandroidsdk.R;
+import com.aminocom.sdk.Sdk;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class LiveTvFragment extends Fragment {
 
-    public static Fragment newInstance() {
-        return new LiveTvFragment();
+    private static final String TAG = LiveTvFragment.class.getSimpleName();
+
+    private Sdk sdk;
+
+    private Disposable disposable = null;
+
+    public static Fragment newInstance(Sdk sdk) {
+        LiveTvFragment fragment = new LiveTvFragment();
+        fragment.setSdk(sdk);
+
+        return fragment;
     }
 
     @Nullable
@@ -31,6 +46,27 @@ public class LiveTvFragment extends Fragment {
             }
         }
 
+        disposable = sdk.channels().getChannels()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(items -> {
+                        },
+                        t -> Log.e(TAG, "Failed to get channels", t)
+                );
+
         return view;
+    }
+
+    public void setSdk(Sdk sdk) {
+        this.sdk = sdk;
+    }
+
+    @Override
+    public void onDestroy() {
+        if(disposable != null) {
+            disposable.dispose();
+        }
+
+        super.onDestroy();
     }
 }
