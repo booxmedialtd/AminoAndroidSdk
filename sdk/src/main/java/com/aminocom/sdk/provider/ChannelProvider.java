@@ -4,8 +4,8 @@ import com.aminocom.sdk.model.client.channel.Channel;
 
 import java.util.List;
 
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 
 public interface ChannelProvider {
-    Observable<List<Channel>> getChannels();
+    Flowable<List<Channel>> getChannels();
 }

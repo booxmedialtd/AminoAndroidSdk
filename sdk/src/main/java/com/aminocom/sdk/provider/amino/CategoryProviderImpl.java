@@ -13,6 +13,7 @@ import com.aminocom.sdk.provider.CategoryProvider;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -36,7 +37,7 @@ public class CategoryProviderImpl implements CategoryProvider {
     }
 
     @Override
-    public Observable<List<Category>> getCategories() {
+    public Flowable<List<Category>> getCategories() {
         if (System.currentTimeMillis() - categoriesCacheTime > CacheTTLConfig.CATEGORY_TTL) {
             return api.getCategoryList(service)
                     .toObservable()
@@ -47,7 +48,7 @@ public class CategoryProviderImpl implements CategoryProvider {
                         localRepository.cacheCategories(categories);
                         categoriesCacheTime = System.currentTimeMillis();
                     })
-                    .flatMapObservable(list -> localRepository.getCategories());
+                    .flatMapPublisher(list -> localRepository.getCategories());
         } else {
             return localRepository.getCategories();
         }

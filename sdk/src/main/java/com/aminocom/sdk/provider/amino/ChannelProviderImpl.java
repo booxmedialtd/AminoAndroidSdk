@@ -10,7 +10,7 @@ import com.aminocom.sdk.provider.ChannelProvider;
 
 import java.util.List;
 
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 
 public class ChannelProviderImpl implements ChannelProvider {
 
@@ -34,7 +34,7 @@ public class ChannelProviderImpl implements ChannelProvider {
 
     // TODO: change username when username will be stored in SDK
     @Override
-    public Observable<List<Channel>> getChannels() {
+    public Flowable<List<Channel>> getChannels() {
         String userName = cookieManager.isCookieExists() ? "bt1@dna.fi" : "guest";
 
         if (System.currentTimeMillis() - channelsCacheTime > CacheTTLConfig.CHANNEL_TTL) {
@@ -47,7 +47,7 @@ public class ChannelProviderImpl implements ChannelProvider {
                         localRepository.cacheChannels(channels);
                         channelsCacheTime = System.currentTimeMillis();
                     })
-                    .flatMapObservable(list -> localRepository.getChannels());
+                    .flatMapPublisher(list -> localRepository.getChannels());
         } else {
             return localRepository.getChannels();
         }

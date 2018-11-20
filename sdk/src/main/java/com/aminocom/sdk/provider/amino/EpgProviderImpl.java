@@ -13,7 +13,7 @@ import com.aminocom.sdk.util.DateUtil;
 import java.util.Calendar;
 import java.util.List;
 
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 
 public class EpgProviderImpl implements EpgProvider {
 
@@ -37,19 +37,19 @@ public class EpgProviderImpl implements EpgProvider {
     }
 
     @Override
-    public Observable<List<Epg>> getTodayEpg() {
+    public Flowable<List<Epg>> getTodayEpg() {
         return getEpg(Calendar.getInstance().getTimeInMillis());
     }
 
     // TODO: Add saving of a loaded date and checking of current loaded date to decrease server load
     // TODO: decrease number of connections to the DB
     @Override
-    public Observable<List<Epg>> getEpg(long dateInMillis) {
+    public Flowable<List<Epg>> getEpg(long dateInMillis) {
         final long startDate = DateUtil.getTvDayStartTime(dateInMillis);
         final long endDate = DateUtil.getTvDayEndTime(dateInMillis);
 
         if (System.currentTimeMillis() - epgCacheTime > CacheTTLConfig.CHANNEL_TTL) {
-            return Observable.range(INITIAL_EPG_PAGE, MAX_EPG_PAGE)
+            return Flowable.range(INITIAL_EPG_PAGE, MAX_EPG_PAGE)
                     .flatMapSingle(page -> api.getEpg(service, String.valueOf(DateUtil.getTimeInSeconds(startDate)), String.valueOf(DateUtil.getTimeInSeconds(endDate)), page))
                     .takeUntil(response -> response.resultSet.currentPage == response.resultSet.totalPages - 1)
                     .flatMapIterable(response -> response.channels)

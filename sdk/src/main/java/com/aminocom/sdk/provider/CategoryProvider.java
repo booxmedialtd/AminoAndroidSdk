@@ -4,8 +4,8 @@ import com.aminocom.sdk.model.client.Category;
 
 import java.util.List;
 
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 
 public interface CategoryProvider {
-    Observable<List<Category>> getCategories();
+    Flowable<List<Category>> getCategories();
 }

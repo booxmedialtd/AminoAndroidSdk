@@ -4,10 +4,10 @@ import com.aminocom.sdk.model.client.Epg;
 
 import java.util.List;
 
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 
 public interface EpgProvider {
-    Observable<List<Epg>> getTodayEpg();
+    Flowable<List<Epg>> getTodayEpg();
 
-    Observable<List<Epg>> getEpg(long dateInMillis);
+    Flowable<List<Epg>> getEpg(long dateInMillis);
 }
