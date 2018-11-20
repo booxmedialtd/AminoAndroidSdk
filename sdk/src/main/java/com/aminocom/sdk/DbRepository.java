@@ -35,7 +35,7 @@ public class DbRepository implements LocalRepository {
 
     @Override
     public void cacheChannels(List<Channel> channels) {
-        this.channels.setItems(channels);
+        this.db.channelDao().insertAll(channels);
     }
 
     @Override

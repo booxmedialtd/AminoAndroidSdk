@@ -22,7 +22,7 @@ public class AminoProviders implements Providers {
         LocalRepository localRepository = new CacheRepository();
 
         userProvider = UserProviderImpl.newInstance(api, authenticator, service);
-        channelProvider = ChannelProviderImpl.newInstance(api, localRepository, service, cookieManager);
+        channelProvider = ChannelProviderImpl.newInstance(api, dbRepository, service, cookieManager);
         categoryProvider = CategoryProviderImpl.newInstance(api, localRepository, service);
         epgProvider = EpgProviderImpl.newInstance(api, dbRepository, service);
     }

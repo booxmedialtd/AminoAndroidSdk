@@ -35,7 +35,7 @@ public class ChannelProviderImpl implements ChannelProvider {
     // TODO: change username when username will be stored in SDK
     @Override
     public Observable<List<Channel>> getChannels() {
-        String userName = cookieManager.isCookieExists() ? "aleksei@test.com" : "guest";
+        String userName = cookieManager.isCookieExists() ? "bt1@dna.fi" : "guest";
 
         if (System.currentTimeMillis() - channelsCacheTime > CacheTTLConfig.CHANNEL_TTL) {
             return api.getChannels(userName, service)

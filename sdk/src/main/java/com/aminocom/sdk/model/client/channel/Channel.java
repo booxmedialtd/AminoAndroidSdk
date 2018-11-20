@@ -1,5 +1,9 @@
 package com.aminocom.sdk.model.client.channel;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import com.aminocom.sdk.model.client.Product;
 import com.aminocom.sdk.model.client.ServiceState;
 import com.aminocom.sdk.model.client.Thumbnail;
@@ -10,16 +14,14 @@ import java.util.Objects;
 /**
  *
  */
-
+@Entity(tableName = "channels")
 public class Channel {
     public Channel() {
     }
 
-    public Channel(String title) {
-        this.title = title;
-    }
-
-    private String id;
+    @PrimaryKey
+    @NonNull
+    private String id = "";
     private String title;
     private String description;
     private boolean adult;
@@ -33,11 +35,12 @@ public class Channel {
     private ServiceState catchUp;
     private FastForwardState fastForward;
 
+    @NonNull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 
@@ -138,6 +141,7 @@ public class Channel {
     }
 
     @Override
+    @NonNull
     public String toString() {
         return title;
     }
@@ -146,9 +150,8 @@ public class Channel {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Channel channel = (Channel) o;
-        return id == channel.id;
+        return Objects.equals(id, channel.id);
     }
 
     @Override

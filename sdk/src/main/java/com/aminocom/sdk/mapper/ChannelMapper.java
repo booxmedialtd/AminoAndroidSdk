@@ -45,7 +45,6 @@ public class ChannelMapper {
             result.setFastForward(FastForwardMapping.from(response.services.fastForward));
         }
 
-
         return result;
     }
 }
