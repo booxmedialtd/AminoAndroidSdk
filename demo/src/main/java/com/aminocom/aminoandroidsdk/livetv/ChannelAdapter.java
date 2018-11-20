@@ -7,13 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aminocom.aminoandroidsdk.R;
-import com.aminocom.sdk.model.client.channel.Channel;
+import com.aminocom.sdk.model.client.channel.LiveChannel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChannelAdapter extends RecyclerView.Adapter<ChannelViewHolder> {
-    private List<Channel> items = new ArrayList<>();
+    private List<LiveChannel> items = new ArrayList<>();
 
     @NonNull
     @Override
@@ -33,7 +33,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelViewHolder> {
         return items.size();
     }
 
-    public void setItems(List<Channel> items) {
+    public void setItems(List<LiveChannel> items) {
         this.items = items;
     }
 }

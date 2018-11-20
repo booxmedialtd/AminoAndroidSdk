@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aminocom.aminoandroidsdk.R;
-import com.aminocom.sdk.model.client.channel.Channel;
+import com.aminocom.sdk.model.client.channel.LiveChannel;
 
 public class ChannelViewHolder extends RecyclerView.ViewHolder {
     private ImageView thumbnail;
@@ -22,8 +22,8 @@ public class ChannelViewHolder extends RecyclerView.ViewHolder {
         description = view.findViewById(R.id.channel_description);
     }
 
-    public void bind(Channel channel) {
-        title.setText(channel.getTitle());
-        description.setText(channel.getDescription());
+    public void bind(LiveChannel channel) {
+        title.setText(channel.getChannel().getTitle());
+        description.setText(channel.getChannel().getDescription());
     }
 }
