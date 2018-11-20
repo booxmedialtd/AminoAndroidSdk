@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">AminoAndroidSdk</string>
+    <string name="app_name">Amino Android Sdk Demo</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">@string/app_name</string>
+    <string name="nav_header_subtitle">sdk@aminocom.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="navigation_live_tv">Live Tv</string>
+    <string name="navigation_categories">Categories</string>
+    <string name="navigation_epg">EPG</string>
+    <string name="navigation_login">Login</string>
 </resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:id="@+id/nav_group_main"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_live_tv"
+            android:icon="@drawable/ic_live_tv_24dp"
+            android:title="@string/navigation_live_tv" />
+        <item
+            android:id="@+id/nav_categories"
+            android:icon="@drawable/ic_categories_24dp"
+            android:title="@string/navigation_categories" />
+        <item
+            android:id="@+id/nav_epg"
+            android:icon="@drawable/ic_epg_24dp"
+            android:title="@string/navigation_epg" />
+    </group>
+
+    <group android:id="@+id/nav_group_login">
+        <item
+            android:id="@+id/nav_login"
+            android:icon="@drawable/ic_login_24dp"
+            android:title="@string/navigation_login" />
+    </group>
+</menu>
