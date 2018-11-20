@@ -6,7 +6,7 @@
     <string name="nav_header_subtitle">sdk@aminocom.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="navigation_live_tv">Live Tv</string>
-    <string name="navigation_categories">Categories</string>
+    <string name="navigation_category">Categories</string>
     <string name="navigation_epg">EPG</string>
     <string name="navigation_login">Login</string>
 </resources>

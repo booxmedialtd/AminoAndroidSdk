@@ -2,6 +2,8 @@ package com.aminocom.aminoandroidsdk;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -11,6 +13,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.aminocom.aminoandroidsdk.category.CategoryFragment;
+import com.aminocom.aminoandroidsdk.epg.EpgFragment;
+import com.aminocom.aminoandroidsdk.livetv.LiveTvFragment;
 import com.aminocom.sdk.AndroidCookieManager;
 import com.aminocom.sdk.DbRepository;
 import com.aminocom.sdk.Sdk;
@@ -129,14 +134,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Fragment fragment = null;
+
         int id = item.getItemId();
 
         if (id == R.id.nav_live_tv) {
-
+            fragment = LiveTvFragment.newInstance();
         } else if (id == R.id.nav_categories) {
-
+            fragment = CategoryFragment.newInstance();
         } else if (id == R.id.nav_epg) {
-
+            fragment = EpgFragment.newInstance();
         } else if (id == R.id.nav_login) {
             disposable.add(
                     //sdk.user().login("aleksei@test.com", "1234")
@@ -147,6 +154,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     items -> Toast.makeText(this, "Login successful", Toast.LENGTH_LONG).show(),
                                     t -> Log.e(TAG, "Failed to login", t)
                             ));
+        }
+
+        if (fragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, fragment, fragment.getClass().getSimpleName())
+                    .commit();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

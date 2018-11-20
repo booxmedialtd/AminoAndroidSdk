@@ -13,7 +13,7 @@
         <item
             android:id="@+id/nav_categories"
             android:icon="@drawable/ic_categories_24dp"
-            android:title="@string/navigation_categories" />
+            android:title="@string/navigation_category" />
         <item
             android:id="@+id/nav_epg"
             android:icon="@drawable/ic_epg_24dp"
