@@ -8,28 +8,28 @@ import com.aminocom.sdk.model.client.channel.Channel;
 
 import java.util.List;
 
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 
 public interface LocalRepository {
-    Observable<List<Channel>> getChannels();
+    Flowable<List<Channel>> getChannels();
 
     void cacheChannels(List<Channel> channels);
 
-    Observable<List<Program>> getPrograms();
+    Flowable<List<Program>> getPrograms();
 
     void cachePrograms(List<Program> programs);
 
     void clearPrograms();
 
-    Observable<List<Epg>> getEpg();
+    Flowable<List<Epg>> getEpg();
 
     void cacheEpg(List<Epg> epgList);
 
-    Observable<List<Group>> getGroup();
+    Flowable<List<Group>> getGroup();
 
     void cacheGroups(List<Group> groups);
 
-    Observable<List<Category>> getCategories();
+    Flowable<List<Category>> getCategories();
 
     void cacheCategories(List<Category> categories);
 }

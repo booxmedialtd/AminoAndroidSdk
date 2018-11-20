@@ -12,7 +12,7 @@ import com.aminocom.sdk.model.client.channel.Channel;
 
 import java.util.List;
 
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 
 public class DbRepository implements LocalRepository {
 
@@ -22,25 +22,19 @@ public class DbRepository implements LocalRepository {
         this.db = Room.databaseBuilder(appContext, SdkDatabase.class, "sdk-database").build();
     }
 
-    private ObservableList<Channel> channels = new ObservableList<>();
-    private ObservableList<Program> programs = new ObservableList<>();
-    private ObservableList<Epg> epgList = new ObservableList<>();
-    private ObservableList<Group> groups = new ObservableList<>();
-    private ObservableList<Category> categories = new ObservableList<>();
-
     @Override
-    public Observable<List<Channel>> getChannels() {
-        return channels.getObservable();
+    public Flowable<List<Channel>> getChannels() {
+        return db.channelDao().getAll();
     }
 
     @Override
     public void cacheChannels(List<Channel> channels) {
-        this.db.channelDao().insertAll(channels);
+        db.channelDao().insertAll(channels);
     }
 
     @Override
-    public Observable<List<Program>> getPrograms() {
-        return programs.getObservable();
+    public Flowable<List<Program>> getPrograms() {
+        return db.programDao().getAll();
     }
 
     @Override
@@ -54,32 +48,29 @@ public class DbRepository implements LocalRepository {
     }
 
     @Override
-    public Observable<List<Epg>> getEpg() {
-        return epgList.getObservable();
+    public Flowable<List<Epg>> getEpg() {
+        return Flowable.empty();
     }
 
     @Override
     public void cacheEpg(List<Epg> epgList) {
-        this.epgList.setItems(epgList);
     }
 
     @Override
-    public Observable<List<Group>> getGroup() {
-        return groups.getObservable();
+    public Flowable<List<Group>> getGroup() {
+        return Flowable.empty();
     }
 
     @Override
     public void cacheGroups(List<Group> groups) {
-        this.groups.setItems(groups);
     }
 
     @Override
-    public Observable<List<Category>> getCategories() {
-        return categories.getObservable();
+    public Flowable<List<Category>> getCategories() {
+        return Flowable.empty();
     }
 
     @Override
     public void cacheCategories(List<Category> categories) {
-        this.categories.setItems(categories);
     }
 }

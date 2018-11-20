@@ -9,10 +9,12 @@ import com.aminocom.sdk.model.client.channel.Channel;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 @Dao
 public interface ChannelDao {
     @Query("SELECT * FROM channels")
-    List<Channel> getAll();
+    Flowable<List<Channel>> getAll();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<Channel> channels);

@@ -9,10 +9,12 @@ import com.aminocom.sdk.model.client.Program;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 @Dao
 public interface ProgramDao {
     @Query("SELECT * FROM programs")
-    List<Program> getAll();
+    Flowable<List<Program>> getAll();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<Program> programs);

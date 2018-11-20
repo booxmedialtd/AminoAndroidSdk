@@ -8,7 +8,7 @@ import com.aminocom.sdk.model.client.channel.Channel;
 
 import java.util.List;
 
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 
 public class CacheRepository implements LocalRepository {
     private ObservableList<Channel> channels = new ObservableList<>();
@@ -18,8 +18,8 @@ public class CacheRepository implements LocalRepository {
     private ObservableList<Category> categories = new ObservableList<>();
 
     @Override
-    public Observable<List<Channel>> getChannels() {
-        return channels.getObservable();
+    public Flowable<List<Channel>> getChannels() {
+        return Flowable.empty();//channels.getObservable();
     }
 
     @Override
@@ -28,8 +28,8 @@ public class CacheRepository implements LocalRepository {
     }
 
     @Override
-    public Observable<List<Program>> getPrograms() {
-        return programs.getObservable();
+    public Flowable<List<Program>> getPrograms() {
+        return Flowable.empty();//programs.getObservable();
     }
 
     @Override
@@ -43,8 +43,8 @@ public class CacheRepository implements LocalRepository {
     }
 
     @Override
-    public Observable<List<Epg>> getEpg() {
-        return epgList.getObservable();
+    public Flowable<List<Epg>> getEpg() {
+        return Flowable.empty();//epgList.getObservable();
     }
 
     @Override
@@ -53,8 +53,8 @@ public class CacheRepository implements LocalRepository {
     }
 
     @Override
-    public Observable<List<Group>> getGroup() {
-        return groups.getObservable();
+    public Flowable<List<Group>> getGroup() {
+        return Flowable.empty();//groups.getObservable();
     }
 
     @Override
@@ -63,8 +63,8 @@ public class CacheRepository implements LocalRepository {
     }
 
     @Override
-    public Observable<List<Category>> getCategories() {
-        return categories.getObservable();
+    public Flowable<List<Category>> getCategories() {
+        return Flowable.empty();//categories.getObservable();
     }
 
     @Override
