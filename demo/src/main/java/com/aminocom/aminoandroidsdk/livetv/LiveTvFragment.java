@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aminocom.aminoandroidsdk.R;
-import com.aminocom.sdk.Sdk;
+import com.aminocom.aminoandroidsdk.App;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -22,15 +22,10 @@ public class LiveTvFragment extends Fragment {
 
     private static final String TAG = LiveTvFragment.class.getSimpleName();
 
-    private Sdk sdk;
-
     private Disposable disposable = null;
 
-    public static Fragment newInstance(Sdk sdk) {
-        LiveTvFragment fragment = new LiveTvFragment();
-        fragment.setSdk(sdk);
-
-        return fragment;
+    public static Fragment newInstance() {
+        return new LiveTvFragment();
     }
 
     @Nullable
@@ -46,7 +41,7 @@ public class LiveTvFragment extends Fragment {
             }
         }
 
-        disposable = sdk.channels().getChannels()
+        disposable = ((App) getActivity().getApplication()).sdk.channels().getChannels()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items -> {
@@ -55,10 +50,6 @@ public class LiveTvFragment extends Fragment {
                 );
 
         return view;
-    }
-
-    public void setSdk(Sdk sdk) {
-        this.sdk = sdk;
     }
 
     @Override

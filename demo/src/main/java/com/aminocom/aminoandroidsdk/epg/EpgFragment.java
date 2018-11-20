@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aminocom.aminoandroidsdk.R;
-import com.aminocom.sdk.Sdk;
+import com.aminocom.aminoandroidsdk.App;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -22,15 +22,10 @@ public class EpgFragment extends Fragment {
 
     private static final String TAG = EpgFragment.class.getSimpleName();
 
-    private Sdk sdk;
-
     private Disposable disposable = null;
 
-    public static Fragment newInstance(Sdk sdk) {
-        EpgFragment fragment = new EpgFragment();
-        fragment.setSdk(sdk);
-
-        return fragment;
+    public static Fragment newInstance() {
+        return new EpgFragment();
     }
 
     @Nullable
@@ -45,7 +40,7 @@ public class EpgFragment extends Fragment {
                 ab.setTitle(R.string.navigation_epg);
             }
 
-            disposable = sdk.epg().getTodayEpg()
+            disposable = ((App) getActivity().getApplication()).sdk.epg().getTodayEpg()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(items -> {
@@ -56,10 +51,6 @@ public class EpgFragment extends Fragment {
         }
 
         return view;
-    }
-
-    public void setSdk(Sdk sdk) {
-        this.sdk = sdk;
     }
 
     @Override

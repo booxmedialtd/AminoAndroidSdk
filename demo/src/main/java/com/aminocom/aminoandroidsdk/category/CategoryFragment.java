@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aminocom.aminoandroidsdk.R;
+import com.aminocom.aminoandroidsdk.App;
 import com.aminocom.sdk.Sdk;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -26,11 +27,8 @@ public class CategoryFragment extends Fragment {
 
     private Disposable disposable = null;
 
-    public static Fragment newInstance(Sdk sdk) {
-        CategoryFragment fragment = new CategoryFragment();
-        fragment.setSdk(sdk);
-
-        return fragment;
+    public static Fragment newInstance() {
+        return new CategoryFragment();
     }
 
     @Nullable
@@ -46,7 +44,7 @@ public class CategoryFragment extends Fragment {
             }
         }
 
-        disposable = sdk.categories().getCategories()
+        disposable = ((App) getActivity().getApplication()).sdk.categories().getCategories()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items -> {
@@ -55,11 +53,6 @@ public class CategoryFragment extends Fragment {
                 );
 
         return view;
-    }
-
-
-    public void setSdk(Sdk sdk) {
-        this.sdk = sdk;
     }
 
     @Override

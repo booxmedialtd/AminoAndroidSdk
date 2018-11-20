@@ -16,10 +16,6 @@ import android.widget.Toast;
 import com.aminocom.aminoandroidsdk.category.CategoryFragment;
 import com.aminocom.aminoandroidsdk.epg.EpgFragment;
 import com.aminocom.aminoandroidsdk.livetv.LiveTvFragment;
-import com.aminocom.sdk.AndroidCookieManager;
-import com.aminocom.sdk.DbRepository;
-import com.aminocom.sdk.Sdk;
-import com.aminocom.sdk.provider.ProviderType;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -30,7 +26,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private CompositeDisposable disposable = new CompositeDisposable();
-    private Sdk sdk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +33,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
-
-        sdk = new Sdk(
-                "https://tv.dna.fi/",
-                "dnaclient",
-                "dn4c1!3nt",
-                ProviderType.AMINO,
-                new AndroidCookieManager(),
-                new DbRepository(getApplicationContext())
-        );
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -76,15 +62,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_live_tv) {
-            fragment = LiveTvFragment.newInstance(sdk);
+            fragment = LiveTvFragment.newInstance();
         } else if (id == R.id.nav_categories) {
-            fragment = CategoryFragment.newInstance(sdk);
+            fragment = CategoryFragment.newInstance();
         } else if (id == R.id.nav_epg) {
-            fragment = EpgFragment.newInstance(sdk);
+            fragment = EpgFragment.newInstance();
         } else if (id == R.id.nav_login) {
             disposable.add(
                     //sdk.user().login("aleksei@test.com", "1234")
-                    sdk.user().login("bt1@dna.fi", "1234")
+                    ((App) getApplication()).sdk.user().login("bt1@dna.fi", "1234")
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(
