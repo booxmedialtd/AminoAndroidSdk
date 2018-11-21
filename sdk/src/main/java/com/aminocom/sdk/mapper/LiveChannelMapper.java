@@ -10,22 +10,11 @@ public class LiveChannelMapper {
     private LiveChannelMapper() {
     }
 
-    static LiveChannel from(Channel channel, List<Program> upcomingPrograms) {
+    public static LiveChannel from(Channel channel, List<Program> pendingPrograms) {
         LiveChannel result = new LiveChannel();
 
         result.setChannel(channel);
-
-        if (upcomingPrograms.size() > 1) {
-            result.setCurrent(upcomingPrograms.get(0));
-
-            if (upcomingPrograms.size() > 2) {
-                result.setNext(upcomingPrograms.get(1));
-
-                if (upcomingPrograms.size() > 3) {
-                    result.setAfterNext(upcomingPrograms.get(2));
-                }
-            }
-        }
+        result.setPendingPrograms(pendingPrograms);
 
         return result;
     }

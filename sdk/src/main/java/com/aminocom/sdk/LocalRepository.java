@@ -17,6 +17,8 @@ public interface LocalRepository {
 
     Flowable<List<Program>> getPrograms();
 
+    Flowable<List<Program>> getPendingPrograms(String channelId, long currentTime, int limit);
+
     void cachePrograms(List<Program> programs);
 
     void clearPrograms();

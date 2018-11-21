@@ -5,6 +5,7 @@ import com.aminocom.sdk.CookieManager;
 import com.aminocom.sdk.LocalRepository;
 import com.aminocom.sdk.ServerApi;
 import com.aminocom.sdk.mapper.ChannelMapper;
+import com.aminocom.sdk.mapper.LiveChannelMapper;
 import com.aminocom.sdk.model.client.channel.Channel;
 import com.aminocom.sdk.model.client.channel.LiveChannel;
 import com.aminocom.sdk.provider.ChannelProvider;
@@ -22,7 +23,7 @@ public class ChannelProviderImpl implements ChannelProvider {
 
     private long channelsCacheTime = 0;
 
-    public static ChannelProvider newInstance(ServerApi api, LocalRepository localRepository, String service, CookieManager cookieManager) {
+    static ChannelProvider newInstance(ServerApi api, LocalRepository localRepository, String service, CookieManager cookieManager) {
         return new ChannelProviderImpl(api, localRepository, service, cookieManager);
     }
 
@@ -56,6 +57,16 @@ public class ChannelProviderImpl implements ChannelProvider {
 
     @Override
     public Flowable<List<LiveChannel>> getLiveChannels() {
-        return Flowable.empty();
+        return localRepository.getChannels()
+                .flatMapSingle(channels -> Flowable.fromIterable(channels)
+                        .map(channel -> LiveChannelMapper.from(channel, null))
+                        //.flatMap(channel -> getLiveChannel(channel))
+                        .toList()
+                );
+    }
+
+    private Flowable<LiveChannel> getLiveChannel(Channel channel) {
+        return localRepository.getPendingPrograms(channel.getId(), System.currentTimeMillis(), 3)
+                .map(programs -> LiveChannelMapper.from(channel, programs));
     }
 }

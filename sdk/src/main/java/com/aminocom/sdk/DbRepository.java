@@ -33,6 +33,11 @@ public class DbRepository implements LocalRepository {
     }
 
     @Override
+    public Flowable<List<Program>> getPendingPrograms(String channelId, long currentTime, int limit) {
+        return db.programDao().getPendingPrograms(channelId, currentTime, limit);
+    }
+
+    @Override
     public Flowable<List<Program>> getPrograms() {
         return db.programDao().getAll();
     }

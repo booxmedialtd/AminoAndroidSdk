@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class EpgProgramMapper {
-    private EpgProgramMapper() {
+public class ProgramMapper {
+    private ProgramMapper() {
     }
 
     public static List<Program> from(String channelId, List<EpgProgramItem> programs) {
@@ -27,6 +27,7 @@ public class EpgProgramMapper {
         result.setTitle(item.title);
         result.setDescription(item.description);
         result.setStartTime(TimeUnit.SECONDS.toMillis(item.startTime));
+        result.setEndTime(result.getStartTime() + TimeUnit.SECONDS.toMillis(item.duration));
         result.setDuration(item.duration);
         result.setShowId(item.showId);
         result.setProgramUId(item.programUId);

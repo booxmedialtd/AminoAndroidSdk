@@ -33,7 +33,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelViewHolder> {
         return items.size();
     }
 
-    public void setItems(List<LiveChannel> items) {
+    void setItems(List<LiveChannel> items) {
         this.items = items;
         notifyDataSetChanged();
     }

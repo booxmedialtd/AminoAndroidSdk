@@ -10,6 +10,6 @@ public class EpgMapper {
     }
 
     public static List<Program> from(EpgChannelItem response) {
-        return EpgProgramMapper.from(response.id, response.programs);
+        return ProgramMapper.from(response.id, response.programs);
     }
 }

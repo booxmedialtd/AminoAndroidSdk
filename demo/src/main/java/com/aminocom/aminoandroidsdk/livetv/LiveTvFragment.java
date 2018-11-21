@@ -55,8 +55,7 @@ public class LiveTvFragment extends Fragment {
                 .subscribe(
                         items -> {
                             System.out.println(items.size());
-                            items.forEach(it -> System.out.println(it.channel.getTitle()));
-                            //adapter.setItems(items),
+                            adapter.setItems(items);
                         },
                         t -> Log.e(TAG, "Failed to get channels", t)
                 );

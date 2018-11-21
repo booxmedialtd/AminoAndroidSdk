@@ -21,4 +21,7 @@ public interface ProgramDao {
 
     @Query("DELETE FROM programs")
     void clear();
+
+    @Query("SELECT * FROM programs WHERE channelId = :channelId AND endTime > :currentTime ORDER BY startTime ASC LIMIT :limit")
+    Flowable<List<Program>> getPendingPrograms(String channelId, long currentTime, int limit);
 }

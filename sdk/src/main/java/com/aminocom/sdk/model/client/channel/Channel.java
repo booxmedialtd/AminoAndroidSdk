@@ -1,5 +1,6 @@
 package com.aminocom.sdk.model.client.channel;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
@@ -21,18 +22,30 @@ public class Channel {
 
     @PrimaryKey
     @NonNull
+    @ColumnInfo(name = "channel_id")
     private String id = "";
+
+    @ColumnInfo(name = "channel_title")
     private String title;
+
+    @ColumnInfo(name = "channel_description")
     private String description;
+
     private boolean adult;
     private String mediaType;
+
+    @ColumnInfo(name = "channel_thumbnails")
     private List<Thumbnail> thumbnails;
     private List<Product> products;
     private Ott ott;
     private List<Dvb> dvbs;
+    @ColumnInfo(name = "channel_live")
     private ServiceState live;
+    @ColumnInfo(name = "channel_recording")
     private ServiceState recording;
+    @ColumnInfo(name = "channel_catchup")
     private ServiceState catchUp;
+    @ColumnInfo(name = "channel_fast_forward")
     private FastForwardState fastForward;
 
     @NonNull

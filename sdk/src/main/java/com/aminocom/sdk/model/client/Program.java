@@ -14,6 +14,7 @@ public class Program {
     private String title;
     private String description;
     private long startTime;
+    private long endTime;
     private int duration;
     private String showId;
     private String dvbInformation;
@@ -46,6 +47,14 @@ public class Program {
 
     public void setStartTime(long startTime) {
         this.startTime = startTime;
+    }
+
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
     }
 
     public int getDuration() {
