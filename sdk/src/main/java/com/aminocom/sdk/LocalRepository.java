@@ -9,6 +9,7 @@ import com.aminocom.sdk.model.client.channel.Channel;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 public interface LocalRepository {
     Flowable<List<Channel>> getChannels();
@@ -17,7 +18,7 @@ public interface LocalRepository {
 
     Flowable<List<Program>> getPrograms();
 
-    Flowable<List<Program>> getPendingPrograms(String channelId, long currentTime, int limit);
+    Single<List<Program>> getPendingPrograms(String channelId, long currentTime, int limit);
 
     void cachePrograms(List<Program> programs);
 

@@ -10,6 +10,7 @@ import com.aminocom.sdk.model.client.Program;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 @Dao
 public interface ProgramDao {
@@ -23,5 +24,5 @@ public interface ProgramDao {
     void clear();
 
     @Query("SELECT * FROM programs WHERE channelId = :channelId AND endTime > :currentTime ORDER BY startTime ASC LIMIT :limit")
-    Flowable<List<Program>> getPendingPrograms(String channelId, long currentTime, int limit);
+    Single<List<Program>> getPendingPrograms(String channelId, long currentTime, int limit);
 }

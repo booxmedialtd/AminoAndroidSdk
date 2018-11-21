@@ -13,6 +13,7 @@ import com.aminocom.sdk.provider.ChannelProvider;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 public class ChannelProviderImpl implements ChannelProvider {
 
@@ -59,14 +60,14 @@ public class ChannelProviderImpl implements ChannelProvider {
     public Flowable<List<LiveChannel>> getLiveChannels() {
         return localRepository.getChannels()
                 .flatMapSingle(channels -> Flowable.fromIterable(channels)
-                        .map(channel -> LiveChannelMapper.from(channel, null))
-                        //.flatMap(channel -> getLiveChannel(channel))
+                        .flatMapSingle(this::getLiveChannel)
                         .toList()
                 );
     }
 
-    private Flowable<LiveChannel> getLiveChannel(Channel channel) {
-        return localRepository.getPendingPrograms(channel.getId(), System.currentTimeMillis(), 3)
+    private Single<LiveChannel> getLiveChannel(Channel channel) {
+        return localRepository
+                .getPendingPrograms(channel.getId(), System.currentTimeMillis(), 3)
                 .map(programs -> LiveChannelMapper.from(channel, programs));
     }
 }

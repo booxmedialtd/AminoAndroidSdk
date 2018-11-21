@@ -13,6 +13,7 @@ import com.aminocom.sdk.model.client.channel.Channel;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 public class DbRepository implements LocalRepository {
 
@@ -33,7 +34,7 @@ public class DbRepository implements LocalRepository {
     }
 
     @Override
-    public Flowable<List<Program>> getPendingPrograms(String channelId, long currentTime, int limit) {
+    public Single<List<Program>> getPendingPrograms(String channelId, long currentTime, int limit) {
         return db.programDao().getPendingPrograms(channelId, currentTime, limit);
     }
 
