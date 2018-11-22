@@ -1,19 +1,22 @@
 package com.aminocom.aminoandroidsdk.livetv;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.aminocom.aminoandroidsdk.R;
 import com.aminocom.aminoandroidsdk.App;
+import com.aminocom.aminoandroidsdk.R;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -46,8 +49,18 @@ public class LiveTvFragment extends Fragment {
 
         adapter = new ChannelAdapter();
 
+
         RecyclerView list = view.findViewById(R.id.live_tv_list);
         list.setAdapter(adapter);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(list.getContext(), DividerItemDecoration.VERTICAL);
+        Drawable divider = ContextCompat.getDrawable(list.getContext(), R.drawable.divider);
+
+        if(divider != null) {
+            dividerItemDecoration.setDrawable(divider);
+        }
+
+        list.addItemDecoration(dividerItemDecoration);
 
         disposable = ((App) getActivity().getApplication()).sdk.channels().getLiveChannels()
                 .subscribeOn(Schedulers.io())
