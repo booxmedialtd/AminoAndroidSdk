@@ -20,17 +20,48 @@
         android:id="@+id/channel_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/channel_thumbnail"
         tools:text="@tools:sample/lorem" />
 
     <TextView
-        android:id="@+id/channel_description"
+        android:id="@+id/channel_current_program"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/channel_thumbnail"
         app:layout_constraintTop_toBottomOf="@id/channel_title"
+        tools:text="@tools:sample/lorem" />
+
+    <TextView
+        android:id="@+id/channel_next_program"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/channel_thumbnail"
+        app:layout_constraintTop_toBottomOf="@id/channel_current_program"
+        tools:text="@tools:sample/lorem" />
+
+    <TextView
+        android:id="@+id/channel_after_next_program"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/channel_thumbnail"
+        app:layout_constraintTop_toBottomOf="@id/channel_next_program"
         tools:text="@tools:sample/lorem" />
 </android.support.constraint.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.aminocom.aminoandroidsdk.livetv;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -8,22 +9,48 @@ import android.widget.TextView;
 
 import com.aminocom.aminoandroidsdk.R;
 import com.aminocom.sdk.model.client.channel.LiveChannel;
+import com.bumptech.glide.Glide;
 
-public class ChannelViewHolder extends RecyclerView.ViewHolder {
-    private ImageView thumbnail;
-    private TextView title;
-    private TextView description;
+class ChannelViewHolder extends RecyclerView.ViewHolder {
+    private final ImageView thumbnail;
+    private final TextView title;
+    private final TextView currentProgram;
+    private final TextView nextProgram;
+    private final TextView afterNextProgram;
 
-    public ChannelViewHolder(@NonNull View view) {
+    ChannelViewHolder(@NonNull View view) {
         super(view);
 
         thumbnail = view.findViewById(R.id.channel_thumbnail);
         title = view.findViewById(R.id.channel_title);
-        description = view.findViewById(R.id.channel_description);
+        currentProgram = view.findViewById(R.id.channel_current_program);
+        nextProgram = view.findViewById(R.id.channel_next_program);
+        afterNextProgram = view.findViewById(R.id.channel_after_next_program);
     }
 
-    public void bind(LiveChannel channel) {
+    void bind(Context context, LiveChannel channel) {
+        Glide.with(context).load(channel.getChannel().getThumbnails().get(0)).into(thumbnail);
+
         title.setText(channel.getChannel().getTitle());
-        description.setText(channel.getChannel().getDescription());
+
+        switch (channel.getPendingPrograms().size()) {
+            case 1:
+                currentProgram.setText(channel.getPendingPrograms().get(0).getTitle());
+                nextProgram.setVisibility(View.GONE);
+                afterNextProgram.setVisibility(View.GONE);
+                break;
+
+            case 2:
+                currentProgram.setText(channel.getPendingPrograms().get(0).getTitle());
+                nextProgram.setText(channel.getPendingPrograms().get(1).getTitle());
+                afterNextProgram.setVisibility(View.GONE);
+                break;
+
+            case 3:
+                currentProgram.setText(channel.getPendingPrograms().get(0).getTitle());
+                nextProgram.setText(channel.getPendingPrograms().get(1).getTitle());
+                afterNextProgram.setText(channel.getPendingPrograms().get(2).getTitle());
+                break;
+        }
     }
 }
