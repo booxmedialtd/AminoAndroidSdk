@@ -53,10 +53,7 @@ public class LiveTvFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        items -> {
-                            System.out.println(items.size());
-                            adapter.setItems(items);
-                        },
+                        items -> adapter.setItems(items),
                         t -> Log.e(TAG, "Failed to get channels", t)
                 );
 

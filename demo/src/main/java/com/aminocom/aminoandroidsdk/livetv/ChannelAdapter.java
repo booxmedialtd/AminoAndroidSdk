@@ -1,5 +1,6 @@
 package com.aminocom.aminoandroidsdk.livetv;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,18 +15,21 @@ import java.util.List;
 
 public class ChannelAdapter extends RecyclerView.Adapter<ChannelViewHolder> {
     private List<LiveChannel> items = new ArrayList<>();
+    private Context context;
 
     @NonNull
     @Override
     public ChannelViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_channel, parent, false);
+        context = parent.getContext();
+
+        View view = LayoutInflater.from(context).inflate(R.layout.item_channel, parent, false);
 
         return new ChannelViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ChannelViewHolder viewHolder, int position) {
-        viewHolder.bind(items.get(position));
+        viewHolder.bind(context, items.get(position));
     }
 
     @Override

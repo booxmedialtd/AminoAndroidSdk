@@ -58,7 +58,7 @@ public class ChannelProviderImpl implements ChannelProvider {
 
     @Override
     public Flowable<List<LiveChannel>> getLiveChannels() {
-        return localRepository.getChannels()
+        return getChannels()
                 .flatMapSingle(channels -> Flowable.fromIterable(channels)
                         .flatMapSingle(this::getLiveChannel)
                         .toList()

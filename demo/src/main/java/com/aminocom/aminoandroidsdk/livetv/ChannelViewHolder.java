@@ -29,7 +29,9 @@ class ChannelViewHolder extends RecyclerView.ViewHolder {
     }
 
     void bind(Context context, LiveChannel channel) {
-        Glide.with(context).load(channel.getChannel().getThumbnails().get(0)).into(thumbnail);
+        if(channel.getChannel().getThumbnails().size() > 0) {
+            Glide.with(context).load(channel.getChannel().getThumbnails().get(0).getUrl()).into(thumbnail);
+        }
 
         title.setText(channel.getChannel().getTitle());
 
