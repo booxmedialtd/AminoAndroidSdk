@@ -43,4 +43,10 @@ public interface ServerApi {
                                @Query("st") String startTime,
                                @Query("et") String endTime,
                                @Query("pg") int page);
+
+    @GET("api/v3/epg")
+    Single<EpgResponse> getRecording(@Query("service") String service,
+                               @Query("st") String startTime,
+                               @Query("et") String endTime,
+                               @Query("pg") int page);
 }
