@@ -8,6 +8,7 @@ import com.aminocom.sdk.provider.CategoryProvider;
 import com.aminocom.sdk.provider.ChannelProvider;
 import com.aminocom.sdk.provider.EpgProvider;
 import com.aminocom.sdk.provider.Providers;
+import com.aminocom.sdk.provider.RecordingProvider;
 import com.aminocom.sdk.provider.UserProvider;
 
 public class AminoProviders implements Providers {
@@ -16,12 +17,14 @@ public class AminoProviders implements Providers {
     private ChannelProvider channelProvider;
     private CategoryProvider categoryProvider;
     private EpgProvider epgProvider;
+    private RecordingProvider recordingProvider;
 
     public AminoProviders(ServerApi api, CustomDigestAuthenticator authenticator, String service, CookieManager cookieManager, LocalRepository dbRepository) {
         userProvider = UserProviderImpl.newInstance(api, authenticator, service);
         channelProvider = ChannelProviderImpl.newInstance(api, dbRepository, service, cookieManager);
         categoryProvider = CategoryProviderImpl.newInstance(api, dbRepository, service);
         epgProvider = EpgProviderImpl.newInstance(api, dbRepository, service);
+        recordingProvider = RecordingProviderImpl.newInstance(api, dbRepository, service);
     }
 
     @Override
@@ -42,5 +45,10 @@ public class AminoProviders implements Providers {
     @Override
     public EpgProvider epg() {
         return epgProvider;
+    }
+
+    @Override
+    public RecordingProvider recording() {
+        return recordingProvider;
     }
 }

@@ -5,4 +5,5 @@ public interface Providers {
     ChannelProvider channels();
     CategoryProvider categories();
     EpgProvider epg();
+    RecordingProvider recording();
 }
