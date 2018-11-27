@@ -1,5 +1,6 @@
 package com.aminocom.sdk.model.network.recording;
 
+import java.util.Date;
 import java.util.List;
 
 public class ProgramItem {
@@ -18,17 +19,19 @@ public class ProgramItem {
 
     public boolean autoDelete;
 
-    public String startTime;
+    public Date startTime;
 
     public List<String> categories;
 
     public String category;
 
+    public String showId;
+
     public String programUid;
 
     public boolean favorite;
 
-    public int channelId;
+    public String channelId;
 
     public String thumbnailUrl;
 }

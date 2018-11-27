@@ -5,6 +5,15 @@ public class Thumbnail {
     private int width;
     private int height;
 
+    public Thumbnail() {
+    }
+
+    public Thumbnail(String url) {
+        this.width = 0;
+        this.height = 0;
+        this.url = url;
+    }
+
     public String getUrl() {
         return url;
     }

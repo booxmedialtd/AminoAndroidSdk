@@ -6,7 +6,9 @@ import com.aminocom.sdk.CacheTTLConfig;
 import com.aminocom.sdk.LocalRepository;
 import com.aminocom.sdk.ServerApi;
 import com.aminocom.sdk.mapper.EpgMapper;
+import com.aminocom.sdk.mapper.ProgramMapper;
 import com.aminocom.sdk.model.client.Epg;
+import com.aminocom.sdk.model.client.Program;
 import com.aminocom.sdk.provider.EpgProvider;
 import com.aminocom.sdk.util.DateUtil;
 
@@ -49,19 +51,31 @@ public class EpgProviderImpl implements EpgProvider {
         final long endDate = DateUtil.getTvDayEndTime(dateInMillis);
 
         if (System.currentTimeMillis() - epgCacheTime > CacheTTLConfig.CHANNEL_TTL) {
-            return Flowable.range(INITIAL_EPG_PAGE, MAX_EPG_PAGE)
-                    .flatMapSingle(page -> api.getEpg(service, String.valueOf(DateUtil.getTimeInSeconds(startDate)), String.valueOf(DateUtil.getTimeInSeconds(endDate)), page))
-                    .takeUntil(response -> response.resultSet.currentPage == response.resultSet.totalPages - 1)
-                    .flatMapIterable(response -> response.channels)
-                    .map(EpgMapper::from)
-                    .doOnNext(epgList -> {
-                        Log.e("LOG_TAG", "===================== getEpg: epg size: " + epgList.size());
-                        localRepository.cachePrograms(epgList);
-                        epgCacheTime = System.currentTimeMillis();
-                    })
+            return loadEpg(startDate, endDate)
                     .flatMap(list -> localRepository.getEpg());
         } else {
             return localRepository.getEpg();
         }
+    }
+
+    private Flowable<List<Program>> loadEpg(long startDate, long endDate) {
+        return Flowable.range(INITIAL_EPG_PAGE, MAX_EPG_PAGE)
+                .flatMapSingle(page -> api.getEpg(service, DateUtil.getTimeInSeconds(startDate), DateUtil.getTimeInSeconds(endDate), page))
+                .takeUntil(response -> response.resultSet.currentPage == response.resultSet.totalPages - 1)
+                .flatMapIterable(response -> response.channels)
+                .map(EpgMapper::from)
+                .doOnNext(epgList -> {
+                    Log.e("LOG_TAG", "===================== getEpg: epg size: " + epgList.size());
+                    localRepository.cachePrograms(epgList);
+                    epgCacheTime = System.currentTimeMillis();
+                })
+                .flatMapSingle(response -> api.getRecording(service, DateUtil.getTimeInSeconds(startDate), DateUtil.getTimeInSeconds(endDate)))
+                .flatMap(response -> Flowable.fromIterable(response.recordedContent.programList.programs))
+                .map(ProgramMapper::from)
+                .toList()
+                .doOnSuccess(programs ->
+                        localRepository.cachePrograms(programs)
+                )
+                .toFlowable();
     }
 }

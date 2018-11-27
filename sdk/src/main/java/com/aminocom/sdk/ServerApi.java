@@ -5,6 +5,7 @@ import com.aminocom.sdk.model.network.category.CategoryListResponse;
 import com.aminocom.sdk.model.network.category.CategoryResponse;
 import com.aminocom.sdk.model.network.channel.ChannelResponse;
 import com.aminocom.sdk.model.network.epg.EpgResponse;
+import com.aminocom.sdk.model.network.recording.RecordingResponse;
 
 import io.reactivex.Single;
 import retrofit2.http.Field;
@@ -40,13 +41,12 @@ public interface ServerApi {
 
     @GET("api/v3/epg")
     Single<EpgResponse> getEpg(@Query("service") String service,
-                               @Query("st") String startTime,
-                               @Query("et") String endTime,
+                               @Query("st") long startTime,
+                               @Query("et") long endTime,
                                @Query("pg") int page);
 
-    @GET("api/v3/epg")
-    Single<EpgResponse> getRecording(@Query("service") String service,
-                               @Query("st") String startTime,
-                               @Query("et") String endTime,
-                               @Query("pg") int page);
+    @GET("api/user/{user}/recording/search?sort=start_date__desc")
+    Single<RecordingResponse> getRecording(@Query("service") String service,
+                                           @Query("st") long startTime,
+                                           @Query("et") long endTime);
 }

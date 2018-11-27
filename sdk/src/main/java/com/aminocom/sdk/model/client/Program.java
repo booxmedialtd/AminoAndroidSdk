@@ -4,6 +4,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import com.aminocom.sdk.model.network.ProgramStatus;
+
 import java.util.List;
 
 @Entity(tableName = "programs")
@@ -11,6 +13,7 @@ public class Program {
     @PrimaryKey
     @NonNull
     private String programUId = "";
+    private String id;
     private String title;
     private String description;
     private long startTime;
@@ -24,6 +27,30 @@ public class Program {
     private ServiceState recording;
     private ServiceState catchUp;
     private List<ExternalInformation> externalInformation;
+    private boolean continuous;
+    private boolean autoDelete;
+    private boolean favorite;
+    private ProgramStatus status;
+    private Thumbnail thumbnail;
+    private long playbackDuration;
+
+
+    @NonNull
+    public String getProgramUId() {
+        return programUId;
+    }
+
+    public void setProgramUId(@NonNull String programUId) {
+        this.programUId = programUId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -71,15 +98,6 @@ public class Program {
 
     public void setShowId(String showId) {
         this.showId = showId;
-    }
-
-    @NonNull
-    public String getProgramUId() {
-        return programUId;
-    }
-
-    public void setProgramUId(@NonNull String programUId) {
-        this.programUId = programUId;
     }
 
     public String getDvbInformation() {
@@ -136,5 +154,53 @@ public class Program {
 
     public void setExternalInformation(List<ExternalInformation> externalInformation) {
         this.externalInformation = externalInformation;
+    }
+
+    public boolean isContinuous() {
+        return continuous;
+    }
+
+    public void setContinuous(boolean continuous) {
+        this.continuous = continuous;
+    }
+
+    public boolean isAutoDelete() {
+        return autoDelete;
+    }
+
+    public void setAutoDelete(boolean autoDelete) {
+        this.autoDelete = autoDelete;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
+    public ProgramStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ProgramStatus status) {
+        this.status = status;
+    }
+
+    public Thumbnail getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(Thumbnail thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public long getPlaybackDuration() {
+        return playbackDuration;
+    }
+
+    public void setPlaybackDuration(long playbackDuration) {
+        this.playbackDuration = playbackDuration;
     }
 }
