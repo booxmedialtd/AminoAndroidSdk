@@ -9,6 +9,7 @@ import com.aminocom.sdk.model.client.Thumbnail;
 import com.aminocom.sdk.model.client.channel.Dvb;
 import com.aminocom.sdk.model.client.channel.FastForwardState;
 import com.aminocom.sdk.model.client.channel.Ott;
+import com.aminocom.sdk.model.network.ProgramStatus;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -30,16 +31,26 @@ public class Converters {
     }
 
     @TypeConverter
-    public static String fromThumbnail(List<Thumbnail> value) {
+    public static String fromThumbnailList(List<Thumbnail> value) {
         return new Gson().toJson(value);
     }
 
     @TypeConverter
-    public static List<Thumbnail> toThumbnail(String value) {
+    public static List<Thumbnail> toThumbnailList(String value) {
         Type type = new TypeToken<List<Thumbnail>>() {
         }.getType();
 
         return new Gson().fromJson(value, type);
+    }
+
+    @TypeConverter
+    public static String fromThumbnail(Thumbnail value) {
+        return new Gson().toJson(value);
+    }
+
+    @TypeConverter
+    public static Thumbnail toThumbnail(String value) {
+        return new Gson().fromJson(value, Thumbnail.class);
     }
 
     @TypeConverter
@@ -109,5 +120,15 @@ public class Converters {
         }.getType();
 
         return new Gson().fromJson(value, type);
+    }
+
+    @TypeConverter
+    public static String fromProgramStatus(ProgramStatus value) {
+        return new Gson().toJson(value);
+    }
+
+    @TypeConverter
+    public static ProgramStatus toProgramStatus(String value) {
+        return new Gson().fromJson(value, ProgramStatus.class);
     }
 }
