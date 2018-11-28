@@ -46,7 +46,8 @@ public interface ServerApi {
                                @Query("pg") int page);
 
     @GET("api/user/{user}/recording/search?sort=start_date__desc")
-    Single<RecordingResponse> getRecording(@Query("service") String service,
+    Single<RecordingResponse> getRecording(@Path("user") String user,
+                                           @Query("service") String service,
                                            @Query("st") long startTime,
                                            @Query("et") long endTime);
 }

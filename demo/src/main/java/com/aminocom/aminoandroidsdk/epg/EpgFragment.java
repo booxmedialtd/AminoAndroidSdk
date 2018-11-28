@@ -46,7 +46,7 @@ public class EpgFragment extends Fragment {
                     .subscribe(items -> {
 
                             },
-                            t -> Log.e(TAG, "Failed to get channels", t)
+                            t -> Log.e(TAG, "Failed to get EPG", t)
                     );
         }
 

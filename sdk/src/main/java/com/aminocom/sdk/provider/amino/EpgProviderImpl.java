@@ -70,7 +70,8 @@ public class EpgProviderImpl implements EpgProvider {
                     localRepository.cachePrograms(epgList);
                     epgCacheTime = System.currentTimeMillis();
                 })
-                .flatMapSingle(response -> api.getRecording(service, DateUtil.getTimeInSeconds(startDate), DateUtil.getTimeInSeconds(endDate)))
+                .buffer(1000)
+                .flatMapSingle(response -> api.getRecording("bt1@dna.fi", service, DateUtil.getTimeInSeconds(startDate), DateUtil.getTimeInSeconds(endDate)))
                 .flatMap(response -> Flowable.fromIterable(response.recordedContent.programList.programs))
                 .map(ProgramMapper::from)
                 .toList()
