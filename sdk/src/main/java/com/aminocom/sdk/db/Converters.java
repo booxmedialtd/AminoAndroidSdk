@@ -16,14 +16,14 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
 
-public class Converters {
+class Converters {
     @TypeConverter
-    public static String fromStringList(List<String> value) {
+    static String fromStringList(List<String> value) {
         return new Gson().toJson(value);
     }
 
     @TypeConverter
-    public static List<String> toStringList(String value) {
+    static List<String> toStringList(String value) {
         Type type = new TypeToken<List<String>>() {
         }.getType();
 
@@ -31,12 +31,12 @@ public class Converters {
     }
 
     @TypeConverter
-    public static String fromThumbnailList(List<Thumbnail> value) {
+    static String fromThumbnailList(List<Thumbnail> value) {
         return new Gson().toJson(value);
     }
 
     @TypeConverter
-    public static List<Thumbnail> toThumbnailList(String value) {
+    static List<Thumbnail> toThumbnailList(String value) {
         Type type = new TypeToken<List<Thumbnail>>() {
         }.getType();
 
@@ -44,32 +44,32 @@ public class Converters {
     }
 
     @TypeConverter
-    public static String fromThumbnail(Thumbnail value) {
+    static String fromThumbnail(Thumbnail value) {
         return new Gson().toJson(value);
     }
 
     @TypeConverter
-    public static Thumbnail toThumbnail(String value) {
+    static Thumbnail toThumbnail(String value) {
         return new Gson().fromJson(value, Thumbnail.class);
     }
 
     @TypeConverter
-    public static String fromServiceState(ServiceState value) {
+    static String fromServiceState(ServiceState value) {
         return new Gson().toJson(value);
     }
 
     @TypeConverter
-    public static ServiceState toServiceState(String value) {
+    static ServiceState toServiceState(String value) {
         return new Gson().fromJson(value, ServiceState.class);
     }
 
     @TypeConverter
-    public static String fromExternalInformation(List<ExternalInformation> value) {
+    static String fromExternalInformation(List<ExternalInformation> value) {
         return new Gson().toJson(value);
     }
 
     @TypeConverter
-    public static List<ExternalInformation> toExternalInformation(String value) {
+    static List<ExternalInformation> toExternalInformation(String value) {
         Type type = new TypeToken<List<ExternalInformation>>() {
         }.getType();
 
@@ -77,22 +77,22 @@ public class Converters {
     }
 
     @TypeConverter
-    public static String fromFastForwardState(FastForwardState value) {
+    static String fromFastForwardState(FastForwardState value) {
         return new Gson().toJson(value);
     }
 
     @TypeConverter
-    public static FastForwardState toFastForwardState(String value) {
+    static FastForwardState toFastForwardState(String value) {
         return new Gson().fromJson(value, FastForwardState.class);
     }
 
     @TypeConverter
-    public static String fromDvb(List<Dvb> value) {
+    static String fromDvb(List<Dvb> value) {
         return new Gson().toJson(value);
     }
 
     @TypeConverter
-    public static List<Dvb> toDvb(String value) {
+    static List<Dvb> toDvb(String value) {
         Type type = new TypeToken<List<Dvb>>() {
         }.getType();
 
@@ -100,22 +100,22 @@ public class Converters {
     }
 
     @TypeConverter
-    public static String fromOtt(Ott value) {
+    static String fromOtt(Ott value) {
         return new Gson().toJson(value);
     }
 
     @TypeConverter
-    public static Ott toOtt(String value) {
+    static Ott toOtt(String value) {
         return new Gson().fromJson(value, Ott.class);
     }
 
     @TypeConverter
-    public static String fromProduct(List<Product> value) {
+    static String fromProduct(List<Product> value) {
         return new Gson().toJson(value);
     }
 
     @TypeConverter
-    public static List<Product> toProduct(String value) {
+    static List<Product> toProduct(String value) {
         Type type = new TypeToken<List<Product>>() {
         }.getType();
 
@@ -123,12 +123,12 @@ public class Converters {
     }
 
     @TypeConverter
-    public static String fromProgramStatus(ProgramStatus value) {
+    static String fromProgramStatus(ProgramStatus value) {
         return new Gson().toJson(value);
     }
 
     @TypeConverter
-    public static ProgramStatus toProgramStatus(String value) {
+    static ProgramStatus toProgramStatus(String value) {
         return new Gson().fromJson(value, ProgramStatus.class);
     }
 }
