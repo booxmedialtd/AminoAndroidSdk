@@ -47,18 +47,19 @@ public class EpgProviderImpl implements EpgProvider {
     // TODO: decrease number of connections to the DB
     @Override
     public Flowable<List<Epg>> getEpg(long dateInMillis) {
-        final long startDate = DateUtil.getTvDayStartTime(dateInMillis);
-        final long endDate = DateUtil.getTvDayEndTime(dateInMillis);
-
-        if (System.currentTimeMillis() - epgCacheTime > CacheTTLConfig.CHANNEL_TTL) {
-            return loadEpg(startDate, endDate)
+                if (System.currentTimeMillis() - epgCacheTime > CacheTTLConfig.CHANNEL_TTL) {
+            return loadEpg(dateInMillis)
                     .flatMap(list -> localRepository.getEpg());
         } else {
             return localRepository.getEpg();
         }
     }
 
-    private Flowable<List<Program>> loadEpg(long startDate, long endDate) {
+    @Override
+    public Flowable<List<Program>> loadEpg(long dateInMillis) {
+        final long startDate = DateUtil.getTvDayStartTime(dateInMillis);
+        final long endDate = DateUtil.getTvDayEndTime(dateInMillis);
+
         return Flowable.range(INITIAL_EPG_PAGE, MAX_EPG_PAGE)
                 .flatMapSingle(page -> api.getEpg(service, DateUtil.getTimeInSeconds(startDate), DateUtil.getTimeInSeconds(endDate), page))
                 .takeUntil(response -> response.resultSet.currentPage == response.resultSet.totalPages - 1)
