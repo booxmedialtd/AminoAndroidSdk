@@ -79,6 +79,8 @@ public class ProgramMapper {
                 if (firstRecording.recordingId != null) {
                     result.setId(firstRecording.recordingId);
                 }
+
+                result.setStatus(ProgramStatus.fromString(firstRecording.status));
             }
         } else {
             result.setStatus(ProgramStatus.SCHEDULED);

@@ -76,7 +76,7 @@ public class EpgProviderImpl implements EpgProvider {
                 .map(ProgramMapper::from)
                 .toList()
                 .doOnSuccess(programs ->
-                        localRepository.cachePrograms(programs)
+                        localRepository.updateOrInsertPrograms(programs)
                 )
                 .toFlowable();
     }

@@ -22,6 +22,8 @@ public interface LocalRepository {
 
     void cachePrograms(List<Program> programs);
 
+    void updateOrInsertPrograms(List<Program> programs);
+
     void clearPrograms();
 
     Flowable<List<Epg>> getEpg();

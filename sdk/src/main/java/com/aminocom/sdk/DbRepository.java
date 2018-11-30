@@ -49,6 +49,23 @@ public class DbRepository implements LocalRepository {
     }
 
     @Override
+    public void updateOrInsertPrograms(List<Program> programs) {
+        for (Program program : programs) {
+            Program dbProgram = db.programDao().get(program.getProgramUId());
+
+            if (dbProgram != null) {
+                dbProgram.setFavorite(program.isFavorite());
+                dbProgram.setContinuous(program.isContinuous());
+                dbProgram.setAutoDelete(program.isAutoDelete());
+                dbProgram.setStatus(program.getStatus());
+                dbProgram.setPlaybackDuration(program.getPlaybackDuration());
+
+                db.programDao().update(dbProgram);
+            }
+        }
+    }
+
+    @Override
     public void clearPrograms() {
         db.programDao().clear();
     }
