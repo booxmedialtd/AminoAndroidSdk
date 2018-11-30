@@ -12,5 +12,5 @@ public interface EpgProvider {
 
     Flowable<List<Epg>> getEpg(long dateInMillis);
 
-    Flowable<List<Program>> loadEpg(long dateInMillis);
+    Flowable<List<Program>> loadEpg(long startDateInMillis, long endDateInMillis);
 }
