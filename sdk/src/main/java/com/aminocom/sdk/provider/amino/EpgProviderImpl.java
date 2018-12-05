@@ -2,13 +2,11 @@ package com.aminocom.sdk.provider.amino;
 
 import android.util.Log;
 
-import com.aminocom.sdk.CacheTTLConfig;
 import com.aminocom.sdk.LocalRepository;
 import com.aminocom.sdk.ServerApi;
 import com.aminocom.sdk.mapper.EpgMapper;
 import com.aminocom.sdk.mapper.ProgramMapper;
 import com.aminocom.sdk.model.client.Epg;
-import com.aminocom.sdk.model.client.Program;
 import com.aminocom.sdk.provider.EpgProvider;
 import com.aminocom.sdk.util.DateUtil;
 
@@ -16,6 +14,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 public class EpgProviderImpl implements EpgProvider {
 
@@ -43,20 +42,15 @@ public class EpgProviderImpl implements EpgProvider {
         return getEpg(Calendar.getInstance().getTimeInMillis());
     }
 
+    @Override
+    public Flowable<List<Epg>> getEpg(long dateInMillis) {
+        return localRepository.getEpg();
+    }
+
     // TODO: Add saving of a loaded date and checking of current loaded date to decrease server load
     // TODO: decrease number of connections to the DB
     @Override
-    public Flowable<List<Epg>> getEpg(long dateInMillis) {
-        if (System.currentTimeMillis() - epgCacheTime > CacheTTLConfig.CHANNEL_TTL) {
-            return loadEpg(dateInMillis, dateInMillis)
-                    .flatMap(list -> localRepository.getEpg());
-        } else {
-            return localRepository.getEpg();
-        }
-    }
-
-    @Override
-    public Flowable<List<Program>> loadEpg(long startDateInMillis, long endDateInMillis) {
+    public Single<Boolean> loadEpg(long startDateInMillis, long endDateInMillis) {
         final long startDate = DateUtil.getTvDayStartTime(startDateInMillis);
         final long endDate = DateUtil.getTvDayEndTime(endDateInMillis);
 
@@ -78,6 +72,6 @@ public class EpgProviderImpl implements EpgProvider {
                 .doOnSuccess(programs ->
                         localRepository.updateOrInsertPrograms(programs)
                 )
-                .toFlowable();
+                .map(programs -> true);
     }
 }
