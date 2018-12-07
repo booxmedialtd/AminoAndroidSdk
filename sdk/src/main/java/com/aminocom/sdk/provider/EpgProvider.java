@@ -10,7 +10,7 @@ import io.reactivex.Single;
 public interface EpgProvider {
     Flowable<List<Epg>> getTodayEpg();
 
-    Flowable<List<Epg>> getEpg(long dateInMillis);
+    Flowable<List<Epg>> getEpg(long startDate, long endDate);
 
-    Single<Boolean> loadEpg(long startDateInMillis, long endDateInMillis);
+    Single<Boolean> loadEpg(long startDate, long endDate);
 }

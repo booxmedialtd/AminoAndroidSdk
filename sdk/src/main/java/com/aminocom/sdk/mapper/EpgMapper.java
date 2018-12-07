@@ -1,7 +1,8 @@
 package com.aminocom.sdk.mapper;
 
+import com.aminocom.sdk.model.client.Epg;
 import com.aminocom.sdk.model.client.Program;
-import com.aminocom.sdk.model.network.epg.EpgChannelItem;
+import com.aminocom.sdk.model.client.channel.Channel;
 
 import java.util.List;
 
@@ -9,7 +10,11 @@ public class EpgMapper {
     private EpgMapper() {
     }
 
-    public static List<Program> from(EpgChannelItem response) {
-        return ProgramMapper.from(response.id, response.programs);
+    public static Epg from(Channel channel, List<Program> programs) {
+        Epg result = new Epg();
+        result.setChannel(channel);
+        result.setPrograms(programs);
+
+        return result;
     }
 }

@@ -71,7 +71,7 @@ public class DbRepository implements LocalRepository {
     }
 
     @Override
-    public Flowable<List<Epg>> getEpg() {
+    public Flowable<List<Program>> getEpgPrograms(String channelId, long startDate, long endDate) {
         return Flowable.empty();
     }
 

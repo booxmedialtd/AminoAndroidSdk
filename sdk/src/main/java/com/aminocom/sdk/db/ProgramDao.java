@@ -21,6 +21,9 @@ public interface ProgramDao {
     @Query("SELECT * FROM programs")
     Flowable<List<Program>> getAll();
 
+    @Query("SELECT * FROM programs WHERE channelId = :channelId AND startTime >= :startDate AND endTime < :endDate ORDER BY startTime")
+    Flowable<List<Program>> getProgramsForChannel(String channelId, long startDate, long endDate);
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAll(List<Program> programs);
 

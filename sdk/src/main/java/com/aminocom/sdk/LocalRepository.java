@@ -26,7 +26,7 @@ public interface LocalRepository {
 
     void clearPrograms();
 
-    Flowable<List<Epg>> getEpg();
+    Flowable<List<Program>> getEpgPrograms(String channelId, long startDate, long endDate);
 
     void cacheEpg(List<Epg> epgList);
 
