@@ -36,10 +36,11 @@ public class EpgProviderImpl implements EpgProvider {
         this.service = service;
     }
 
-    // TODO: To be implemented
     @Override
     public Flowable<List<Epg>> getTodayEpg() {
-        return Flowable.empty();
+        long todayDate = System.currentTimeMillis();
+
+        return getEpg(todayDate, todayDate);
     }
 
     @Override
@@ -56,12 +57,12 @@ public class EpgProviderImpl implements EpgProvider {
     // TODO: Add saving of a loaded date and checking of current loaded date to decrease server load
     // TODO: decrease number of connections to the DB
     @Override
-    public Single<Boolean> loadEpg(long startDateInMillis, long endDateInMillis) {
-        final long startDate = DateUtil.getTvDayStartTime(startDateInMillis);
-        final long endDate = DateUtil.getTvDayEndTime(endDateInMillis);
+    public Single<Boolean> loadEpg(long startDate, long endDate) {
+        final long start = DateUtil.getTvDayStartTime(startDate);
+        final long end = DateUtil.getTvDayEndTime(endDate);
 
         return Flowable.range(INITIAL_EPG_PAGE, MAX_EPG_PAGE)
-                .flatMapSingle(page -> api.getEpg(service, DateUtil.getTimeInSeconds(startDate), DateUtil.getTimeInSeconds(endDate), page))
+                .flatMapSingle(page -> api.getEpg(service, DateUtil.getTimeInSeconds(start), DateUtil.getTimeInSeconds(end), page))
                 .takeUntil(response -> response.resultSet.currentPage == response.resultSet.totalPages - 1)
                 .flatMapIterable(response -> response.channels)
                 .map(response -> ProgramMapper.from(response.id, response.programs))
@@ -71,7 +72,7 @@ public class EpgProviderImpl implements EpgProvider {
                     epgCacheTime = System.currentTimeMillis();
                 })
                 .buffer(1000)
-                .flatMapSingle(response -> api.getRecording("bt1@dna.fi", service, DateUtil.getTimeInSeconds(startDate), DateUtil.getTimeInSeconds(endDate)))
+                .flatMapSingle(response -> api.getRecording("bt1@dna.fi", service, DateUtil.getTimeInSeconds(start), DateUtil.getTimeInSeconds(end)))
                 .flatMap(response -> Flowable.fromIterable(response.recordedContent.programList.programs))
                 .map(ProgramMapper::from)
                 .toList()
