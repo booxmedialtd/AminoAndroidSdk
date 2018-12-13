@@ -1,6 +1,6 @@
 {
   "resultSet": {
-    "totalItems": 4,
+    "totalItems": 3,
     "totalPages": 1,
     "itemsPerPage": 1000,
     "currentPage": 0,
@@ -230,73 +230,6 @@
               "none"
             ],
             "sources": {}
-          },
-          "catchup": {
-            "enabled": false,
-            "blacklisted": false,
-            "commercial": true
-          },
-          "recording": {
-            "enabled": false,
-            "commercial": true,
-            "blacklisted": false
-          },
-          "fastForward": {
-            "fastForwardPvr": false,
-            "fastForwardCatchUp": false,
-            "fastForwardStartOver": false
-          }
-        },
-        "user": {},
-        "customProperties": []
-      },
-      {
-        "id": "17592",
-        "title": "UpdateTestChannelName3",
-        "description": "",
-        "adult": false,
-        "mediaType": "VIDEO",
-        "thumbnails": [],
-        "products": [],
-        "extra": {
-          "ext_source_id": "34"
-        },
-        "services": {
-          "live": {
-            "enabled": false,
-            "commercial": true,
-            "protection": [
-              "none"
-            ],
-            "sources": {
-              "ott": {
-                "lcn": 77,
-                "mobile_lcn": 77,
-                "streams": [
-                  {
-                    "id": 39,
-                    "codec_info": "video/mp4",
-                    "protection": "none",
-                    "streaming_protocol": "hls",
-                    "transport_protocol": "http",
-                    "url": "https://nebtest1.auto.neb.amo.booxmedia.xyz/api/channel/17592/stream/39/play?service\u003dmobileclient"
-                  }
-                ]
-              },
-              "dvb": {
-                "triplets": [
-                  {
-                    "operator_name": "",
-                    "type": "T",
-                    "onid": "223",
-                    "tsid": "223",
-                    "sid": "662",
-                    "quality": "HD",
-                    "lcn": 0
-                  }
-                ]
-              }
-            }
           },
           "catchup": {
             "enabled": false,

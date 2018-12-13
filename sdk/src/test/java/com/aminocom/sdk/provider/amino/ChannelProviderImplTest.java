@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.subscribers.TestSubscriber;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -33,7 +34,7 @@ public class ChannelProviderImplTest {
         mockServer.start();
 
         sdk = new Sdk(
-                "https://nebtest1.auto.neb.amo.booxmedia.xyz/",
+                mockServer.url("/").toString(),
                 "mobileclient",
                 "qn05BON1hXGCUsw",
                 ProviderType.AMINO,
@@ -41,18 +42,16 @@ public class ChannelProviderImplTest {
                 new TestLocalRepository());
     }
 
-    // FIXME: Fix mocking of the server
     @Test
-    public void getChannels() {
+    public void getChannels_GuestUser() throws Exception {
         TestSubscriber<List<Channel>> testObserver = new TestSubscriber<>();
 
-        //String path = "json";
+        String path = "/api/v3/user/guest/channel?service=mobileclient";
 
         MockResponse mockResponse = new MockResponse()
-                .setResponseCode(400)
+                .setResponseCode(200)
                 .setBody(jsonReader.getJson("json/channel_response_4_items.json"));
 
-        //mockServer.enqueue(new MockResponse().setBody("Digest request").setResponseCode(200));
         mockServer.enqueue(mockResponse);
 
         sdk.channels().getChannels().subscribe(testObserver);
@@ -60,11 +59,10 @@ public class ChannelProviderImplTest {
 
         testObserver.assertNoErrors();
         testObserver.assertValueCount(1);
-        assertEquals(4, testObserver.values().get(0).size());
+        assertEquals(3, testObserver.values().get(0).size());
 
-        //RecordedRequest request = mockServer.takeRequest();
-
-        //assertEquals(path, request.getPath());
+        RecordedRequest request = mockServer.takeRequest();
+        assertEquals(path, request.getPath());
     }
 
     @After
