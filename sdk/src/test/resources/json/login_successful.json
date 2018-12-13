@@ -1,0 +1,13 @@
+{
+  "userStat": {
+    "maxAllowedSession": 1000,
+    "currentSession": 1,
+    "migrated": false,
+    "configuration": 1,
+    "emailSubscription": {
+      "all": ""
+    },
+    "premiumUser": false,
+    "streamingOver3G": true
+  }
+}

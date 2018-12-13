@@ -5,6 +5,7 @@ import com.aminocom.sdk.Sdk;
 import com.aminocom.sdk.TestCookieManager;
 import com.aminocom.sdk.TestLocalRepository;
 import com.aminocom.sdk.model.client.channel.Channel;
+import com.aminocom.sdk.model.network.UserResponse;
 import com.aminocom.sdk.provider.ProviderType;
 
 import org.junit.After;
@@ -14,6 +15,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.observers.TestObserver;
 import io.reactivex.subscribers.TestSubscriber;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -63,6 +65,48 @@ public class ChannelProviderImplTest {
 
         RecordedRequest request = mockServer.takeRequest();
         assertEquals(path, request.getPath());
+    }
+
+    // TODO: Fix after implementation of settings interface
+    @Test
+    public void getChannels_AuthorizedUser() throws Exception {
+        String user = "test@test.com";
+        String password = "1234";
+
+        login(user, password);
+
+        TestSubscriber<List<Channel>> testObserver = new TestSubscriber<>();
+
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(200)
+                .setBody(jsonReader.getJson("json/channel_response_4_items.json"));
+
+        mockServer.enqueue(mockResponse);
+
+        sdk.channels().getChannels().subscribe(testObserver);
+        testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS);
+
+        testObserver.assertNoErrors();
+        testObserver.assertValueCount(1);
+        assertEquals(3, testObserver.values().get(0).size());
+
+        String path = "/api/v3/user/" + user + "/channel?service=mobileclient";
+
+        RecordedRequest request = mockServer.takeRequest();
+        assertEquals(path, request.getPath());
+    }
+
+    private void login(String user, String password) throws InterruptedException {
+        TestObserver<UserResponse> loginObserver = new TestObserver<>();
+
+        MockResponse loginResponse = new MockResponse()
+                .setResponseCode(200)
+                .setHeader("Set-Cookie", "usid=e54e189ea043ea4a5bfaf6");
+
+        mockServer.enqueue(loginResponse);
+
+        sdk.user().login(user, password).subscribe(loginObserver);
+        mockServer.takeRequest();
     }
 
     @After

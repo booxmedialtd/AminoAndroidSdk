@@ -10,15 +10,11 @@ public class TestCookieManager implements CookieManager {
 
     @Override
     public void setCookie(String value) {
-        cookie += value.substring(0, value.indexOf(";")) + "; ";
+        cookie = value;
     }
 
     @Override
     public String getCookie() {
-        if (cookie.length() > 2) {
-            return cookie.substring(0, cookie.length() - 2);
-        } else {
-            return cookie;
-        }
+        return cookie;
     }
 }
