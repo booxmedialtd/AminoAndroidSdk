@@ -3,6 +3,7 @@ package com.aminocom.sdk.provider.amino;
 import com.aminocom.sdk.JsonReader;
 import com.aminocom.sdk.Sdk;
 import com.aminocom.sdk.TestCookieManager;
+import com.aminocom.sdk.TestLocalRepository;
 import com.aminocom.sdk.model.client.Category;
 import com.aminocom.sdk.model.client.channel.Channel;
 import com.aminocom.sdk.model.network.UserResponse;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.observers.TestObserver;
+import io.reactivex.subscribers.TestSubscriber;
 import okhttp3.mockwebserver.MockWebServer;
 
 import static org.junit.Assert.assertEquals;
@@ -24,25 +26,28 @@ import static org.junit.Assert.assertEquals;
 public class CategoryProviderImplTest {
     private MockWebServer mockServer;
     private JsonReader jsonReader;
+    private Sdk sdk;
 
     @Before
     public void setUp() throws Exception {
         mockServer = new MockWebServer();
 
         mockServer.start();
+
+        sdk = new Sdk(
+                "https://nebtest1.auto.neb.amo.booxmedia.xyz/",
+                "mobileclient",
+                "qn05BON1hXGCUsw",
+                ProviderType.AMINO,
+                new TestCookieManager(),
+                new TestLocalRepository());
     }
 
     // FIXME: Fix mocking of the server
     @Test
     public void getChannels() throws Exception {
-        Sdk sdk = new Sdk(
-                "https://nebtest1.auto.neb.amo.booxmedia.xyz/",
-                "mobileclient",
-                "qn05BON1hXGCUsw",
-                ProviderType.AMINO,
-                new TestCookieManager());
 
-        TestObserver<List<Channel>> testObserver = new TestObserver<>();
+        TestSubscriber<List<Channel>> testObserver = new TestSubscriber<>();
 
         //String path = "json";
 
@@ -66,12 +71,6 @@ public class CategoryProviderImplTest {
     // FIXME: Fix mocking of the server
     @Test
     public void loginCorrect() throws Exception {
-        Sdk sdk = new Sdk(
-                "https://nebtest1.auto.neb.amo.booxmedia.xyz/",
-                "mobileclient",
-                "qn05BON1hXGCUsw",
-                ProviderType.AMINO,
-                new TestCookieManager());
 
         TestObserver<UserResponse> testObserver = new TestObserver<>();
 
@@ -99,7 +98,8 @@ public class CategoryProviderImplTest {
                 "mobileclient",
                 "qn05BON1hXGCUsw",
                 ProviderType.AMINO,
-                new TestCookieManager());
+                new TestCookieManager(),
+                new TestLocalRepository());
 
         TestObserver<UserResponse> testObserver = new TestObserver<>();
 
@@ -119,14 +119,8 @@ public class CategoryProviderImplTest {
     // FIXME: Fix mocking of the server
     @Test
     public void getCategories_NoLogin() throws Exception {
-        Sdk sdk = new Sdk(
-                "https://nebtest1.auto.neb.amo.booxmedia.xyz/",
-                "mobileclient",
-                "qn05BON1hXGCUsw",
-                ProviderType.AMINO,
-                new TestCookieManager());
 
-        TestObserver<List<Category>> testObserver = new TestObserver<>();
+        TestSubscriber<List<Category>> testObserver = new TestSubscriber<>();
 
         sdk.categories().getCategories().subscribe(testObserver);
         testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS);
@@ -138,12 +132,6 @@ public class CategoryProviderImplTest {
     // FIXME: Fix mocking of the server.
     @Test
     public void getCategories_Login() throws Exception {
-        Sdk sdk = new Sdk(
-                "https://nebtest1.auto.neb.amo.booxmedia.xyz/",
-                "mobileclient",
-                "qn05BON1hXGCUsw",
-                ProviderType.AMINO,
-                new TestCookieManager());
 
         TestObserver<UserResponse> loginObserver = new TestObserver<>();
 
@@ -156,7 +144,7 @@ public class CategoryProviderImplTest {
         loginObserver.assertNoErrors();
         loginObserver.assertValueCount(1);
 
-        TestObserver<List<Category>> categoryObserver = new TestObserver<>();
+        TestSubscriber<List<Category>> categoryObserver = new TestSubscriber<>();
 
         sdk.categories().getCategories().subscribe(categoryObserver);
         categoryObserver.awaitTerminalEvent(3, TimeUnit.SECONDS);
