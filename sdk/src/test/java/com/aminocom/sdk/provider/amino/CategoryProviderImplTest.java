@@ -17,12 +17,16 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.observers.TestObserver;
 import io.reactivex.subscribers.TestSubscriber;
+import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+
+import static junit.framework.TestCase.assertEquals;
 
 // TODO: check correctness of TestCookieManager
 public class CategoryProviderImplTest {
     private MockWebServer mockServer;
-    private JsonReader jsonReader;
+    private JsonReader jsonReader = new JsonReader();
     private Sdk sdk;
 
     @Before
@@ -32,7 +36,7 @@ public class CategoryProviderImplTest {
         mockServer.start();
 
         sdk = new Sdk(
-                "https://nebtest1.auto.neb.amo.booxmedia.xyz/",
+                mockServer.url("/").toString(),
                 "mobileclient",
                 "qn05BON1hXGCUsw",
                 ProviderType.AMINO,
@@ -43,6 +47,13 @@ public class CategoryProviderImplTest {
     // FIXME: Fix mocking of the server
     @Test
     public void getCategories_GuestUser() throws Exception {
+        String path = "/api/category?service=mobileclient";
+
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(200)
+                .setBody(jsonReader.getJson("json/category_response_3_items.json"));
+
+        mockServer.enqueue(mockResponse);
 
         TestSubscriber<List<Category>> testObserver = new TestSubscriber<>();
 
@@ -51,6 +62,10 @@ public class CategoryProviderImplTest {
 
         testObserver.assertNoErrors();
         testObserver.assertValueCount(1);
+        assertEquals(3, testObserver.values().get(0).size());
+
+        RecordedRequest request = mockServer.takeRequest();
+        assertEquals(path, request.getPath());
     }
 
     // FIXME: Fix mocking of the server.

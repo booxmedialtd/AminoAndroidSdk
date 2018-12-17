@@ -14,6 +14,7 @@ import io.reactivex.Single;
 
 public class TestLocalRepository implements LocalRepository {
     private List<Channel> channels = new ArrayList<>();
+    private List<Category> categories = new ArrayList<>();
 
     @Override
     public Flowable<List<Channel>> getChannels() {
@@ -67,10 +68,11 @@ public class TestLocalRepository implements LocalRepository {
 
     @Override
     public Flowable<List<Category>> getCategories() {
-        return null;
+        return Flowable.just(categories);
     }
 
     @Override
     public void cacheCategories(List<Category> categories) {
+        this.categories.addAll(categories);
     }
 }
