@@ -44,7 +44,6 @@ public class CategoryProviderImplTest {
                 new TestLocalRepository());
     }
 
-    // FIXME: Fix mocking of the server
     @Test
     public void getCategories_GuestUser() throws Exception {
         String path = "/api/category?service=mobileclient";
@@ -68,20 +67,13 @@ public class CategoryProviderImplTest {
         assertEquals(path, request.getPath());
     }
 
-    // FIXME: Fix mocking of the server.
+    // TODO: Fix after implementation of settings interface
     @Test
     public void getCategories_AuthorizedUser() throws Exception {
-
-        TestObserver<UserResponse> loginObserver = new TestObserver<>();
-
         String user = "aleksei@test.com";
         String password = "1234";
 
-        sdk.user().login(user, password).subscribe(loginObserver);
-        loginObserver.awaitTerminalEvent(1, TimeUnit.SECONDS);
-
-        loginObserver.assertNoErrors();
-        loginObserver.assertValueCount(1);
+        login(user, password);
 
         TestSubscriber<List<Category>> categoryObserver = new TestSubscriber<>();
 
@@ -90,6 +82,24 @@ public class CategoryProviderImplTest {
 
         categoryObserver.assertNoErrors();
         categoryObserver.assertValueCount(1);
+
+        String path = "/api/user/" + user + "/category?service=mobileclient";
+
+        RecordedRequest request = mockServer.takeRequest();
+        assertEquals(path, request.getPath());
+    }
+
+    private void login(String user, String password) throws InterruptedException {
+        TestObserver<UserResponse> loginObserver = new TestObserver<>();
+
+        MockResponse loginResponse = new MockResponse()
+                .setResponseCode(200)
+                .setHeader("Set-Cookie", "usid=e54e189ea043ea4a5bfaf6");
+
+        mockServer.enqueue(loginResponse);
+
+        sdk.user().login(user, password).subscribe(loginObserver);
+        mockServer.takeRequest();
     }
 
     @After

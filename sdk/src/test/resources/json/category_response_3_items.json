@@ -7,7 +7,7 @@
         "title": "Music and Arts",
         "source": "Boox TV",
         "thumbnailUrl": "",
-        "epgUrl": "https:\/\/nebtest1.auto.neb.amo.booxmedia.xyz\/api\/epg?service=dnaclient&keyword=Music+and+Arts&search_in=category&st=1545043200&sort=start_date__asc&ipp=80",
+        "epgUrl": "https:\/\/localhost:62304\/api\/epg?service=dnaclient&keyword=Music+and+Arts&search_in=category&st=1545043200&sort=start_date__asc&ipp=80",
         "categoryType": "booxtv_normal"
       },
       {
@@ -15,7 +15,7 @@
         "title": "Documentary",
         "source": "Boox TV",
         "thumbnailUrl": "",
-        "epgUrl": "https:\/\/nebtest1.auto.neb.amo.booxmedia.xyz\/api\/epg?service=dnaclient&keyword=Documentary&search_in=category&st=1545043200&sort=start_date__asc&ipp=80",
+        "epgUrl": "https:\/\/localhost:62304\/api\/epg?service=dnaclient&keyword=Documentary&search_in=category&st=1545043200&sort=start_date__asc&ipp=80",
         "categoryType": "booxtv_normal"
       },
       {
@@ -23,7 +23,7 @@
         "title": "Series",
         "source": "Boox TV",
         "thumbnailUrl": "",
-        "epgUrl": "https:\/\/nebtest1.auto.neb.amo.booxmedia.xyz\/api\/epg?service=dnaclient&keyword=Series&search_in=category&st=1545043200&sort=start_date__asc&ipp=80",
+        "epgUrl": "https:\/\/localhost:62304\/api\/epg?service=dnaclient&keyword=Series&search_in=category&st=1545043200&sort=start_date__asc&ipp=80",
         "categoryType": "booxtv_normal"
       }
     ]
