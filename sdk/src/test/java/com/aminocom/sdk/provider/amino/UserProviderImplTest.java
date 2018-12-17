@@ -14,6 +14,7 @@ import org.junit.Test;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.observers.TestObserver;
+import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 
 import static org.junit.Assert.assertEquals;
@@ -21,36 +22,40 @@ import static org.junit.Assert.assertEquals;
 // TODO: check correctness of TestCookieManager
 public class UserProviderImplTest {
     private MockWebServer mockServer;
-    private JsonReader jsonReader;
+    private JsonReader jsonReader = new JsonReader();
+    private Sdk sdk;
+    private TestCookieManager cookieManager;
 
     @Before
     public void setUp() throws Exception {
         mockServer = new MockWebServer();
 
         mockServer.start();
+
+        cookieManager = new TestCookieManager();
+
+        sdk = new Sdk(
+                mockServer.url("/").toString(),
+                "mobileclient",
+                "qn05BON1hXGCUsw",
+                ProviderType.AMINO,
+                cookieManager,
+                new TestLocalRepository());
     }
 
     // FIXME: Fix mocking of the server
     @Test
     public void loginCorrect() throws Exception {
-        Sdk sdk = new Sdk(
-                "https://nebtest1.auto.neb.amo.booxmedia.xyz/",
-                "mobileclient",
-                "qn05BON1hXGCUsw",
-                ProviderType.AMINO,
-                new TestCookieManager(),
-                new TestLocalRepository());
-
         TestObserver<UserResponse> testObserver = new TestObserver<>();
 
         String user = "aleksei@test.com";
         String password = "1234";
 
-        /*MockResponse mockResponse = new MockResponse()
+        MockResponse mockResponse = new MockResponse()
                 .setResponseCode(200)
-                .setBody(getJson("json/login_response.json"));
+                .setBody(jsonReader.getJson("json/login_successful.json"));
 
-        mockServer.enqueue(mockResponse);*/
+        mockServer.enqueue(mockResponse);
 
         sdk.user().login(user, password).subscribe(testObserver);
         testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS);
@@ -62,22 +67,14 @@ public class UserProviderImplTest {
     // FIXME: Fix mocking of the server
     @Test
     public void loginWrong() throws Exception {
-        Sdk sdk = new Sdk(
-                "https://nebtest1.auto.neb.amo.booxmedia.xyz/",
-                "mobileclient",
-                "qn05BON1hXGCUsw",
-                ProviderType.AMINO,
-                new TestCookieManager(),
-                new TestLocalRepository());
-
         TestObserver<UserResponse> testObserver = new TestObserver<>();
 
         String user = "some_user@test.com";
         String password = "0000";
 
-        //MockResponse mockResponse = new MockResponse().setResponseCode(401);
+        MockResponse mockResponse = new MockResponse().setResponseCode(401);
 
-        //mockServer.enqueue(mockResponse);
+        mockServer.enqueue(mockResponse);
 
         sdk.user().login(user, password).subscribe(testObserver);
         testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS);
