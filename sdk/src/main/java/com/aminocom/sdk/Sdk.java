@@ -7,6 +7,7 @@ import com.aminocom.sdk.provider.ProviderFactory;
 import com.aminocom.sdk.provider.ProviderType;
 import com.aminocom.sdk.provider.Providers;
 import com.aminocom.sdk.provider.RecordingProvider;
+import com.aminocom.sdk.provider.StreamProvider;
 import com.aminocom.sdk.provider.UserProvider;
 import com.burgstaller.okhttp.CachingAuthenticatorDecorator;
 import com.burgstaller.okhttp.digest.CachingAuthenticator;
@@ -94,5 +95,10 @@ public class Sdk implements Providers {
     @Override
     public RecordingProvider recording() {
         return providers.recording();
+    }
+
+    @Override
+    public StreamProvider stream() {
+        return providers.stream();
     }
 }
