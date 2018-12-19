@@ -20,7 +20,7 @@ public class Stream  implements Comparable<Stream> {
 
     @Override
     public int compareTo(Stream another) {
-        return bitrate - another.getBitrate();
+        return Integer.compare(another.getBitrate(), bitrate);
     }
 
     public String getServiceId() {
