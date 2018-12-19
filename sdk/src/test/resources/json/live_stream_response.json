@@ -1,0 +1,58 @@
+{
+  "data": [
+    {
+      "id": "{\"stream_url\":\"https:\\\/\\\/segments2-live-production.secure2.footprint.net\\\/17\\\/17.m3u8\"}",
+      "type": "PlayableStream",
+      "attributes": {
+        "suggested_devices": [],
+        "codec_info": "video\/mp4",
+        "transport_protocol": "http",
+        "streaming_protocols": [
+          "hls"
+        ],
+        "bitrate": 600,
+        "stream_url": "https:\/\/segments2-live-production.secure2.footprint.net\/17\/17.m3u8?startvalidity=20181219125037&endvalidity=20181220125537&nva=20181220125537&ttl=86700&ip=83.150.69.169&token=0f5f4ac3381b6a9d97437",
+        "protection_types": [
+          "none"
+        ],
+        "suggested_market_segments": []
+      }
+    },
+    {
+      "id": "{\"stream_url\":\"rtsp:\\\/\\\/tv.booxmedia.com\\\/live_yle1\"}",
+      "type": "PlayableStream",
+      "attributes": {
+        "suggested_devices": [],
+        "codec_info": "application\/x-rtsp",
+        "transport_protocol": "rtsp",
+        "streaming_protocols": [
+          "hls"
+        ],
+        "bitrate": 300,
+        "stream_url": "rtsp:\/\/tv.booxmedia.com\/live_yle1",
+        "protection_types": [
+          "none"
+        ],
+        "suggested_market_segments": []
+      }
+    },
+    {
+      "id": "{\"stream_url\":\"rtsp:\\\/\\\/tv.booxmedia.com\\\/live_yle1\"}",
+      "type": "PlayableStream",
+      "attributes": {
+        "suggested_devices": [],
+        "codec_info": "application\/x-rtsp",
+        "transport_protocol": "rtsp",
+        "streaming_protocols": [
+          "hls"
+        ],
+        "bitrate": 1024,
+        "stream_url": "rtsp:\/\/tv.booxmedia.com\/live_yle1",
+        "protection_types": [
+          "none"
+        ],
+        "suggested_market_segments": []
+      }
+    }
+  ]
+}
