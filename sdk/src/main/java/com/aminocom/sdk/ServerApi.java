@@ -6,7 +6,7 @@ import com.aminocom.sdk.model.network.category.CategoryResponse;
 import com.aminocom.sdk.model.network.channel.ChannelResponse;
 import com.aminocom.sdk.model.network.epg.EpgResponse;
 import com.aminocom.sdk.model.network.recording.RecordingResponse;
-import com.aminocom.sdk.model.network.steam.StreamResponse;
+import com.aminocom.sdk.model.network.stream.StreamResponse;
 
 import io.reactivex.Single;
 import retrofit2.http.Field;
@@ -54,7 +54,7 @@ public interface ServerApi {
 
 
     @GET("api/v1/channels/{channelId}/relationships/streams")
-    Single<StreamResponse> getChannelStreams(@Path("channelId") long channelId, @Query("service") String service);
+    Single<StreamResponse> getChannelStreams(@Path("channelId") String channelId, @Query("service") String service);
 
     @GET("api/v1/recordings/{recordingId}/relationships/streams")
     Single<StreamResponse> getRecordingStreams(@Path("recordingId") String recordingId, @Query("service") String service);

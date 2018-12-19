@@ -9,6 +9,7 @@ import com.aminocom.sdk.provider.ChannelProvider;
 import com.aminocom.sdk.provider.EpgProvider;
 import com.aminocom.sdk.provider.Providers;
 import com.aminocom.sdk.provider.RecordingProvider;
+import com.aminocom.sdk.provider.StreamProvider;
 import com.aminocom.sdk.provider.UserProvider;
 
 public class AminoProviders implements Providers {
@@ -18,6 +19,7 @@ public class AminoProviders implements Providers {
     private CategoryProvider categoryProvider;
     private EpgProvider epgProvider;
     private RecordingProvider recordingProvider;
+    private StreamProvider streamProvider;
 
     public AminoProviders(ServerApi api, CustomDigestAuthenticator authenticator, String service, CookieManager cookieManager, LocalRepository dbRepository) {
         userProvider = UserProviderImpl.newInstance(api, authenticator, service);
@@ -25,6 +27,7 @@ public class AminoProviders implements Providers {
         categoryProvider = CategoryProviderImpl.newInstance(api, dbRepository, service);
         epgProvider = EpgProviderImpl.newInstance(api, dbRepository, service);
         recordingProvider = RecordingProviderImpl.newInstance(api, dbRepository, service);
+        streamProvider = StreamProviderImpl.newInstance(api, service);
     }
 
     @Override
@@ -50,5 +53,10 @@ public class AminoProviders implements Providers {
     @Override
     public RecordingProvider recording() {
         return recordingProvider;
+    }
+
+    @Override
+    public StreamProvider stream() {
+        return streamProvider;
     }
 }

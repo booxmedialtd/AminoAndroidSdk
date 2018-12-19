@@ -1,4 +1,4 @@
-package com.aminocom.sdk.model.network.steam;
+package com.aminocom.sdk.model.network.stream;
 
 import com.google.gson.annotations.SerializedName;
 

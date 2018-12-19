@@ -6,4 +6,5 @@ public interface Providers {
     CategoryProvider categories();
     EpgProvider epg();
     RecordingProvider recording();
+    StreamProvider stream();
 }
