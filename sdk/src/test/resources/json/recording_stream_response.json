@@ -1,0 +1,46 @@
+{
+  "data": [
+    {
+      "id": "{\"stream_url\":\"http:\\\/\\\/mts-pro-vdn-sslnpvr.dna.fi\",\"profile_name\":\"hd_5\"}",
+      "type": "PlayableStream",
+      "attributes": {
+        "suggested_devices": [],
+        "codec_info": "video\/mp4",
+        "transport_protocol": "http",
+        "streaming_protocols": [
+          "hls"
+        ],
+        "bitrate": 2404,
+        "stream_url": "http:\/\/mts-pro-vdn-sslnpvr.dna.fi\/rec\/r2\/2018\/11\/28\/451\/8187048\/8187048.ism\/playlist.m3u8?token=41616f0e547c7225feed8e00164bfa05&expires=1545410497",
+        "protection_types": [
+          "none"
+        ],
+        "suggested_market_segments": [],
+        "profile_name": "hd_5",
+        "max_resolution": "576",
+        "vbr_max_bitrate": 2404
+      }
+    },
+    {
+      "id": "{\"stream_url\":\"https:\\\/\\\/production-npvr-media-booxmedia.secure.footprint.net\",\"profile_name\":\"hd_5\"}",
+      "type": "PlayableStream",
+      "attributes": {
+        "suggested_devices": [],
+        "codec_info": "video\/mp4",
+        "transport_protocol": "https",
+        "streaming_protocols": [
+          "hls"
+        ],
+        "bitrate": 2404,
+        "stream_url": "https:\/\/production-npvr-media-booxmedia.secure.footprint.net\/rec\/r2\/2018\/11\/28\/451\/8187048\/8187048.ism\/playlist.m3u8?startvalidity=20181221083637&endvalidity=20181222084137&nva=20181222084137&ttl=86700&ip=83.150.69.169&token=02e408c6fbc452aab6710",
+        "protection_types": [
+          "none"
+        ],
+        "suggested_market_segments": [],
+        "profile_name": "hd_5",
+        "max_resolution": "576",
+        "vbr_max_bitrate": 2404
+      }
+    }
+  ]
+}

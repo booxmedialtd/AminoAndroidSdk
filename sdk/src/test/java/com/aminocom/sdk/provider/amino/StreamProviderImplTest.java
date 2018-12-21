@@ -94,6 +94,46 @@ public class StreamProviderImplTest {
         return testObserver;
     }
 
+    @Test
+    public void getRecordingStreams_NoErrors() {
+        TestObserver<List<Stream>> testObserver = sendRecordingRequest();
+
+        testObserver.assertNoErrors();
+        testObserver.assertValueCount(1);
+    }
+
+    @Test
+    public void getRecordingStreams_PathCorrect() throws Exception {
+        sendRecordingRequest();
+
+        String path = "/api/v1/recordings/2788453/relationships/streams?service=mobileclient";
+
+        RecordedRequest request = mockServer.takeRequest();
+        assertEquals(path, request.getPath());
+    }
+
+    @Test
+    public void getRecordingStreams_ListSizeCorrect() {
+        TestObserver<List<Stream>> testObserver = sendRecordingRequest();
+
+        assertEquals(2, testObserver.values().get(0).size());
+    }
+
+    private TestObserver<List<Stream>> sendRecordingRequest() {
+        TestObserver<List<Stream>> testObserver = new TestObserver<>();
+
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(200)
+                .setBody(jsonReader.getJson("json/recording_stream_response.json"));
+
+        mockServer.enqueue(mockResponse);
+
+        sdk.stream().getRecordingStreams("2788453").subscribe(testObserver);
+        testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS);
+
+        return testObserver;
+    }
+
     @After
     public void tearDown() throws Exception {
         mockServer.shutdown();
