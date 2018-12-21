@@ -1,0 +1,21 @@
+{
+  "id": "{\"stream_url\":\"http:\\\/\\\/mts-pro-vdn-sslnpvr.dna.fi\",\"profile_name\":\"hd_5\"}",
+  "type": "PlayableStream",
+  "attributes": {
+    "suggested_devices": [],
+    "codec_info": "video\/mp4",
+    "transport_protocol": "http",
+    "streaming_protocols": [
+      "hls"
+    ],
+    "bitrate": 2404,
+    "stream_url": "http:\/\/mts-pro-vdn-sslnpvr.dna.fi\/rec\/r2\/2018\/11\/28\/451\/8187048\/8187048.ism\/playlist.m3u8?token=d3658830181715a3d80eadc27bd32d88&expires=1545410897",
+    "protection_types": [
+      "none"
+    ],
+    "suggested_market_segments": [],
+    "profile_name": "hd_5",
+    "max_resolution": "576",
+    "vbr_max_bitrate": 2404
+  }
+}
