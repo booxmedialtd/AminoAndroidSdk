@@ -20,11 +20,11 @@ public class StreamMapper {
     public static Stream from(String channelId, StreamItem item) {
         Stream stream = new Stream();
 
-        stream.setServiceId(channelId);
-        stream.setBitrate(item.attributes.bitrate);
+        stream.setServiceId(item.id);
         stream.setChannelId(channelId);
-        stream.setProtocol(item.attributes.transportProtocol);
-        stream.setStreamType(item.attributes.streamUrl);
+        stream.setBitrate(item.attributes.bitrate);
+        stream.setTransportProtocol(item.attributes.transportProtocol);
+        stream.setStreamUrl(item.attributes.streamUrl);
 
         List<String> protectionTypes = item.attributes.protectionTypes;
 
@@ -33,8 +33,8 @@ public class StreamMapper {
 
         List<String> streamingProtocols = item.attributes.streamingProtocols;
 
-        String streamType = (streamingProtocols != null && streamingProtocols.size() > 0) ? streamingProtocols.get(0) : "";
-        stream.setStreamType(streamType);
+        String streamProtocol = (streamingProtocols != null && streamingProtocols.size() > 0) ? streamingProtocols.get(0) : "";
+        stream.setStreamProtocol(streamProtocol);
 
         return stream;
     }

@@ -12,8 +12,8 @@ public class Stream  implements Comparable<Stream> {
 
     private String serviceId;
     private int bitrate;
-    private String streamType;
-    private String protocol;
+    private String streamProtocol;
+    private String transportProtocol;
     private String streamUrl;
     private String protection;
     private String channelId;
@@ -39,20 +39,20 @@ public class Stream  implements Comparable<Stream> {
         this.bitrate = bitrate;
     }
 
-    public String getProtocol() {
-        return protocol;
+    public String getTransportProtocol() {
+        return transportProtocol;
     }
 
-    public void setProtocol(String protocol) {
-        this.protocol = protocol;
+    public void setTransportProtocol(String transportProtocol) {
+        this.transportProtocol = transportProtocol;
     }
 
-    public String getStreamType() {
-        return streamType;
+    public String getStreamProtocol() {
+        return streamProtocol;
     }
 
-    public void setStreamType(String streamType) {
-        this.streamType = streamType;
+    public void setStreamProtocol(String streamProtocol) {
+        this.streamProtocol = streamProtocol;
     }
 
     public String getStreamUrl() {
