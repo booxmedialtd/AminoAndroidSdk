@@ -52,6 +52,11 @@ public interface ServerApi {
                                            @Query("st") long startTime,
                                            @Query("et") long endTime);
 
+    @GET("api/user/{user}/recording/favorite?sort=start_date__desc")
+    Single<RecordingResponse> getFavoriteRecording(@Path("user") String user,
+                                           @Query("service") String service,
+                                           @Query("st") long startTime,
+                                           @Query("et") long endTime);
 
     @GET("api/v1/channels/{channelId}/relationships/streams")
     Single<StreamResponse> getChannelStreams(@Path("channelId") String channelId, @Query("service") String service);
