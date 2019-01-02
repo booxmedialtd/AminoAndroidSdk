@@ -32,7 +32,12 @@ public class TestLocalRepository implements LocalRepository {
     }
 
     @Override
-    public Single<List<Program>> getPendingPrograms(String channelId, long currentTime, int limit) {
+    public Flowable<List<Program>> getPrograms(long startDate, long endDate) {
+        return null;
+    }
+
+    @Override
+    public Single<List<Program>> getUpcomingPrograms(String channelId, long currentTime, int limit) {
         return null;
     }
 

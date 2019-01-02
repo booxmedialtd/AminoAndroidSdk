@@ -54,6 +54,16 @@ public class ProgramMapper {
         return result;
     }
 
+    public static List<Program> from(List<ProgramItem> programs) {
+        List<Program> result = new ArrayList<>();
+
+        for (ProgramItem item : programs) {
+            result.add(from(item));
+        }
+
+        return result;
+    }
+
     public static Program from(ProgramItem item) {
         Program result = new Program();
 

@@ -34,13 +34,18 @@ public class DbRepository implements LocalRepository {
     }
 
     @Override
-    public Single<List<Program>> getPendingPrograms(String channelId, long currentTime, int limit) {
+    public Single<List<Program>> getUpcomingPrograms(String channelId, long currentTime, int limit) {
         return db.programDao().getPendingPrograms(channelId, currentTime, limit);
     }
 
     @Override
     public Flowable<List<Program>> getPrograms() {
         return db.programDao().getAll();
+    }
+
+    @Override
+    public Flowable<List<Program>> getPrograms(long startDate, long endDate) {
+        return null;
     }
 
     @Override

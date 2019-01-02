@@ -1,7 +1,5 @@
 package com.aminocom.sdk.provider.amino;
 
-import android.util.Log;
-
 import com.aminocom.sdk.LocalRepository;
 import com.aminocom.sdk.ServerApi;
 import com.aminocom.sdk.mapper.EpgMapper;
@@ -19,6 +17,7 @@ public class EpgProviderImpl implements EpgProvider {
 
     private static final int INITIAL_EPG_PAGE = 0;
     private static final int MAX_EPG_PAGE = 20;
+    private static final int RECORDING_PAGE_NUMBER = 1;
 
     private ServerApi api;
     private LocalRepository localRepository;
@@ -67,12 +66,11 @@ public class EpgProviderImpl implements EpgProvider {
                 .flatMapIterable(response -> response.channels)
                 .map(response -> ProgramMapper.from(response.id, response.programs))
                 .doOnNext(epgList -> {
-                    Log.e("LOG_TAG", "===================== getEpg: epg size: " + epgList.size());
                     localRepository.cachePrograms(epgList);
                     epgCacheTime = System.currentTimeMillis();
                 })
                 .buffer(1000)
-                .flatMapSingle(response -> api.getRecording("bt1@dna.fi", service, DateUtil.getTimeInSeconds(start), DateUtil.getTimeInSeconds(end)))
+                .flatMapSingle(response -> api.getRecording("bt1@dna.fi", service, DateUtil.getTimeInSeconds(start), DateUtil.getTimeInSeconds(end), RECORDING_PAGE_NUMBER))
                 .flatMap(response -> Flowable.fromIterable(response.recordedContent.programList.programs))
                 .map(ProgramMapper::from)
                 .toList()

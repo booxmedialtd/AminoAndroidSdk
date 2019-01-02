@@ -2,14 +2,16 @@ package com.aminocom.sdk.provider;
 
 import com.aminocom.sdk.model.client.Program;
 
+import java.util.List;
+
 import io.reactivex.Flowable;
 
 public interface RecordingProvider {
-    Flowable<Program> getPastRecordings();
+    Flowable<List<Program>> getPastRecordings();
 
-    Flowable<Program> getFutureRecordings();
+    Flowable<List<Program>> getUpcomingRecordings();
 
-    Flowable<Program> getRecordings(Long startTime, Long endTime);
+    Flowable<List<Program>> getRecordings(Long startTime, Long endTime);
 
     Flowable<Program> getFavoriteRecordings(Long startTime, Long endTime);
 }

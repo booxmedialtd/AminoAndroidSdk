@@ -50,7 +50,8 @@ public interface ServerApi {
     Single<RecordingResponse> getRecording(@Path("user") String user,
                                            @Query("service") String service,
                                            @Query("st") Long startTime,
-                                           @Query("et") Long endTime);
+                                           @Query("et") Long endTime,
+                                           @Query("pg") int page);
 
     @GET("api/user/{user}/recording/favorite?sort=start_date__desc")
     Single<RecordingResponse> getFavoriteRecording(@Path("user") String user,

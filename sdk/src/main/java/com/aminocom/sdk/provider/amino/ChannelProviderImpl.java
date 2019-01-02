@@ -67,7 +67,7 @@ public class ChannelProviderImpl implements ChannelProvider {
 
     private Single<LiveChannel> getLiveChannel(Channel channel) {
         return localRepository
-                .getPendingPrograms(channel.getId(), System.currentTimeMillis(), 3)
+                .getUpcomingPrograms(channel.getId(), System.currentTimeMillis(), 3)
                 .map(programs -> LiveChannelMapper.from(channel, programs));
     }
 }

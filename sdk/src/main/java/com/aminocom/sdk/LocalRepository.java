@@ -18,7 +18,9 @@ public interface LocalRepository {
 
     Flowable<List<Program>> getPrograms();
 
-    Single<List<Program>> getPendingPrograms(String channelId, long currentTime, int limit);
+    Flowable<List<Program>> getPrograms(long startDate, long endDate);
+
+    Single<List<Program>> getUpcomingPrograms(String channelId, long currentTime, int limit);
 
     void cachePrograms(List<Program> programs);
 
