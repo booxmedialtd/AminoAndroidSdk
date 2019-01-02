@@ -26,12 +26,22 @@ public class RecordingProviderImpl implements RecordingProvider {
     }
 
     @Override
-    public Flowable<Program> getRecordings() {
+    public Flowable<Program> getPastRecordings() {
+        return Flowable.empty();
+    }
+
+    @Override
+    public Flowable<Program> getFutureRecordings() {
         return Flowable.empty();
     }
 
     @Override
     public Flowable<Program> getRecordingsByTime(long startTime, long endTime) {
+        return Flowable.empty();
+    }
+
+    @Override
+    public Flowable<Program> getFavoriteRecordings(long startTime, long endTime) {
         return Flowable.empty();
     }
 }
