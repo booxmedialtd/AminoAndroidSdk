@@ -9,7 +9,7 @@ public interface RecordingProvider {
 
     Flowable<Program> getFutureRecordings();
 
-    Flowable<Program> getRecordingsByTime(long startTime, long endTime);
+    Flowable<Program> getRecordings(Long startTime, Long endTime);
 
-    Flowable<Program> getFavoriteRecordings(long startTime, long endTime);
+    Flowable<Program> getFavoriteRecordings(Long startTime, Long endTime);
 }
