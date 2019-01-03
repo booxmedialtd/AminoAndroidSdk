@@ -13,5 +13,5 @@ public interface RecordingProvider {
 
     Flowable<List<Program>> getRecordings(Long startTime, Long endTime);
 
-    Flowable<Program> getFavoriteRecordings(Long startTime, Long endTime);
+    Flowable<List<Program>> getFavoriteRecordings(Long startTime, Long endTime);
 }

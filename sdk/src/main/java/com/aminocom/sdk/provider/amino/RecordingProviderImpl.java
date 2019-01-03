@@ -57,7 +57,15 @@ public class RecordingProviderImpl implements RecordingProvider {
     }
 
     @Override
-    public Flowable<Program> getFavoriteRecordings(Long startTime, Long endTime) {
-        return Flowable.empty();
+    public Flowable<List<Program>> getFavoriteRecordings(Long startTime, Long endTime) {
+        return Flowable.range(INITIAL_RECORDING_PAGE, MAX_RECORDING_PAGE)
+                .flatMapSingle(page -> api.getFavoriteRecording("btcv3@dna.fi", service, DateUtil.getTimeInSeconds(startTime), DateUtil.getTimeInSeconds(endTime), page))
+                .takeUntil(response -> response.recordedContent.resultSet.currentPage == response.recordedContent.resultSet.totalPages - 1)
+                .map(response -> ProgramMapper.from(response.recordedContent.programList.programs))
+                .doOnNext(programs -> {
+                    localRepository.updateOrInsertPrograms(programs);
+                    recordingCacheTime = System.currentTimeMillis();
+                })
+                .flatMap(programs -> localRepository.getPrograms(startTime, endTime));
     }
 }
