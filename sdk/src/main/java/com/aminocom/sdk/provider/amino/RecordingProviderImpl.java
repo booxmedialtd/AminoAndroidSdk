@@ -9,6 +9,7 @@ import com.aminocom.sdk.util.DateUtil;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 
 public class RecordingProviderImpl implements RecordingProvider {
@@ -59,7 +60,7 @@ public class RecordingProviderImpl implements RecordingProvider {
     @Override
     public Flowable<List<Program>> getFavoriteRecordings(Long startTime, Long endTime) {
         return Flowable.range(INITIAL_RECORDING_PAGE, MAX_RECORDING_PAGE)
-                .flatMapSingle(page -> api.getFavoriteRecording("btcv3@dna.fi", service, DateUtil.getTimeInSeconds(startTime), DateUtil.getTimeInSeconds(endTime), page))
+                .flatMapSingle(page -> api.getFavoriteRecording("btcv3@dna.fi", service, page))
                 .takeUntil(response -> response.recordedContent.resultSet.currentPage == response.recordedContent.resultSet.totalPages - 1)
                 .map(response -> ProgramMapper.from(response.recordedContent.programList.programs))
                 .doOnNext(programs -> {
@@ -67,5 +68,11 @@ public class RecordingProviderImpl implements RecordingProvider {
                     recordingCacheTime = System.currentTimeMillis();
                 })
                 .flatMap(programs -> localRepository.getPrograms(startTime, endTime));
+    }
+
+    @Override
+    public Completable setFavorite(String programUid, boolean isFavorite) {
+        return isFavorite ? api.addFavoriteRecording("btcv3@dna.fi", programUid, service) :
+                api.removeFavoriteRecording("btcv3@dna.fi", programUid, service);
     }
 }

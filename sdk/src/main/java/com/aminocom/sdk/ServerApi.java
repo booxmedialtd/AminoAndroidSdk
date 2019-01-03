@@ -8,11 +8,13 @@ import com.aminocom.sdk.model.network.epg.EpgResponse;
 import com.aminocom.sdk.model.network.recording.RecordingResponse;
 import com.aminocom.sdk.model.network.stream.StreamResponse;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -56,9 +58,19 @@ public interface ServerApi {
     @GET("api/user/{user}/recording/favorite?sort=start_date__desc")
     Single<RecordingResponse> getFavoriteRecording(@Path("user") String user,
                                                    @Query("service") String service,
-                                                   @Query("st") Long startTime,
-                                                   @Query("et") Long endTime,
                                                    @Query("pg") int page);
+
+    @FormUrlEncoded
+    @PUT("api/user/{user}/recording/favorite")
+    Completable addFavoriteRecording(@Path("user") String user,
+                                     @Field("add") String programUid,
+                                     @Query("service") String service);
+
+    @FormUrlEncoded
+    @PUT("api/user/{user}/recording/favorite")
+    Completable removeFavoriteRecording(@Path("user") String user,
+                                        @Field("remove") String programUid,
+                                        @Query("service") String service);
 
     @GET("api/v1/channels/{channelId}/relationships/streams")
     Single<StreamResponse> getChannelStreams(@Path("channelId") String channelId, @Query("service") String service);
