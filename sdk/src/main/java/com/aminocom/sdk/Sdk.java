@@ -40,7 +40,7 @@ public class Sdk implements Providers {
                 baseUrl,
                 service,
                 servicePassword,
-                ProviderType.AMINO,
+                type,
                 new AndroidCookieManager(),
                 new DbRepository(context),
                 new SharedPrefSettings(context)
