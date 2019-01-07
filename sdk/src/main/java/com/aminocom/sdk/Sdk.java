@@ -1,5 +1,7 @@
 package com.aminocom.sdk;
 
+import android.content.Context;
+
 import com.aminocom.sdk.provider.CategoryProvider;
 import com.aminocom.sdk.provider.ChannelProvider;
 import com.aminocom.sdk.provider.EpgProvider;
@@ -9,6 +11,8 @@ import com.aminocom.sdk.provider.Providers;
 import com.aminocom.sdk.provider.RecordingProvider;
 import com.aminocom.sdk.provider.StreamProvider;
 import com.aminocom.sdk.provider.UserProvider;
+import com.aminocom.sdk.settings.Settings;
+import com.aminocom.sdk.settings.SharedPrefSettings;
 import com.burgstaller.okhttp.CachingAuthenticatorDecorator;
 import com.burgstaller.okhttp.digest.CachingAuthenticator;
 import com.burgstaller.okhttp.digest.Credentials;
@@ -31,7 +35,19 @@ public class Sdk implements Providers {
 
     private Providers providers;
 
-    public Sdk(String baseUrl, String service, String servicePassword, ProviderType type, CookieManager cookieManager, LocalRepository dbRepository) {
+    public Sdk(Context context, String baseUrl, String service, String servicePassword, ProviderType type) {
+        new Sdk(
+                baseUrl,
+                service,
+                servicePassword,
+                ProviderType.AMINO,
+                new AndroidCookieManager(),
+                new DbRepository(context),
+                new SharedPrefSettings(context)
+        );
+    }
+
+    public Sdk(String baseUrl, String service, String servicePassword, ProviderType type, CookieManager cookieManager, LocalRepository dbRepository, Settings settings) {
 
         final HttpLoggingInterceptor.Logger logger = message -> {
             if (!message.isEmpty()) {
@@ -69,7 +85,7 @@ public class Sdk implements Providers {
 
         ServerApi api = retrofit.create(ServerApi.class);
 
-        this.providers = ProviderFactory.getProvider(type, api, authenticator, service, cookieManager, dbRepository);
+        this.providers = ProviderFactory.getProvider(type, api, authenticator, service, cookieManager, dbRepository, settings);
     }
 
     @Override
