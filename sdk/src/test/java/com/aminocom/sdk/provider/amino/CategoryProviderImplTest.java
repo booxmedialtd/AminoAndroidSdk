@@ -4,6 +4,7 @@ import com.aminocom.sdk.JsonReader;
 import com.aminocom.sdk.Sdk;
 import com.aminocom.sdk.TestCookieManager;
 import com.aminocom.sdk.TestLocalRepository;
+import com.aminocom.sdk.TestSettings;
 import com.aminocom.sdk.model.client.Category;
 import com.aminocom.sdk.model.network.UserResponse;
 import com.aminocom.sdk.provider.ProviderType;
@@ -41,7 +42,9 @@ public class CategoryProviderImplTest {
                 "qn05BON1hXGCUsw",
                 ProviderType.AMINO,
                 new TestCookieManager(),
-                new TestLocalRepository());
+                new TestLocalRepository(),
+                new TestSettings()
+        );
     }
 
     @Test
