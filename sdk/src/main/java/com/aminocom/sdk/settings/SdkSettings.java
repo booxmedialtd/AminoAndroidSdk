@@ -3,7 +3,7 @@ package com.aminocom.sdk.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class SharedPrefSettings implements Settings {
+public class SdkSettings implements Settings {
 
     private static final String SETTINGS_FILE_NAME = "com.aminocom.sdk";
 
@@ -12,7 +12,7 @@ public class SharedPrefSettings implements Settings {
 
     private final SharedPreferences preferences;
 
-    public SharedPrefSettings(Context context) {
+    public SdkSettings(Context context) {
         preferences = context.getSharedPreferences(SETTINGS_FILE_NAME, Context.MODE_PRIVATE);
     }
 
