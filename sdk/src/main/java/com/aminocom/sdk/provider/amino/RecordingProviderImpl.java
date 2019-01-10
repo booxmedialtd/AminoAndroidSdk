@@ -5,6 +5,7 @@ import com.aminocom.sdk.ServerApi;
 import com.aminocom.sdk.mapper.ProgramMapper;
 import com.aminocom.sdk.model.client.Program;
 import com.aminocom.sdk.provider.RecordingProvider;
+import com.aminocom.sdk.settings.Settings;
 import com.aminocom.sdk.util.DateUtil;
 
 import java.util.List;
@@ -20,17 +21,19 @@ public class RecordingProviderImpl implements RecordingProvider {
     private ServerApi api;
     private LocalRepository localRepository;
     private String service;
+    private Settings settings;
 
     private long recordingCacheTime = 0;
 
-    public static RecordingProvider newInstance(ServerApi api, LocalRepository localRepository, String service) {
-        return new RecordingProviderImpl(api, localRepository, service);
+    public static RecordingProvider newInstance(ServerApi api, LocalRepository localRepository, String service, Settings settings) {
+        return new RecordingProviderImpl(api, localRepository, service, settings);
     }
 
-    private RecordingProviderImpl(ServerApi api, LocalRepository localRepository, String service) {
+    private RecordingProviderImpl(ServerApi api, LocalRepository localRepository, String service, Settings settings) {
         this.api = api;
         this.localRepository = localRepository;
         this.service = service;
+        this.settings = settings;
     }
 
     @Override
@@ -43,11 +46,10 @@ public class RecordingProviderImpl implements RecordingProvider {
         return getRecordings(System.currentTimeMillis(), null);
     }
 
-    // TODO: change username when username will be stored in SDK
     @Override
     public Flowable<List<Program>> getRecordings(Long startTime, Long endTime) {
         return Flowable.range(INITIAL_RECORDING_PAGE, MAX_RECORDING_PAGE)
-                .flatMapSingle(page -> api.getRecording("btcv3@dna.fi", service, DateUtil.getTimeInSeconds(startTime), DateUtil.getTimeInSeconds(endTime), page))
+                .flatMapSingle(page -> api.getRecording(settings.getUserName(), service, DateUtil.getTimeInSeconds(startTime), DateUtil.getTimeInSeconds(endTime), page))
                 .takeUntil(response -> response.recordedContent.resultSet.currentPage == response.recordedContent.resultSet.totalPages - 1)
                 .map(response -> ProgramMapper.from(response.recordedContent.programList.programs))
                 .doOnNext(programs -> {
@@ -60,7 +62,7 @@ public class RecordingProviderImpl implements RecordingProvider {
     @Override
     public Flowable<List<Program>> getFavoriteRecordings(Long startTime, Long endTime) {
         return Flowable.range(INITIAL_RECORDING_PAGE, MAX_RECORDING_PAGE)
-                .flatMapSingle(page -> api.getFavoriteRecording("btcv3@dna.fi", service, page))
+                .flatMapSingle(page -> api.getFavoriteRecording(settings.getUserName(), service, page))
                 .takeUntil(response -> response.recordedContent.resultSet.currentPage == response.recordedContent.resultSet.totalPages - 1)
                 .map(response -> ProgramMapper.from(response.recordedContent.programList.programs))
                 .doOnNext(programs -> {
@@ -72,7 +74,7 @@ public class RecordingProviderImpl implements RecordingProvider {
 
     @Override
     public Completable setFavorite(String programUid, boolean isFavorite) {
-        return isFavorite ? api.addFavoriteRecording("btcv3@dna.fi", programUid, service) :
-                api.removeFavoriteRecording("btcv3@dna.fi", programUid, service);
+        return isFavorite ? api.addFavoriteRecording(settings.getUserName(), programUid, service) :
+                api.removeFavoriteRecording(settings.getUserName(), programUid, service);
     }
 }

@@ -24,10 +24,10 @@ public class AminoProviders implements Providers {
 
     public AminoProviders(ServerApi api, CustomDigestAuthenticator authenticator, String service, CookieManager cookieManager, LocalRepository dbRepository, Settings settings) {
         userProvider = UserProviderImpl.newInstance(api, authenticator, service);
-        channelProvider = ChannelProviderImpl.newInstance(api, dbRepository, service, cookieManager);
+        channelProvider = ChannelProviderImpl.newInstance(api, dbRepository, service, cookieManager, settings);
         categoryProvider = CategoryProviderImpl.newInstance(api, dbRepository, service);
-        epgProvider = EpgProviderImpl.newInstance(api, dbRepository, service);
-        recordingProvider = RecordingProviderImpl.newInstance(api, dbRepository, service);
+        epgProvider = EpgProviderImpl.newInstance(api, dbRepository, service, settings);
+        recordingProvider = RecordingProviderImpl.newInstance(api, dbRepository, service, settings);
         streamProvider = StreamProviderImpl.newInstance(api, service);
     }
 

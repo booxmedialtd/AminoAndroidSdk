@@ -9,6 +9,8 @@ import com.aminocom.sdk.mapper.LiveChannelMapper;
 import com.aminocom.sdk.model.client.channel.Channel;
 import com.aminocom.sdk.model.client.channel.LiveChannel;
 import com.aminocom.sdk.provider.ChannelProvider;
+import com.aminocom.sdk.provider.UserProvider;
+import com.aminocom.sdk.settings.Settings;
 
 import java.util.List;
 
@@ -21,24 +23,25 @@ public class ChannelProviderImpl implements ChannelProvider {
     private LocalRepository localRepository;
     private String service;
     private CookieManager cookieManager;
+    private Settings settings;
 
     private long channelsCacheTime = 0;
 
-    static ChannelProvider newInstance(ServerApi api, LocalRepository localRepository, String service, CookieManager cookieManager) {
-        return new ChannelProviderImpl(api, localRepository, service, cookieManager);
+    static ChannelProvider newInstance(ServerApi api, LocalRepository localRepository, String service, CookieManager cookieManager, Settings settings) {
+        return new ChannelProviderImpl(api, localRepository, service, cookieManager, settings);
     }
 
-    private ChannelProviderImpl(ServerApi api, LocalRepository localRepository, String service, CookieManager cookieManager) {
+    private ChannelProviderImpl(ServerApi api, LocalRepository localRepository, String service, CookieManager cookieManager, Settings settings) {
         this.api = api;
         this.localRepository = localRepository;
         this.service = service;
         this.cookieManager = cookieManager;
+        this.settings = settings;
     }
 
-    // TODO: change username when username will be stored in SDK
     @Override
     public Flowable<List<Channel>> getChannels() {
-        String userName = cookieManager.isCookieExists() ? "bt1@dna.fi" : "guest";
+        String userName = cookieManager.isCookieExists() ? settings.getUserName() : UserProvider.USER_GUEST;
 
         if (System.currentTimeMillis() - channelsCacheTime > CacheTTLConfig.CHANNEL_TTL) {
             return api.getChannels(userName, service)

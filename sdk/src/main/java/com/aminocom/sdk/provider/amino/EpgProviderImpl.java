@@ -6,6 +6,7 @@ import com.aminocom.sdk.mapper.EpgMapper;
 import com.aminocom.sdk.mapper.ProgramMapper;
 import com.aminocom.sdk.model.client.Epg;
 import com.aminocom.sdk.provider.EpgProvider;
+import com.aminocom.sdk.settings.Settings;
 import com.aminocom.sdk.util.DateUtil;
 
 import java.util.List;
@@ -22,17 +23,19 @@ public class EpgProviderImpl implements EpgProvider {
     private ServerApi api;
     private LocalRepository localRepository;
     private String service;
+    private Settings settings;
 
     private long epgCacheTime = 0;
 
-    public static EpgProvider newInstance(ServerApi api, LocalRepository localRepository, String service) {
-        return new EpgProviderImpl(api, localRepository, service);
+    public static EpgProvider newInstance(ServerApi api, LocalRepository localRepository, String service, Settings settings) {
+        return new EpgProviderImpl(api, localRepository, service, settings);
     }
 
-    private EpgProviderImpl(ServerApi api, LocalRepository localRepository, String service) {
+    private EpgProviderImpl(ServerApi api, LocalRepository localRepository, String service, Settings settings) {
         this.api = api;
         this.localRepository = localRepository;
         this.service = service;
+        this.settings = settings;
     }
 
     @Override
@@ -70,7 +73,7 @@ public class EpgProviderImpl implements EpgProvider {
                     epgCacheTime = System.currentTimeMillis();
                 })
                 .buffer(1000)
-                .flatMapSingle(response -> api.getRecording("bt1@dna.fi", service, DateUtil.getTimeInSeconds(start), DateUtil.getTimeInSeconds(end), RECORDING_PAGE_NUMBER))
+                .flatMapSingle(response -> api.getRecording(settings.getUserName(), service, DateUtil.getTimeInSeconds(start), DateUtil.getTimeInSeconds(end), RECORDING_PAGE_NUMBER))
                 .flatMap(response -> Flowable.fromIterable(response.recordedContent.programList.programs))
                 .map(ProgramMapper::from)
                 .toList()
