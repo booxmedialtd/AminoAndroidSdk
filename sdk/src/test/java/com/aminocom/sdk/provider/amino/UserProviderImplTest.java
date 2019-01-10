@@ -7,6 +7,7 @@ import com.aminocom.sdk.TestLocalRepository;
 import com.aminocom.sdk.TestSettings;
 import com.aminocom.sdk.model.network.UserResponse;
 import com.aminocom.sdk.provider.ProviderType;
+import com.aminocom.sdk.settings.Settings;
 
 import org.junit.After;
 import org.junit.Before;
@@ -25,7 +26,7 @@ public class UserProviderImplTest {
     private MockWebServer mockServer;
     private JsonReader jsonReader = new JsonReader();
     private Sdk sdk;
-    private TestCookieManager cookieManager;
+    private Settings settings;
 
     @Before
     public void setUp() throws Exception {
@@ -33,56 +34,71 @@ public class UserProviderImplTest {
 
         mockServer.start();
 
-        cookieManager = new TestCookieManager();
+        settings = new TestSettings();
 
         sdk = new Sdk(
                 mockServer.url("/").toString(),
                 "mobileclient",
                 "qn05BON1hXGCUsw",
                 ProviderType.AMINO,
-                cookieManager,
+                new TestCookieManager(),
                 new TestLocalRepository(),
-                new TestSettings()
+                settings
         );
     }
 
-    // FIXME: Fix mocking of the server
     @Test
-    public void loginCorrect() throws Exception {
-        TestObserver<UserResponse> testObserver = new TestObserver<>();
-
-        String user = "aleksei@test.com";
-        String password = "1234";
-
+    public void login_Successful() {
         MockResponse mockResponse = new MockResponse()
                 .setResponseCode(200)
                 .setBody(jsonReader.getJson("json/login_successful.json"));
 
-        mockServer.enqueue(mockResponse);
-
-        sdk.user().login(user, password).subscribe(testObserver);
-        testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS);
+        TestObserver<UserResponse> testObserver = login("test@test.com", "1234", mockResponse);
 
         testObserver.assertNoErrors();
         testObserver.assertValueCount(1);
     }
 
-    // FIXME: Fix mocking of the server
     @Test
-    public void loginWrong() throws Exception {
+    public void login_Successful_SaveUserName() {
+        String user = "test@test.com";
+
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(200)
+                .setBody(jsonReader.getJson("json/login_successful.json"));
+
+        login(user, "1234", mockResponse);
+
+        assertEquals(user, settings.getUserName());
+    }
+
+    private TestObserver<UserResponse> login(String username, String password, MockResponse mockResponse) {
         TestObserver<UserResponse> testObserver = new TestObserver<>();
-
-        String user = "some_user@test.com";
-        String password = "0000";
-
-        MockResponse mockResponse = new MockResponse().setResponseCode(401);
 
         mockServer.enqueue(mockResponse);
 
-        sdk.user().login(user, password).subscribe(testObserver);
+        sdk.user().login(username, password).subscribe(testObserver);
         testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS);
 
+        return testObserver;
+    }
+
+    @Test
+    public void login_Failed() {
+        MockResponse mockResponse = new MockResponse().setResponseCode(401);
+
+        TestObserver<UserResponse> testObserver = login("some_user@test.com", "0000", mockResponse);
+
         assertEquals(1, testObserver.errorCount());
+    }
+
+    @Test
+    public void login_Failed_NoUserName() {
+        MockResponse mockResponse = new MockResponse().setResponseCode(401);
+
+        login("some_user@test.com", "0000", mockResponse);
+
+        assertEquals("", settings.getUserName());
     }
 
     @After

@@ -4,7 +4,7 @@ import com.aminocom.sdk.settings.Settings;
 
 public class TestSettings implements Settings {
 
-    private String username;
+    private String username = "";
     private long lastLoadedEpgDay;
 
     @Override
