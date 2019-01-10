@@ -6,7 +6,6 @@ import com.aminocom.sdk.TestCookieManager;
 import com.aminocom.sdk.TestLocalRepository;
 import com.aminocom.sdk.TestSettings;
 import com.aminocom.sdk.model.client.Category;
-import com.aminocom.sdk.model.network.UserResponse;
 import com.aminocom.sdk.provider.ProviderType;
 
 import org.junit.After;
@@ -16,7 +15,6 @@ import org.junit.Test;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.observers.TestObserver;
 import io.reactivex.subscribers.TestSubscriber;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -24,7 +22,6 @@ import okhttp3.mockwebserver.RecordedRequest;
 
 import static junit.framework.TestCase.assertEquals;
 
-// TODO: check correctness of TestCookieManager
 public class CategoryProviderImplTest {
     private MockWebServer mockServer;
     private JsonReader jsonReader = new JsonReader();
@@ -48,7 +45,7 @@ public class CategoryProviderImplTest {
     }
 
     @Test
-    public void getCategories_GuestUser() throws Exception {
+    public void getCategories_Successful() throws Exception {
         String path = "/api/category?service=mobileclient";
 
         MockResponse mockResponse = new MockResponse()
@@ -70,39 +67,20 @@ public class CategoryProviderImplTest {
         assertEquals(path, request.getPath());
     }
 
-    // TODO: Fix after implementation of settings interface
     @Test
-    public void getCategories_AuthorizedUser() throws Exception {
-        String user = "aleksei@test.com";
-        String password = "1234";
+    public void getCategories_Failed() {
+        MockResponse mockResponse = new MockResponse()
+                .setResponseCode(500);
 
-        login(user, password);
+        mockServer.enqueue(mockResponse);
 
-        TestSubscriber<List<Category>> categoryObserver = new TestSubscriber<>();
+        TestSubscriber<List<Category>> testObserver = new TestSubscriber<>();
 
-        sdk.categories().getCategories().subscribe(categoryObserver);
-        categoryObserver.awaitTerminalEvent(3, TimeUnit.SECONDS);
+        sdk.categories().getCategories().subscribe(testObserver);
+        testObserver.awaitTerminalEvent(2, TimeUnit.SECONDS);
 
-        categoryObserver.assertNoErrors();
-        categoryObserver.assertValueCount(1);
-
-        String path = "/api/user/" + user + "/category?service=mobileclient";
-
-        RecordedRequest request = mockServer.takeRequest();
-        assertEquals(path, request.getPath());
-    }
-
-    private void login(String user, String password) throws InterruptedException {
-        TestObserver<UserResponse> loginObserver = new TestObserver<>();
-
-        MockResponse loginResponse = new MockResponse()
-                .setResponseCode(200)
-                .setHeader("Set-Cookie", "usid=e54e189ea043ea4a5bfaf6");
-
-        mockServer.enqueue(loginResponse);
-
-        sdk.user().login(user, password).subscribe(loginObserver);
-        mockServer.takeRequest();
+        testObserver.assertNoValues();
+        assertEquals(1, testObserver.errorCount());
     }
 
     @After
