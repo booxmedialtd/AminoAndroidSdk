@@ -70,13 +70,11 @@ public class ChannelProviderImplTest {
         assertEquals(path, request.getPath());
     }
 
-    // TODO: Fix after implementation of settings interface
     @Test
     public void getChannels_AuthorizedUser() throws Exception {
         String user = "test@test.com";
-        String password = "1234";
 
-        login(user, password);
+        login(user, "1234");
 
         TestSubscriber<List<Channel>> testObserver = new TestSubscriber<>();
 
@@ -99,16 +97,17 @@ public class ChannelProviderImplTest {
         assertEquals(path, request.getPath());
     }
 
-    private void login(String user, String password) throws InterruptedException {
+    private void login(String username, String password) throws InterruptedException {
         TestObserver<UserResponse> loginObserver = new TestObserver<>();
 
         MockResponse loginResponse = new MockResponse()
                 .setResponseCode(200)
-                .setHeader("Set-Cookie", "usid=e54e189ea043ea4a5bfaf6");
+                .setHeader("Set-Cookie", "usid=e54e189ea043ea4a5bfaf6")
+                .setBody(jsonReader.getJson("json/login_successful.json"));
 
         mockServer.enqueue(loginResponse);
 
-        sdk.user().login(user, password).subscribe(loginObserver);
+        sdk.user().login(username, password).subscribe(loginObserver);
         mockServer.takeRequest();
     }
 
