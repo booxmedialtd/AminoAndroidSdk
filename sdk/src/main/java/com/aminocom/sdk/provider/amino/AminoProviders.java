@@ -23,7 +23,7 @@ public class AminoProviders implements Providers {
     private StreamProvider streamProvider;
 
     public AminoProviders(ServerApi api, CustomDigestAuthenticator authenticator, String service, CookieManager cookieManager, LocalRepository dbRepository, Settings settings) {
-        userProvider = UserProviderImpl.newInstance(api, authenticator, service);
+        userProvider = UserProviderImpl.newInstance(api, authenticator, service, settings);
         channelProvider = ChannelProviderImpl.newInstance(api, dbRepository, service, cookieManager, settings);
         categoryProvider = CategoryProviderImpl.newInstance(api, dbRepository, service);
         epgProvider = EpgProviderImpl.newInstance(api, dbRepository, service, settings);
