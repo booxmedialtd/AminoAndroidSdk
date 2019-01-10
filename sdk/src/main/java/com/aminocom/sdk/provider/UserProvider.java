@@ -8,5 +8,5 @@ public interface UserProvider {
 
     String USER_GUEST = "guest";
 
-    Single<UserResponse> login(String login, String password);
+    Single<UserResponse> login(String username, String password);
 }
