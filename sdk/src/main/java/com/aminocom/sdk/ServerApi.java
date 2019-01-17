@@ -5,6 +5,7 @@ import com.aminocom.sdk.model.network.category.CategoryListResponse;
 import com.aminocom.sdk.model.network.category.CategoryResponse;
 import com.aminocom.sdk.model.network.channel.ChannelResponse;
 import com.aminocom.sdk.model.network.epg.EpgResponse;
+import com.aminocom.sdk.model.network.group.RecordingGroupResponse;
 import com.aminocom.sdk.model.network.recording.RecordingResponse;
 import com.aminocom.sdk.model.network.stream.StreamResponse;
 
@@ -77,4 +78,15 @@ public interface ServerApi {
 
     @GET("api/v1/recordings/{recordingId}/relationships/streams")
     Single<StreamResponse> getRecordingStreams(@Path("recordingId") String recordingId, @Query("service") String service);
+
+    @GET("api/v2/user/{user}/recording/group?sort=start_date__asc")
+    Single<RecordingGroupResponse> getRecordingGroups(@Path("user") String user,
+                                                      @Query("st") long startTime,
+                                                      @Query("favorite") boolean favorite,
+                                                      @Query("service") String service);
+
+    @GET("api/v2/user/{user}/recording/group/{groupId}?sort=start_date__asc")
+    Single<RecordingGroupResponse> getGroupRecordings(@Path("user") String user,
+                                                         @Path("groupId") String groupId,
+                                                         @Query("service") String service);
 }
