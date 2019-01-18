@@ -3,6 +3,8 @@ package com.aminocom.sdk.model.network.recording.group;
 import com.aminocom.sdk.model.network.recording.ProgramItem;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 class RecordingGroup {
 
     public static final String TYPE_GROUP = "Group";
@@ -22,4 +24,7 @@ class RecordingGroup {
 
     @SerializedName("program")
     public ProgramItem program;
+
+    @SerializedName("programs")
+    public List<ProgramItem> programs;
 }
