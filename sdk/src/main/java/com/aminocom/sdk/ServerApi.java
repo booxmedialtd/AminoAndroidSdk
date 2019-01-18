@@ -5,7 +5,7 @@ import com.aminocom.sdk.model.network.category.CategoryListResponse;
 import com.aminocom.sdk.model.network.category.CategoryResponse;
 import com.aminocom.sdk.model.network.channel.ChannelResponse;
 import com.aminocom.sdk.model.network.epg.EpgResponse;
-import com.aminocom.sdk.model.network.group.RecordingGroupResponse;
+import com.aminocom.sdk.model.network.recording.group.RecordingGroupResponse;
 import com.aminocom.sdk.model.network.recording.RecordingResponse;
 import com.aminocom.sdk.model.network.stream.StreamResponse;
 
