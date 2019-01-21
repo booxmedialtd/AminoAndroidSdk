@@ -3,6 +3,7 @@ package com.aminocom.sdk.provider.amino;
 import com.aminocom.sdk.LocalRepository;
 import com.aminocom.sdk.ServerApi;
 import com.aminocom.sdk.mapper.ProgramMapper;
+import com.aminocom.sdk.model.client.Group;
 import com.aminocom.sdk.model.client.Program;
 import com.aminocom.sdk.provider.RecordingProvider;
 import com.aminocom.sdk.settings.Settings;
@@ -76,5 +77,15 @@ public class RecordingProviderImpl implements RecordingProvider {
     public Completable setFavorite(String programUid, boolean isFavorite) {
         return isFavorite ? api.addFavoriteRecording(settings.getUserName(), programUid, service) :
                 api.removeFavoriteRecording(settings.getUserName(), programUid, service);
+    }
+
+    @Override
+    public Flowable<List<Group>> getGroups() {
+        return null;
+    }
+
+    @Override
+    public Flowable<List<Group>> getGroupRecordings(String groupId) {
+        return null;
     }
 }
