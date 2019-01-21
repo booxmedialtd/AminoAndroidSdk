@@ -1,6 +1,6 @@
 package com.aminocom.sdk.provider;
 
-import com.aminocom.sdk.model.client.Group;
+import com.aminocom.sdk.model.client.RecordingGroup;
 import com.aminocom.sdk.model.client.Program;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public interface RecordingProvider {
 
     Completable setFavorite(String programUid, boolean isFavorite);
 
-    Flowable<List<Group>> getGroups();
+    Flowable<List<RecordingGroup>> getGroups();
 
-    Flowable<List<Group>> getGroupRecordings(String groupId);
+    Flowable<List<RecordingGroup>> getGroupRecordings(String groupId);
 }

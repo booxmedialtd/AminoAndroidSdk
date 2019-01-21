@@ -3,7 +3,7 @@ package com.aminocom.sdk.provider.amino;
 import com.aminocom.sdk.LocalRepository;
 import com.aminocom.sdk.ServerApi;
 import com.aminocom.sdk.mapper.ProgramMapper;
-import com.aminocom.sdk.model.client.Group;
+import com.aminocom.sdk.model.client.RecordingGroup;
 import com.aminocom.sdk.model.client.Program;
 import com.aminocom.sdk.provider.RecordingProvider;
 import com.aminocom.sdk.settings.Settings;
@@ -80,12 +80,12 @@ public class RecordingProviderImpl implements RecordingProvider {
     }
 
     @Override
-    public Flowable<List<Group>> getGroups() {
+    public Flowable<List<RecordingGroup>> getGroups() {
         return null;
     }
 
     @Override
-    public Flowable<List<Group>> getGroupRecordings(String groupId) {
+    public Flowable<List<RecordingGroup>> getGroupRecordings(String groupId) {
         return null;
     }
 }

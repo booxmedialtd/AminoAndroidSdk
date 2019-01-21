@@ -5,10 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-class RecordingGroup {
-
-    public static final String TYPE_GROUP = "Group";
-    public static final String TYPE_SINGLE = "Single";
+public class RecordingGroupItem {
 
     @SerializedName("id")
     public int id;

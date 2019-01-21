@@ -10,5 +10,5 @@ public class RecordingGroupResponse{
     public ResultSet resultSet;
 
     @SerializedName("recordingGroups")
-    public List<RecordingGroup> recordingGroups;
+    public List<RecordingGroupItem> recordingGroups;
 }

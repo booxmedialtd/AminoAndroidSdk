@@ -2,7 +2,7 @@ package com.aminocom.sdk;
 
 import com.aminocom.sdk.model.client.Category;
 import com.aminocom.sdk.model.client.Epg;
-import com.aminocom.sdk.model.client.Group;
+import com.aminocom.sdk.model.client.RecordingGroup;
 import com.aminocom.sdk.model.client.Program;
 import com.aminocom.sdk.model.client.channel.Channel;
 
@@ -63,12 +63,12 @@ public class TestLocalRepository implements LocalRepository {
     }
 
     @Override
-    public Flowable<List<Group>> getGroup() {
+    public Flowable<List<RecordingGroup>> getGroup() {
         return null;
     }
 
     @Override
-    public void cacheGroups(List<Group> groups) {
+    public void cacheGroups(List<RecordingGroup> groups) {
     }
 
     @Override

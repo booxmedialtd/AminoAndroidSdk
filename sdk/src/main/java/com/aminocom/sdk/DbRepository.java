@@ -6,7 +6,7 @@ import android.content.Context;
 import com.aminocom.sdk.db.SdkDatabase;
 import com.aminocom.sdk.model.client.Category;
 import com.aminocom.sdk.model.client.Epg;
-import com.aminocom.sdk.model.client.Group;
+import com.aminocom.sdk.model.client.RecordingGroup;
 import com.aminocom.sdk.model.client.Program;
 import com.aminocom.sdk.model.client.channel.Channel;
 
@@ -85,12 +85,12 @@ public class DbRepository implements LocalRepository {
     }
 
     @Override
-    public Flowable<List<Group>> getGroup() {
+    public Flowable<List<RecordingGroup>> getGroup() {
         return Flowable.empty();
     }
 
     @Override
-    public void cacheGroups(List<Group> groups) {
+    public void cacheGroups(List<RecordingGroup> groups) {
     }
 
     @Override

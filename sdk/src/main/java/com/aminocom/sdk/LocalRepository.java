@@ -2,7 +2,7 @@ package com.aminocom.sdk;
 
 import com.aminocom.sdk.model.client.Category;
 import com.aminocom.sdk.model.client.Epg;
-import com.aminocom.sdk.model.client.Group;
+import com.aminocom.sdk.model.client.RecordingGroup;
 import com.aminocom.sdk.model.client.Program;
 import com.aminocom.sdk.model.client.channel.Channel;
 
@@ -32,9 +32,9 @@ public interface LocalRepository {
 
     void cacheEpg(List<Epg> epgList);
 
-    Flowable<List<Group>> getGroup();
+    Flowable<List<RecordingGroup>> getGroup();
 
-    void cacheGroups(List<Group> groups);
+    void cacheGroups(List<RecordingGroup> groups);
 
     Flowable<List<Category>> getCategories();
 
