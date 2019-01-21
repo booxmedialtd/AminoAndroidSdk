@@ -1,5 +1,8 @@
 package com.aminocom.sdk.model.client;
 
+import android.arch.persistence.room.Entity;
+
+@Entity(tableName = "recording_groups")
 public class RecordingGroup {
     public static final String TYPE_GROUP = "RecordingGroup";
     public static final String TYPE_SINGLE = "Single";

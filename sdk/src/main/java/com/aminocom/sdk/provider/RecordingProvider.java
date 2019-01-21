@@ -19,7 +19,7 @@ public interface RecordingProvider {
 
     Completable setFavorite(String programUid, boolean isFavorite);
 
-    Flowable<List<RecordingGroup>> getGroups();
+    Flowable<List<RecordingGroup>> getGroups(Long startTime);
 
     Flowable<List<RecordingGroup>> getGroupRecordings(String groupId);
 }

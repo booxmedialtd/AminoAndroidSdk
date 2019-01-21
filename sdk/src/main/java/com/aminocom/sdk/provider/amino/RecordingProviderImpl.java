@@ -3,6 +3,7 @@ package com.aminocom.sdk.provider.amino;
 import com.aminocom.sdk.LocalRepository;
 import com.aminocom.sdk.ServerApi;
 import com.aminocom.sdk.mapper.ProgramMapper;
+import com.aminocom.sdk.mapper.RecordingGroupMapper;
 import com.aminocom.sdk.model.client.RecordingGroup;
 import com.aminocom.sdk.model.client.Program;
 import com.aminocom.sdk.provider.RecordingProvider;
@@ -80,12 +81,30 @@ public class RecordingProviderImpl implements RecordingProvider {
     }
 
     @Override
-    public Flowable<List<RecordingGroup>> getGroups() {
-        return null;
+    public Flowable<List<RecordingGroup>> getGroups(Long startTime) {
+        return Flowable.range(INITIAL_RECORDING_PAGE, MAX_RECORDING_PAGE)
+                .flatMapSingle(page -> api.getRecordingGroups(settings.getUserName(), startTime, false, service, page))
+                .takeUntil(response -> response.resultSet.currentPage == response.resultSet.totalPages - 1)
+                .map(response -> RecordingGroupMapper.from(response.recordingGroups))
+                .doOnNext(programs -> {
+                    localRepository.cacheGroups(programs);
+                    recordingCacheTime = System.currentTimeMillis();
+                })
+                .flatMap(programs -> localRepository.getRecordingGroups());
     }
 
     @Override
     public Flowable<List<RecordingGroup>> getGroupRecordings(String groupId) {
+        /*        return Flowable.range(INITIAL_RECORDING_PAGE, MAX_RECORDING_PAGE)
+                .flatMapSingle(page -> api.getRecordingGroups(settings.getUserName(), startTime, false, service, page))
+                .takeUntil(response -> response.resultSet.currentPage == response.resultSet.totalPages - 1)
+                .map(response -> ProgramMapper.from(response.recordedContent.programList.programs))
+                .doOnNext(programs -> {
+                    localRepository.updateOrInsertPrograms(programs);
+                    recordingCacheTime = System.currentTimeMillis();
+                })
+                .flatMap(programs -> localRepository.getPrograms(startTime, endTime));
+                */
         return null;
     }
 }

@@ -83,7 +83,8 @@ public interface ServerApi {
     Single<RecordingGroupResponse> getRecordingGroups(@Path("user") String user,
                                                       @Query("st") long startTime,
                                                       @Query("favorite") boolean favorite,
-                                                      @Query("service") String service);
+                                                      @Query("service") String service,
+                                                      @Query("pg") int page);
 
     @GET("api/v2/user/{user}/recording/group/{groupId}?sort=start_date__asc")
     Single<RecordingGroupResponse> getGroupRecordings(@Path("user") String user,

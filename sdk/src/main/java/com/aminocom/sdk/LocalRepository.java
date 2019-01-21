@@ -32,7 +32,7 @@ public interface LocalRepository {
 
     void cacheEpg(List<Epg> epgList);
 
-    Flowable<List<RecordingGroup>> getGroup();
+    Flowable<List<RecordingGroup>> getRecordingGroups();
 
     void cacheGroups(List<RecordingGroup> groups);
 

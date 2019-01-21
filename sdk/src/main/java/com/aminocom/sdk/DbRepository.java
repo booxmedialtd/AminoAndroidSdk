@@ -85,7 +85,7 @@ public class DbRepository implements LocalRepository {
     }
 
     @Override
-    public Flowable<List<RecordingGroup>> getGroup() {
+    public Flowable<List<RecordingGroup>> getRecordingGroups() {
         return Flowable.empty();
     }
 
