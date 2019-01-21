@@ -49,6 +49,11 @@ public class DbRepository implements LocalRepository {
     }
 
     @Override
+    public Flowable<List<Program>> getProgramsByGroup(String groupId) {
+        return db.programDao().getProgramsByGroup(groupId);
+    }
+
+    @Override
     public void cachePrograms(List<Program> programs) {
         db.programDao().insertAll(programs);
     }

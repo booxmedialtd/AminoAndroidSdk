@@ -80,6 +80,7 @@ public class RecordingProviderImpl implements RecordingProvider {
                 api.removeFavoriteRecording(settings.getUserName(), programUid, service);
     }
 
+    // Add group DAO
     @Override
     public Flowable<List<RecordingGroup>> getGroups(Long startTime) {
         return Flowable.range(INITIAL_RECORDING_PAGE, MAX_RECORDING_PAGE)
@@ -98,7 +99,7 @@ public class RecordingProviderImpl implements RecordingProvider {
         return Flowable.range(INITIAL_RECORDING_PAGE, MAX_RECORDING_PAGE)
                 .flatMapSingle(page -> api.getGroupRecordings(settings.getUserName(), groupId, service))
                 .takeUntil(response -> response.resultSet.currentPage == response.resultSet.totalPages - 1)
-                .map(response -> ProgramMapper.from(response.recordingGroup.programs))
+                .map(response -> ProgramMapper.from(response.recordingGroup.programs, groupId))
                 .doOnNext(programs -> {
                     localRepository.updateOrInsertPrograms(programs);
                     recordingCacheTime = System.currentTimeMillis();

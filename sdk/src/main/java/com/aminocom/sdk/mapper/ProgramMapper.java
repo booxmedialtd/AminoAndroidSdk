@@ -55,16 +55,24 @@ public class ProgramMapper {
     }
 
     public static List<Program> from(List<ProgramItem> programs) {
+        return from(programs, null);
+    }
+
+    public static List<Program> from(List<ProgramItem> programs, String groupId) {
         List<Program> result = new ArrayList<>();
 
         for (ProgramItem item : programs) {
-            result.add(from(item));
+            result.add(from(item, groupId));
         }
 
         return result;
     }
 
     public static Program from(ProgramItem item) {
+        return from(item, null);
+    }
+
+    public static Program from(ProgramItem item, String groupId) {
         Program result = new Program();
 
         result.setProgramUId(item.programUid);
@@ -95,6 +103,8 @@ public class ProgramMapper {
         } else {
             result.setStatus(ProgramStatus.SCHEDULED);
         }
+
+        result.setGroupId(groupId);
 
         return result;
     }

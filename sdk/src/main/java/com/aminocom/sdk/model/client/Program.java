@@ -33,7 +33,7 @@ public class Program {
     private ProgramStatus status;
     private Thumbnail thumbnail;
     private long playbackDuration;
-
+    private String groupId;
 
     @NonNull
     public String getProgramUId() {
@@ -202,5 +202,13 @@ public class Program {
 
     public void setPlaybackDuration(long playbackDuration) {
         this.playbackDuration = playbackDuration;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 }
