@@ -20,6 +20,8 @@ public interface LocalRepository {
 
     Flowable<List<Program>> getPrograms(long startDate, long endDate);
 
+    Flowable<List<Program>> getProgramsByGroup(String groupId);
+
     Single<List<Program>> getUpcomingPrograms(String channelId, long currentTime, int limit);
 
     void cachePrograms(List<Program> programs);

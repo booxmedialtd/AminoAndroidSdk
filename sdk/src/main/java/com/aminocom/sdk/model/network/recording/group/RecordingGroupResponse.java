@@ -11,4 +11,7 @@ public class RecordingGroupResponse{
 
     @SerializedName("recordingGroups")
     public List<RecordingGroupItem> recordingGroups;
+
+    @SerializedName("recordingGroup")
+    public RecordingGroupItem recordingGroup;
 }

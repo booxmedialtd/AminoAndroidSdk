@@ -21,5 +21,5 @@ public interface RecordingProvider {
 
     Flowable<List<RecordingGroup>> getGroups(Long startTime);
 
-    Flowable<List<RecordingGroup>> getGroupRecordings(String groupId);
+    Flowable<List<Program>> getGroupRecordings(String groupId);
 }

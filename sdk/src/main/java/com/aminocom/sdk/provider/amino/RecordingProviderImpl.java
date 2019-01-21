@@ -94,17 +94,15 @@ public class RecordingProviderImpl implements RecordingProvider {
     }
 
     @Override
-    public Flowable<List<RecordingGroup>> getGroupRecordings(String groupId) {
-        /*        return Flowable.range(INITIAL_RECORDING_PAGE, MAX_RECORDING_PAGE)
-                .flatMapSingle(page -> api.getRecordingGroups(settings.getUserName(), startTime, false, service, page))
+    public Flowable<List<Program>> getGroupRecordings(String groupId) {
+        return Flowable.range(INITIAL_RECORDING_PAGE, MAX_RECORDING_PAGE)
+                .flatMapSingle(page -> api.getGroupRecordings(settings.getUserName(), groupId, service))
                 .takeUntil(response -> response.resultSet.currentPage == response.resultSet.totalPages - 1)
-                .map(response -> ProgramMapper.from(response.recordedContent.programList.programs))
+                .map(response -> ProgramMapper.from(response.recordingGroup.programs))
                 .doOnNext(programs -> {
                     localRepository.updateOrInsertPrograms(programs);
                     recordingCacheTime = System.currentTimeMillis();
                 })
-                .flatMap(programs -> localRepository.getPrograms(startTime, endTime));
-                */
-        return null;
+                .flatMap(programs -> localRepository.getProgramsByGroup(groupId));
     }
 }
