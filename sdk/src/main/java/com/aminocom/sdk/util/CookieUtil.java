@@ -8,9 +8,9 @@ import java.util.Locale;
 import okhttp3.Cookie;
 import okhttp3.Response;
 
-public class CookieParser {
+public class CookieUtil {
 
-    private CookieParser() {
+    private CookieUtil() {
     }
 
     public static List<String> parseCookies(Response response) {

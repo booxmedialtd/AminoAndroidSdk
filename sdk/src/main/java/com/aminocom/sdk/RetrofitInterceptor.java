@@ -1,6 +1,6 @@
 package com.aminocom.sdk;
 
-import com.aminocom.sdk.util.CookieParser;
+import com.aminocom.sdk.util.CookieUtil;
 import com.burgstaller.okhttp.CacheKeyProvider;
 import com.burgstaller.okhttp.DefaultCacheKeyProvider;
 import com.burgstaller.okhttp.digest.CachingAuthenticator;
@@ -74,7 +74,7 @@ public class RetrofitInterceptor implements Interceptor {
         if (response != null && response.request() != null
                 && response.request().url().toString().contains("/login") && responseCode == HTTP_OK) {
 
-            List<String> loginCookies = CookieParser.parseCookies(response);
+            List<String> loginCookies = CookieUtil.parseCookies(response);
 
             if (!loginCookies.isEmpty()) {
                 for (String cookieString : loginCookies) {
