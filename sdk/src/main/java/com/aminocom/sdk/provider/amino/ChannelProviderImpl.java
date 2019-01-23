@@ -1,6 +1,5 @@
 package com.aminocom.sdk.provider.amino;
 
-import com.aminocom.sdk.CacheTTLConfig;
 import com.aminocom.sdk.CookieManager;
 import com.aminocom.sdk.LocalRepository;
 import com.aminocom.sdk.ServerApi;
@@ -43,7 +42,7 @@ public class ChannelProviderImpl implements ChannelProvider {
     public Flowable<List<Channel>> getChannels() {
         String userName = cookieManager.isCookieExists() ? settings.getUserName() : UserProvider.USER_GUEST;
 
-        if (System.currentTimeMillis() - channelsCacheTime > CacheTTLConfig.CHANNEL_TTL) {
+        if (System.currentTimeMillis() - channelsCacheTime > settings.getCacheTtlManager().gerChannelTtl()) {
             return api.getChannels(userName, service)
                     .toObservable()
                     .flatMapIterable(response -> response.data.channels)

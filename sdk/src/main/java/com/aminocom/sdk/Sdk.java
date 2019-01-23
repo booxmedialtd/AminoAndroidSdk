@@ -12,7 +12,7 @@ import com.aminocom.sdk.provider.RecordingProvider;
 import com.aminocom.sdk.provider.StreamProvider;
 import com.aminocom.sdk.provider.UserProvider;
 import com.aminocom.sdk.settings.Settings;
-import com.aminocom.sdk.settings.SdkSettings;
+import com.aminocom.sdk.settings.DefaultSettings;
 import com.burgstaller.okhttp.CachingAuthenticatorDecorator;
 import com.burgstaller.okhttp.digest.CachingAuthenticator;
 import com.burgstaller.okhttp.digest.Credentials;
@@ -43,7 +43,7 @@ public class Sdk implements Providers {
                 type,
                 new AndroidCookieManager(),
                 new DbRepository(context),
-                new SdkSettings(context)
+                new DefaultSettings(context, new DefaultCacheTtlManager())
         );
     }
 

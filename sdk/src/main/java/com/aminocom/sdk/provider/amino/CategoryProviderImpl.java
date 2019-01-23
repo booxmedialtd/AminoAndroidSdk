@@ -2,7 +2,6 @@ package com.aminocom.sdk.provider.amino;
 
 import android.util.Log;
 
-import com.aminocom.sdk.CacheTTLConfig;
 import com.aminocom.sdk.LocalRepository;
 import com.aminocom.sdk.ServerApi;
 import com.aminocom.sdk.mapper.CategoryMapper;
@@ -10,6 +9,7 @@ import com.aminocom.sdk.mapper.CategoryProgramMapper;
 import com.aminocom.sdk.model.client.Category;
 import com.aminocom.sdk.model.network.category.CategoryListItem;
 import com.aminocom.sdk.provider.CategoryProvider;
+import com.aminocom.sdk.settings.Settings;
 
 import java.util.List;
 
@@ -23,22 +23,24 @@ public class CategoryProviderImpl implements CategoryProvider {
     private ServerApi api;
     private LocalRepository localRepository;
     private String service;
+    private Settings settings;
 
     private long categoriesCacheTime = 0;
 
-    public static CategoryProvider newInstance(ServerApi api, LocalRepository localRepository, String service) {
-        return new CategoryProviderImpl(api, localRepository, service);
+    public static CategoryProvider newInstance(ServerApi api, LocalRepository localRepository, String service, Settings settings) {
+        return new CategoryProviderImpl(api, localRepository, service, settings);
     }
 
-    private CategoryProviderImpl(ServerApi api, LocalRepository localRepository, String service) {
+    private CategoryProviderImpl(ServerApi api, LocalRepository localRepository, String service, Settings settings) {
         this.api = api;
         this.localRepository = localRepository;
         this.service = service;
+        this.settings = settings;
     }
 
     @Override
     public Flowable<List<Category>> getCategories() {
-        if (System.currentTimeMillis() - categoriesCacheTime > CacheTTLConfig.CATEGORY_TTL) {
+        if (System.currentTimeMillis() - categoriesCacheTime > settings.getCacheTtlManager().getCategoryTtl()) {
             return api.getCategoryList(service)
                     .toObservable()
                     .flatMapIterable(response -> response.categoryList.categories)

@@ -1,5 +1,7 @@
 package com.aminocom.sdk.settings;
 
+import com.aminocom.sdk.CacheTtlManager;
+
 public interface Settings {
 
     void clear();
@@ -11,4 +13,6 @@ public interface Settings {
     long getLastLoadedEpgDay();
 
     void setLastLoadedEpgDay(long time);
+
+    CacheTtlManager getCacheTtlManager();
 }
