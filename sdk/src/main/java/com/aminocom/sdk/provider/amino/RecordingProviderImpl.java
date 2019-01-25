@@ -50,28 +50,37 @@ public class RecordingProviderImpl implements RecordingProvider {
 
     @Override
     public Flowable<List<Program>> getRecordings(Long startTime, Long endTime) {
-        return Flowable.range(INITIAL_RECORDING_PAGE, MAX_RECORDING_PAGE)
-                .flatMapSingle(page -> api.getRecording(settings.getUserName(), service, DateUtil.getTimeInSeconds(startTime), DateUtil.getTimeInSeconds(endTime), page))
-                .takeUntil(response -> response.recordedContent.resultSet.currentPage == response.recordedContent.resultSet.totalPages - 1)
-                .map(response -> ProgramMapper.from(response.recordedContent.programList.programs))
-                .doOnNext(programs -> {
-                    localRepository.updateOrInsertPrograms(programs);
-                    recordingCacheTime = System.currentTimeMillis();
-                })
-                .flatMap(programs -> localRepository.getPrograms(startTime, endTime));
+        if (System.currentTimeMillis() - settings.getRecordingLoadedTime() > settings.getCacheTtlManager().getRecordingTtl()) {
+            return Flowable.range(INITIAL_RECORDING_PAGE, MAX_RECORDING_PAGE)
+                    .flatMapSingle(page -> api.getRecording(settings.getUserName(), service, DateUtil.getTimeInSeconds(startTime), DateUtil.getTimeInSeconds(endTime), page))
+                    .takeUntil(response -> response.recordedContent.resultSet.currentPage == response.recordedContent.resultSet.totalPages - 1)
+                    .map(response -> ProgramMapper.from(response.recordedContent.programList.programs))
+                    .doOnNext(programs -> {
+                        localRepository.updateOrInsertPrograms(programs);
+                        recordingCacheTime = System.currentTimeMillis();
+                    })
+                    .flatMap(programs -> localRepository.getPrograms(startTime, endTime));
+        } else {
+            return localRepository.getPrograms(startTime, endTime);
+        }
     }
 
+    // FIXME: Fix returning of favorites only
     @Override
     public Flowable<List<Program>> getFavoriteRecordings(Long startTime, Long endTime) {
-        return Flowable.range(INITIAL_RECORDING_PAGE, MAX_RECORDING_PAGE)
-                .flatMapSingle(page -> api.getFavoriteRecording(settings.getUserName(), service, page))
-                .takeUntil(response -> response.recordedContent.resultSet.currentPage == response.recordedContent.resultSet.totalPages - 1)
-                .map(response -> ProgramMapper.from(response.recordedContent.programList.programs))
-                .doOnNext(programs -> {
-                    localRepository.updateOrInsertPrograms(programs);
-                    recordingCacheTime = System.currentTimeMillis();
-                })
-                .flatMap(programs -> localRepository.getPrograms(startTime, endTime));
+        if (System.currentTimeMillis() - settings.getFavoriteRecordingLoadedTime() > settings.getCacheTtlManager().getRecordingTtl()) {
+            return Flowable.range(INITIAL_RECORDING_PAGE, MAX_RECORDING_PAGE)
+                    .flatMapSingle(page -> api.getFavoriteRecording(settings.getUserName(), service, page))
+                    .takeUntil(response -> response.recordedContent.resultSet.currentPage == response.recordedContent.resultSet.totalPages - 1)
+                    .map(response -> ProgramMapper.from(response.recordedContent.programList.programs))
+                    .doOnNext(programs -> {
+                        localRepository.updateOrInsertPrograms(programs);
+                        recordingCacheTime = System.currentTimeMillis();
+                    })
+                    .flatMap(programs -> localRepository.getPrograms(startTime, endTime));
+        } else {
+            return localRepository.getPrograms(startTime, endTime);
+        }
     }
 
     @Override

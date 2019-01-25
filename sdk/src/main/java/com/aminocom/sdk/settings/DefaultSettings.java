@@ -10,7 +10,11 @@ public class DefaultSettings implements Settings {
     private static final String SETTINGS_FILE_NAME = "com.aminocom.sdk";
 
     private static final String PREF_USER_NAME = "user_name";
-    private static final String PREF_LAST_LOADED_EPG = "last_loaded_epg";
+    private static final String PREF_EPG_LOADED_TIME = "epg_loaded_time";
+    private static final String PREF_CHANNEL_LOADED_TIME = "channel_loaded_time";
+    private static final String PREF_CATEGORY_LOADED_TIME = "category_loaded_time";
+    private static final String PREF_RECORDING_LOADED_TIME = "recording_loaded_time";
+    private static final String PREF_FAVORITE_RECORDING_LOADED_TIME = "favorite_recording_loaded_time";
 
     private final CacheTtlManager cacheTtlManager;
 
@@ -37,13 +41,53 @@ public class DefaultSettings implements Settings {
     }
 
     @Override
-    public long getLastLoadedEpgDay() {
-        return preferences.getLong(PREF_LAST_LOADED_EPG, 0);
+    public long getEpgLoadedTime() {
+        return preferences.getLong(PREF_EPG_LOADED_TIME, 0);
     }
 
     @Override
-    public void setLastLoadedEpgDay(long time) {
-        preferences.edit().putLong(PREF_USER_NAME, time).apply();
+    public void setEpgLoadedTime(long time) {
+        preferences.edit().putLong(PREF_EPG_LOADED_TIME, time).apply();
+    }
+
+    @Override
+    public long getCategoryLoadedTime() {
+        return preferences.getLong(PREF_CATEGORY_LOADED_TIME, 0);
+    }
+
+    @Override
+    public void setCategoryLoadedTime(long time) {
+        preferences.edit().putLong(PREF_CATEGORY_LOADED_TIME, time).apply();
+    }
+
+    @Override
+    public long getChannelLoadedTime() {
+        return preferences.getLong(PREF_CHANNEL_LOADED_TIME, 0);
+    }
+
+    @Override
+    public void setChannelLoadedTime(long time) {
+        preferences.edit().putLong(PREF_CHANNEL_LOADED_TIME, time).apply();
+    }
+
+    @Override
+    public long getRecordingLoadedTime() {
+        return preferences.getLong(PREF_RECORDING_LOADED_TIME, 0);
+    }
+
+    @Override
+    public void setRecordingLoadedTime(long time) {
+        preferences.edit().putLong(PREF_RECORDING_LOADED_TIME, time).apply();
+    }
+
+    @Override
+    public long getFavoriteRecordingLoadedTime() {
+        return preferences.getLong(PREF_FAVORITE_RECORDING_LOADED_TIME, 0);
+    }
+
+    @Override
+    public void setFavoriteRecordingLoadedTime(long time) {
+        preferences.edit().putLong(PREF_FAVORITE_RECORDING_LOADED_TIME, time).apply();
     }
 
     @Override

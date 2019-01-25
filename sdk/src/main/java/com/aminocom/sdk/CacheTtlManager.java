@@ -3,7 +3,7 @@ package com.aminocom.sdk;
 public interface CacheTtlManager {
     long getRecordingTtl();
 
-    long gerChannelTtl();
+    long getChannelTtl();
 
     long getCategoryTtl();
 

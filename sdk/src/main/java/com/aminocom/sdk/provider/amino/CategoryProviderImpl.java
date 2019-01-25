@@ -25,8 +25,6 @@ public class CategoryProviderImpl implements CategoryProvider {
     private String service;
     private Settings settings;
 
-    private long categoriesCacheTime = 0;
-
     public static CategoryProvider newInstance(ServerApi api, LocalRepository localRepository, String service, Settings settings) {
         return new CategoryProviderImpl(api, localRepository, service, settings);
     }
@@ -40,7 +38,7 @@ public class CategoryProviderImpl implements CategoryProvider {
 
     @Override
     public Flowable<List<Category>> getCategories() {
-        if (System.currentTimeMillis() - categoriesCacheTime > settings.getCacheTtlManager().getCategoryTtl()) {
+        if (System.currentTimeMillis() - settings.getCategoryLoadedTime() > settings.getCacheTtlManager().getCategoryTtl()) {
             return api.getCategoryList(service)
                     .toObservable()
                     .flatMapIterable(response -> response.categoryList.categories)
@@ -48,7 +46,7 @@ public class CategoryProviderImpl implements CategoryProvider {
                     .toList()
                     .doOnSuccess(categories -> {
                         localRepository.cacheCategories(categories);
-                        categoriesCacheTime = System.currentTimeMillis();
+                        settings.setCategoryLoadedTime(System.currentTimeMillis());
                     })
                     .flatMapPublisher(list -> localRepository.getCategories());
         } else {

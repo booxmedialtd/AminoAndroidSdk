@@ -63,23 +63,27 @@ public class EpgProviderImpl implements EpgProvider {
         final long start = DateUtil.getTvDayStartTime(startDate);
         final long end = DateUtil.getTvDayEndTime(endDate);
 
-        return Flowable.range(INITIAL_EPG_PAGE, MAX_EPG_PAGE)
-                .flatMapSingle(page -> api.getEpg(service, DateUtil.getTimeInSeconds(start), DateUtil.getTimeInSeconds(end), page))
-                .takeUntil(response -> response.resultSet.currentPage == response.resultSet.totalPages - 1)
-                .flatMapIterable(response -> response.channels)
-                .map(response -> ProgramMapper.from(response.id, response.programs))
-                .doOnNext(epgList -> {
-                    localRepository.cachePrograms(epgList);
-                    epgCacheTime = System.currentTimeMillis();
-                })
-                .buffer(1000)
-                .flatMapSingle(response -> api.getRecording(settings.getUserName(), service, DateUtil.getTimeInSeconds(start), DateUtil.getTimeInSeconds(end), RECORDING_PAGE_NUMBER))
-                .flatMap(response -> Flowable.fromIterable(response.recordedContent.programList.programs))
-                .map(ProgramMapper::from)
-                .toList()
-                .doOnSuccess(programs ->
-                        localRepository.updateOrInsertPrograms(programs)
-                )
-                .map(programs -> true);
+        if (System.currentTimeMillis() - settings.getEpgLoadedTime() > settings.getCacheTtlManager().getEpgTtl()) {
+            return Flowable.range(INITIAL_EPG_PAGE, MAX_EPG_PAGE)
+                    .flatMapSingle(page -> api.getEpg(service, DateUtil.getTimeInSeconds(start), DateUtil.getTimeInSeconds(end), page))
+                    .takeUntil(response -> response.resultSet.currentPage == response.resultSet.totalPages - 1)
+                    .flatMapIterable(response -> response.channels)
+                    .map(response -> ProgramMapper.from(response.id, response.programs))
+                    .doOnNext(epgList -> {
+                        localRepository.cachePrograms(epgList);
+                        settings.setEpgLoadedTime(System.currentTimeMillis());
+                    })
+                    .buffer(1000)
+                    .flatMapSingle(response -> api.getRecording(settings.getUserName(), service, DateUtil.getTimeInSeconds(start), DateUtil.getTimeInSeconds(end), RECORDING_PAGE_NUMBER))
+                    .flatMap(response -> Flowable.fromIterable(response.recordedContent.programList.programs))
+                    .map(ProgramMapper::from)
+                    .toList()
+                    .doOnSuccess(programs ->
+                            localRepository.updateOrInsertPrograms(programs)
+                    )
+                    .map(programs -> true);
+        } else {
+            return Single.just(true);
+        }
     }
 }

@@ -24,8 +24,6 @@ public class ChannelProviderImpl implements ChannelProvider {
     private CookieManager cookieManager;
     private Settings settings;
 
-    private long channelsCacheTime = 0;
-
     static ChannelProvider newInstance(ServerApi api, LocalRepository localRepository, String service, CookieManager cookieManager, Settings settings) {
         return new ChannelProviderImpl(api, localRepository, service, cookieManager, settings);
     }
@@ -42,7 +40,7 @@ public class ChannelProviderImpl implements ChannelProvider {
     public Flowable<List<Channel>> getChannels() {
         String userName = cookieManager.isCookieExists() ? settings.getUserName() : UserProvider.USER_GUEST;
 
-        if (System.currentTimeMillis() - channelsCacheTime > settings.getCacheTtlManager().gerChannelTtl()) {
+        if (System.currentTimeMillis() - settings.getChannelLoadedTime() > settings.getCacheTtlManager().getChannelTtl()) {
             return api.getChannels(userName, service)
                     .toObservable()
                     .flatMapIterable(response -> response.data.channels)
@@ -50,7 +48,7 @@ public class ChannelProviderImpl implements ChannelProvider {
                     .toList()
                     .doOnSuccess(channels -> {
                         localRepository.cacheChannels(channels);
-                        channelsCacheTime = System.currentTimeMillis();
+                        settings.setChannelLoadedTime(System.currentTimeMillis());
                     })
                     .flatMapPublisher(list -> localRepository.getChannels());
         } else {

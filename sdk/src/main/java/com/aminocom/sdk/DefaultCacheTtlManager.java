@@ -15,7 +15,7 @@ public class DefaultCacheTtlManager implements CacheTtlManager {
     }
 
     @Override
-    public long gerChannelTtl() {
+    public long getChannelTtl() {
         return CHANNEL_TTL;
     }
 

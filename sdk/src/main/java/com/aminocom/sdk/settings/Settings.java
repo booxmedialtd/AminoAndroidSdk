@@ -10,9 +10,25 @@ public interface Settings {
 
     void setUserName(String username);
 
-    long getLastLoadedEpgDay();
+    long getEpgLoadedTime();
 
-    void setLastLoadedEpgDay(long time);
+    void setEpgLoadedTime(long time);
+
+    long getCategoryLoadedTime();
+
+    void setCategoryLoadedTime(long time);
+
+    long getChannelLoadedTime();
+
+    void setChannelLoadedTime(long time);
+
+    long getRecordingLoadedTime();
+
+    void setRecordingLoadedTime(long time);
+
+    long getFavoriteRecordingLoadedTime();
+
+    void setFavoriteRecordingLoadedTime(long time);
 
     CacheTtlManager getCacheTtlManager();
 }
