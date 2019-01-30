@@ -16,6 +16,8 @@ public interface LocalRepository {
 
     void cacheChannels(List<Channel> channels);
 
+    void clearChannels();
+
     Flowable<List<Program>> getPrograms();
 
     Flowable<List<Program>> getPrograms(long startDate, long endDate);
@@ -34,11 +36,17 @@ public interface LocalRepository {
 
     void cacheEpg(List<Epg> epgList);
 
+    void clearEpg();
+
     Flowable<List<RecordingGroup>> getRecordingGroups();
 
     void cacheGroups(List<RecordingGroup> groups);
 
+    void clearGroups();
+
     Flowable<List<Category>> getCategories();
 
     void cacheCategories(List<Category> categories);
+
+    void clearCategories();
 }

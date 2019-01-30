@@ -34,6 +34,11 @@ public class DbRepository implements LocalRepository {
     }
 
     @Override
+    public void clearChannels() {
+        throw new UnsupportedOperationException("To be implemented");
+    }
+
+    @Override
     public Single<List<Program>> getUpcomingPrograms(String channelId, long currentTime, int limit) {
         return db.programDao().getPendingPrograms(channelId, currentTime, limit);
     }
@@ -90,6 +95,11 @@ public class DbRepository implements LocalRepository {
     }
 
     @Override
+    public void clearEpg() {
+        throw new UnsupportedOperationException("To be implemented");
+    }
+
+    @Override
     public Flowable<List<RecordingGroup>> getRecordingGroups() {
         return Flowable.empty();
     }
@@ -99,11 +109,21 @@ public class DbRepository implements LocalRepository {
     }
 
     @Override
+    public void clearGroups() {
+        throw new UnsupportedOperationException("To be implemented");
+    }
+
+    @Override
     public Flowable<List<Category>> getCategories() {
         return Flowable.empty();
     }
 
     @Override
     public void cacheCategories(List<Category> categories) {
+    }
+
+    @Override
+    public void clearCategories() {
+        throw new UnsupportedOperationException("To be implemented");
     }
 }

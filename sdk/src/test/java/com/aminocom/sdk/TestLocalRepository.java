@@ -27,12 +27,22 @@ public class TestLocalRepository implements LocalRepository {
     }
 
     @Override
+    public void clearChannels() {
+        channels.clear();
+    }
+
+    @Override
     public Flowable<List<Program>> getPrograms() {
         return null;
     }
 
     @Override
     public Flowable<List<Program>> getPrograms(long startDate, long endDate) {
+        return null;
+    }
+
+    @Override
+    public Flowable<List<Program>> getProgramsByGroup(String groupId) {
         return null;
     }
 
@@ -63,12 +73,22 @@ public class TestLocalRepository implements LocalRepository {
     }
 
     @Override
+    public void clearEpg() {
+
+    }
+
+    @Override
     public Flowable<List<RecordingGroup>> getRecordingGroups() {
         return null;
     }
 
     @Override
     public void cacheGroups(List<RecordingGroup> groups) {
+    }
+
+    @Override
+    public void clearGroups() {
+
     }
 
     @Override
@@ -79,5 +99,10 @@ public class TestLocalRepository implements LocalRepository {
     @Override
     public void cacheCategories(List<Category> categories) {
         this.categories.addAll(categories);
+    }
+
+    @Override
+    public void clearCategories() {
+        categories.clear();
     }
 }

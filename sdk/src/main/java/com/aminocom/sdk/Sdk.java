@@ -35,6 +35,16 @@ public class Sdk implements Providers {
 
     private Providers providers;
 
+
+    /**
+     * Simplified constructor which creates instance of the SDK with default CookieManager, LocalRepository and Settings
+     *
+     * @param context - Android context, better to use application context
+     * @param baseUrl - base url to the service
+     * @param service - parameter for service authentication
+     * @param servicePassword - password for service authentication
+     * @param type - Type of data provider. For example it can be ProviderType.AMINO
+     */
     public Sdk(Context context, String baseUrl, String service, String servicePassword, ProviderType type) {
         new Sdk(
                 baseUrl,
@@ -47,6 +57,18 @@ public class Sdk implements Providers {
         );
     }
 
+
+    /**
+     * Base constructor which creates instance of the SDK for fetching of data
+     *
+     * @param baseUrl - base url to the service
+     * @param service - parameter for service authentication
+     * @param servicePassword - password for service authentication
+     * @param type - Type of data provider. For example it can be ProviderType.AMINO
+     * @param cookieManager - manager to store cookies
+     * @param dbRepository - local repository fro caching of fetched data
+     * @param settings - user settings
+     */
     public Sdk(String baseUrl, String service, String servicePassword, ProviderType type, CookieManager cookieManager, LocalRepository dbRepository, Settings settings) {
 
         final HttpLoggingInterceptor.Logger logger = message -> {
