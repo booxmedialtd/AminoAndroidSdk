@@ -1,4 +1,4 @@
-package com.aminocom.sdk;
+package com.aminocom.sdk.provider.local;
 
 import com.aminocom.sdk.model.client.Category;
 import com.aminocom.sdk.model.client.Epg;
@@ -11,7 +11,7 @@ import java.util.List;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
-public interface LocalRepository {
+public interface LocalProvider {
     Flowable<List<Channel>> getChannels();
 
     void cacheChannels(List<Channel> channels);

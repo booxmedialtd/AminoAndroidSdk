@@ -1,4 +1,4 @@
-package com.aminocom.sdk.provider.amino;
+package com.aminocom.sdk.provider.network.amino;
 
 import com.aminocom.sdk.JsonReader;
 import com.aminocom.sdk.Sdk;
@@ -6,7 +6,7 @@ import com.aminocom.sdk.TestCookieManager;
 import com.aminocom.sdk.TestLocalRepository;
 import com.aminocom.sdk.TestSettings;
 import com.aminocom.sdk.model.client.Category;
-import com.aminocom.sdk.provider.ProviderType;
+import com.aminocom.sdk.provider.network.ProviderType;
 
 import org.junit.After;
 import org.junit.Before;

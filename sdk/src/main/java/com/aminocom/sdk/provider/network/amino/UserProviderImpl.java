@@ -1,9 +1,9 @@
-package com.aminocom.sdk.provider.amino;
+package com.aminocom.sdk.provider.network.amino;
 
 import com.aminocom.sdk.CustomDigestAuthenticator;
 import com.aminocom.sdk.ServerApi;
 import com.aminocom.sdk.model.network.UserResponse;
-import com.aminocom.sdk.provider.UserProvider;
+import com.aminocom.sdk.provider.network.UserProvider;
 import com.aminocom.sdk.settings.Settings;
 import com.aminocom.sdk.util.AccountUtil;
 import com.burgstaller.okhttp.digest.Credentials;

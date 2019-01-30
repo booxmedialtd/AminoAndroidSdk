@@ -1,4 +1,4 @@
-package com.aminocom.sdk.provider;
+package com.aminocom.sdk.provider.network;
 
 public interface Providers {
     UserProvider user();

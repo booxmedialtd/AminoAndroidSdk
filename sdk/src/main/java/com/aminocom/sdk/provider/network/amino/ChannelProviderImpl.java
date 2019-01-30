@@ -1,14 +1,14 @@
-package com.aminocom.sdk.provider.amino;
+package com.aminocom.sdk.provider.network.amino;
 
 import com.aminocom.sdk.CookieManager;
-import com.aminocom.sdk.LocalRepository;
+import com.aminocom.sdk.provider.local.LocalProvider;
 import com.aminocom.sdk.ServerApi;
 import com.aminocom.sdk.mapper.ChannelMapper;
 import com.aminocom.sdk.mapper.LiveChannelMapper;
 import com.aminocom.sdk.model.client.channel.Channel;
 import com.aminocom.sdk.model.client.channel.LiveChannel;
-import com.aminocom.sdk.provider.ChannelProvider;
-import com.aminocom.sdk.provider.UserProvider;
+import com.aminocom.sdk.provider.network.ChannelProvider;
+import com.aminocom.sdk.provider.network.UserProvider;
 import com.aminocom.sdk.settings.Settings;
 
 import java.util.List;
@@ -19,16 +19,16 @@ import io.reactivex.Single;
 public class ChannelProviderImpl implements ChannelProvider {
 
     private ServerApi api;
-    private LocalRepository localRepository;
+    private LocalProvider localRepository;
     private String service;
     private CookieManager cookieManager;
     private Settings settings;
 
-    static ChannelProvider newInstance(ServerApi api, LocalRepository localRepository, String service, CookieManager cookieManager, Settings settings) {
+    static ChannelProvider newInstance(ServerApi api, LocalProvider localRepository, String service, CookieManager cookieManager, Settings settings) {
         return new ChannelProviderImpl(api, localRepository, service, cookieManager, settings);
     }
 
-    private ChannelProviderImpl(ServerApi api, LocalRepository localRepository, String service, CookieManager cookieManager, Settings settings) {
+    private ChannelProviderImpl(ServerApi api, LocalProvider localRepository, String service, CookieManager cookieManager, Settings settings) {
         this.api = api;
         this.localRepository = localRepository;
         this.service = service;

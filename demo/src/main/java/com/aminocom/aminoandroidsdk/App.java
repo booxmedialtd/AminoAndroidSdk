@@ -3,7 +3,7 @@ package com.aminocom.aminoandroidsdk;
 import android.app.Application;
 
 import com.aminocom.sdk.Sdk;
-import com.aminocom.sdk.provider.ProviderType;
+import com.aminocom.sdk.provider.network.ProviderType;
 
 public class App extends Application {
     public Sdk sdk;

@@ -5,6 +5,7 @@ import com.aminocom.sdk.model.client.Epg;
 import com.aminocom.sdk.model.client.RecordingGroup;
 import com.aminocom.sdk.model.client.Program;
 import com.aminocom.sdk.model.client.channel.Channel;
+import com.aminocom.sdk.provider.local.LocalProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
-public class TestLocalRepository implements LocalRepository {
+public class TestLocalRepository implements LocalProvider {
     private List<Channel> channels = new ArrayList<>();
     private List<Category> categories = new ArrayList<>();
 

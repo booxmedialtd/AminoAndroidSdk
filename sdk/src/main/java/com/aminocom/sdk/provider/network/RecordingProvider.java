@@ -1,4 +1,4 @@
-package com.aminocom.sdk.provider;
+package com.aminocom.sdk.provider.network;
 
 import com.aminocom.sdk.model.client.RecordingGroup;
 import com.aminocom.sdk.model.client.Program;

@@ -1,4 +1,4 @@
-package com.aminocom.sdk;
+package com.aminocom.sdk.provider.local;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;
@@ -15,11 +15,11 @@ import java.util.List;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
-public class DbRepository implements LocalRepository {
+public class DbProvider implements LocalProvider {
 
     private SdkDatabase db;
 
-    public DbRepository(Context appContext) {
+    public DbProvider(Context appContext) {
         this.db = Room.databaseBuilder(appContext, SdkDatabase.class, "sdk-database").build();
     }
 

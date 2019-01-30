@@ -1,14 +1,14 @@
-package com.aminocom.sdk.provider.amino;
+package com.aminocom.sdk.provider.network.amino;
 
 import android.util.Log;
 
-import com.aminocom.sdk.LocalRepository;
+import com.aminocom.sdk.provider.local.LocalProvider;
 import com.aminocom.sdk.ServerApi;
 import com.aminocom.sdk.mapper.CategoryMapper;
 import com.aminocom.sdk.mapper.CategoryProgramMapper;
 import com.aminocom.sdk.model.client.Category;
 import com.aminocom.sdk.model.network.category.CategoryListItem;
-import com.aminocom.sdk.provider.CategoryProvider;
+import com.aminocom.sdk.provider.network.CategoryProvider;
 import com.aminocom.sdk.settings.Settings;
 
 import java.util.List;
@@ -21,15 +21,15 @@ public class CategoryProviderImpl implements CategoryProvider {
     private static final String TAG = CategoryProviderImpl.class.getSimpleName();
 
     private ServerApi api;
-    private LocalRepository localRepository;
+    private LocalProvider localRepository;
     private String service;
     private Settings settings;
 
-    public static CategoryProvider newInstance(ServerApi api, LocalRepository localRepository, String service, Settings settings) {
+    public static CategoryProvider newInstance(ServerApi api, LocalProvider localRepository, String service, Settings settings) {
         return new CategoryProviderImpl(api, localRepository, service, settings);
     }
 
-    private CategoryProviderImpl(ServerApi api, LocalRepository localRepository, String service, Settings settings) {
+    private CategoryProviderImpl(ServerApi api, LocalProvider localRepository, String service, Settings settings) {
         this.api = api;
         this.localRepository = localRepository;
         this.service = service;

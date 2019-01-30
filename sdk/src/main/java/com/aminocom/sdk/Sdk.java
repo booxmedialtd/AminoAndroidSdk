@@ -2,15 +2,17 @@ package com.aminocom.sdk;
 
 import android.content.Context;
 
-import com.aminocom.sdk.provider.CategoryProvider;
-import com.aminocom.sdk.provider.ChannelProvider;
-import com.aminocom.sdk.provider.EpgProvider;
-import com.aminocom.sdk.provider.ProviderFactory;
-import com.aminocom.sdk.provider.ProviderType;
-import com.aminocom.sdk.provider.Providers;
-import com.aminocom.sdk.provider.RecordingProvider;
-import com.aminocom.sdk.provider.StreamProvider;
-import com.aminocom.sdk.provider.UserProvider;
+import com.aminocom.sdk.provider.local.DbProvider;
+import com.aminocom.sdk.provider.local.LocalProvider;
+import com.aminocom.sdk.provider.network.CategoryProvider;
+import com.aminocom.sdk.provider.network.ChannelProvider;
+import com.aminocom.sdk.provider.network.EpgProvider;
+import com.aminocom.sdk.provider.network.ProviderFactory;
+import com.aminocom.sdk.provider.network.ProviderType;
+import com.aminocom.sdk.provider.network.Providers;
+import com.aminocom.sdk.provider.network.RecordingProvider;
+import com.aminocom.sdk.provider.network.StreamProvider;
+import com.aminocom.sdk.provider.network.UserProvider;
 import com.aminocom.sdk.settings.Settings;
 import com.aminocom.sdk.settings.DefaultSettings;
 import com.burgstaller.okhttp.CachingAuthenticatorDecorator;
@@ -37,7 +39,7 @@ public class Sdk implements Providers {
 
 
     /**
-     * Simplified constructor which creates instance of the SDK with default CookieManager, LocalRepository and Settings
+     * Simplified constructor which creates instance of the SDK with default CookieManager, LocalProvider and Settings
      *
      * @param context - Android context, better to use application context
      * @param baseUrl - base url to the service
@@ -52,7 +54,7 @@ public class Sdk implements Providers {
                 servicePassword,
                 type,
                 new AndroidCookieManager(),
-                new DbRepository(context),
+                new DbProvider(context),
                 new DefaultSettings(context, new DefaultCacheTtlManager())
         );
     }
@@ -66,10 +68,10 @@ public class Sdk implements Providers {
      * @param servicePassword - password for service authentication
      * @param type - Type of data provider. For example it can be ProviderType.AMINO
      * @param cookieManager - manager to store cookies
-     * @param dbRepository - local repository fro caching of fetched data
+     * @param dbRepository - local provider for caching of fetched data
      * @param settings - user settings
      */
-    public Sdk(String baseUrl, String service, String servicePassword, ProviderType type, CookieManager cookieManager, LocalRepository dbRepository, Settings settings) {
+    public Sdk(String baseUrl, String service, String servicePassword, ProviderType type, CookieManager cookieManager, LocalProvider dbRepository, Settings settings) {
 
         final HttpLoggingInterceptor.Logger logger = message -> {
             if (!message.isEmpty()) {

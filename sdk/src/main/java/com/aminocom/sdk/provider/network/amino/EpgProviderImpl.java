@@ -1,11 +1,11 @@
-package com.aminocom.sdk.provider.amino;
+package com.aminocom.sdk.provider.network.amino;
 
-import com.aminocom.sdk.LocalRepository;
+import com.aminocom.sdk.provider.local.LocalProvider;
 import com.aminocom.sdk.ServerApi;
 import com.aminocom.sdk.mapper.EpgMapper;
 import com.aminocom.sdk.mapper.ProgramMapper;
 import com.aminocom.sdk.model.client.Epg;
-import com.aminocom.sdk.provider.EpgProvider;
+import com.aminocom.sdk.provider.network.EpgProvider;
 import com.aminocom.sdk.settings.Settings;
 import com.aminocom.sdk.util.DateUtil;
 
@@ -21,17 +21,17 @@ public class EpgProviderImpl implements EpgProvider {
     private static final int RECORDING_PAGE_NUMBER = 1;
 
     private ServerApi api;
-    private LocalRepository localRepository;
+    private LocalProvider localRepository;
     private String service;
     private Settings settings;
 
     private long epgCacheTime = 0;
 
-    public static EpgProvider newInstance(ServerApi api, LocalRepository localRepository, String service, Settings settings) {
+    public static EpgProvider newInstance(ServerApi api, LocalProvider localRepository, String service, Settings settings) {
         return new EpgProviderImpl(api, localRepository, service, settings);
     }
 
-    private EpgProviderImpl(ServerApi api, LocalRepository localRepository, String service, Settings settings) {
+    private EpgProviderImpl(ServerApi api, LocalProvider localRepository, String service, Settings settings) {
         this.api = api;
         this.localRepository = localRepository;
         this.service = service;

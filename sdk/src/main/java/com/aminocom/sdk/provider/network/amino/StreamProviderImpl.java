@@ -1,9 +1,9 @@
-package com.aminocom.sdk.provider.amino;
+package com.aminocom.sdk.provider.network.amino;
 
 import com.aminocom.sdk.ServerApi;
 import com.aminocom.sdk.mapper.StreamMapper;
 import com.aminocom.sdk.model.client.Stream;
-import com.aminocom.sdk.provider.StreamProvider;
+import com.aminocom.sdk.provider.network.StreamProvider;
 
 import java.util.List;
 
