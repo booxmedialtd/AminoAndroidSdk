@@ -2,6 +2,7 @@ package com.aminocom.sdk.provider.network.amino;
 
 import com.aminocom.sdk.CustomDigestAuthenticator;
 import com.aminocom.sdk.ServerApi;
+import com.aminocom.sdk.model.network.Storage;
 import com.aminocom.sdk.model.network.UserResponse;
 import com.aminocom.sdk.provider.network.UserProvider;
 import com.aminocom.sdk.settings.Settings;
@@ -40,5 +41,20 @@ public class UserProviderImpl implements UserProvider {
                 "8.0.1",
                 service
         ).doOnSuccess(response -> settings.setUserName(username));
+    }
+
+    @Override
+    public Single<Boolean> logout() {
+        throw new UnsupportedOperationException("To be implemented");
+    }
+
+    @Override
+    public Single<UserResponse> register(String username, String password) {
+        throw new UnsupportedOperationException("To be implemented");
+    }
+
+    @Override
+    public Single<Storage> getUserStorage() {
+        throw new UnsupportedOperationException("To be implemented");
     }
 }
